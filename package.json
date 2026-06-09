@@ -1,0 +1,7 @@
+{
+  "name": "app-pulse-check",
+  "private": true,
+  "scripts": {
+    "dev:backend": "npm run dev:backend --prefix backend"
+  }
+}
