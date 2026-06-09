@@ -11,3 +11,42 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum CheckStatus {
+  NEW
+  UP
+  DOWN
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  checks       Check[]
+}
+
+model Check {
+  id              String      @id @default(cuid())
+  uuid            String      @unique @default(uuid())
+  userId          String
+  name            String
+  intervalSeconds Int
+  graceSeconds    Int
+  status          CheckStatus @default(NEW)
+  lastPingedAt    DateTime?
+  createdAt       DateTime    @default(now())
+  user            User        @relation(fields: [userId], references: [id])
+  pingLogs        PingLog[]
+
+  @@index([userId])
+}
+
+model PingLog {
+  id       String   @id @default(cuid())
+  checkId  String
+  pingedAt DateTime @default(now())
+  check    Check    @relation(fields: [checkId], references: [id])
+
+  @@index([checkId])
+}
