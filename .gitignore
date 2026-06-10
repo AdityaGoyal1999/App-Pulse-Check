@@ -22,8 +22,29 @@ node_modules/
 
 # --- Build output ---
 dist/
+backend/dist/
 build/
 out/
+
+# tsc artifacts emitted beside sources (misconfigured builds)
+backend/src/**/*.js
+backend/src/**/*.js.map
+backend/src/**/*.d.ts.map
+!backend/src/types/express.d.ts
+
+backend/generated/prisma/**/*.js
+backend/generated/prisma/**/*.js.map
+backend/generated/prisma/**/*.d.ts
+backend/generated/prisma/**/*.d.ts.map
+
+backend/prisma/**/*.js
+backend/prisma/**/*.js.map
+backend/prisma/**/*.d.ts
+backend/prisma/**/*.d.ts.map
+backend/prisma.config.js
+backend/prisma.config.js.map
+backend/prisma.config.d.ts
+backend/prisma.config.d.ts.map
 .next/
 .nuxt/
 .svelte-kit/
