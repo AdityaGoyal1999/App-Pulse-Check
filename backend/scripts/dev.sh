@@ -30,7 +30,7 @@ done
 cd "${BACKEND_DIR}"
 
 echo "Starting Prisma Studio at http://localhost:5555 ..."
-npx prisma studio &
+npx prisma studio --port 5555 --browser none &
 STUDIO_PID=$!
 
 cleanup() {
