@@ -2,6 +2,12 @@
 .env
 .env.*
 !.env.example
+
+# Backend env: commit backend/.env.example only
+backend/.env
+backend/.env.local
+backend/.env.*
+!backend/.env.example
 *.pem
 *.key
 *.p12
