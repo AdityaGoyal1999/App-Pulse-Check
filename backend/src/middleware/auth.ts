@@ -1,11 +1,29 @@
 import type { NextFunction, Request, Response } from "express";
+import { verifyToken } from "../lib/jwt";
 
-// Step 3c: parse "Authorization: Bearer <token>", verifyToken,
-// attach req.user = { id: userId }, else 401 { error: "Unauthorized" }
 export function requireAuth(
-  _req: Request,
+  req: Request,
   res: Response,
-  _next: NextFunction,
+  next: NextFunction,
 ): void {
-  res.status(501).json({ error: "requireAuth not implemented yet" });
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader?.startsWith("Bearer ")) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+
+  const token = authHeader.slice("Bearer ".length).trim();
+  if (!token) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+
+  try {
+    const payload = verifyToken(token);
+    req.user = { id: payload.userId };
+    next();
+  } catch {
+    res.status(401).json({ error: "Unauthorized" });
+  }
 }

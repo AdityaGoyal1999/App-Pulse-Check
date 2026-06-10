@@ -5,8 +5,9 @@ export type JwtPayload = { userId: string };
 export function signToken(payload: JwtPayload): string {
   const secret = process.env.JWT_SECRET;
   if (!secret) throw new Error("JWT_SECRET is not set");
-  const expiresIn = (process.env.JWT_EXPIRES_IN ??
-    "7d") as jwt.SignOptions["expiresIn"];
+  const expiresIn = (process.env.JWT_EXPIRES_IN ?? "7d") as NonNullable<
+    jwt.SignOptions["expiresIn"]
+  >;
   return jwt.sign(payload, secret, { expiresIn });
 }
 

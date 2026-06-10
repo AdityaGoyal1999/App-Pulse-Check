@@ -10,6 +10,7 @@ export default defineConfig({
     seed: "tsx prisma/seed.ts",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    // Non-null assertion: db.ts and seed.ts throw early if DATABASE_URL is unset
+    url: process.env["DATABASE_URL"]!,
   },
 });
