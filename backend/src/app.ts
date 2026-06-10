@@ -1,7 +1,10 @@
 import express from "express";
+import { authRouter } from "./routes/auth";
 import { pingRouter } from "./routes/ping";
 
 export const app = express();
+
+app.use(express.json());
 
 // Check if this server is running
 app.get("/health", (_req, res) => {
@@ -10,6 +13,8 @@ app.get("/health", (_req, res) => {
 
 // Ping endpoint
 app.use("/ping", pingRouter);
+
+app.use("/api/auth", authRouter);
 
 // 404 handler
 app.use((_req, res) => {
