@@ -1,4 +1,4 @@
-# App Pulse Check 💓
+# App Pulse Check 
 
 **The heartbeat monitor for background jobs, cron tasks, and scripts.**
 
@@ -37,12 +37,14 @@ Built for indie hackers, solo developers, and small teams who need to know when 
 
 ## 🛠 Tech stack
 
-| Layer | Stack |
-|-------|-------|
-| ⚙️ API | Node.js, TypeScript, Express |
-| 🐘 Database | PostgreSQL, Prisma |
-| 🔑 Auth | bcrypt, JSON Web Tokens, Zod validation |
+
+| Layer       | Stack                                               |
+| ----------- | --------------------------------------------------- |
+| ⚙️ API      | Node.js, TypeScript, Express                        |
+| 🐘 Database | PostgreSQL, Prisma                                  |
+| 🔑 Auth     | bcrypt, JSON Web Tokens, Zod validation             |
 | 🎨 Frontend | Next.js, React, TypeScript, Tailwind CSS, shadcn/ui |
+
 
 ## 🚀 Getting started
 
@@ -84,12 +86,15 @@ AppPulseCheck/
 
 ## 🗺️ Roadmap
 
-| Milestone | Status |
-|-----------|--------|
-| Core API and ping ingestion | ✅ Shipped |
-| User auth and check CRUD | 🚧 In progress |
-| Web dashboard | 🔜 Planned |
-| Background status worker | 🔜 Planned |
-| Alerting and notifications | 🔜 Planned |
-| Resolution and deduplication | 🔜 Planned |
-| Production deployment | 🔜 Planned |
+
+| Milestone                    | Status         |
+| ---------------------------- | -------------- |
+| Core API and ping ingestion  | ✅ Shipped      |
+| User auth and check CRUD     | 🚧 In progress |
+| Web dashboard                | 🔜 Planned     |
+| Background status worker     | 🔜 Planned     |
+| Alerting and notifications   | 🔜 Planned     |
+| Resolution and deduplication | 🔜 Planned     |
+| Production deployment        | 🔜 Planned     |
+
+
