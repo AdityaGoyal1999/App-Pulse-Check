@@ -1,4 +1,4 @@
-# App Pulse Check
+# App Pulse Check 💓
 
 **The heartbeat monitor for background jobs, cron tasks, and scripts.**
 
@@ -6,52 +6,52 @@ App Pulse Check is a lightweight uptime monitor for heartbeat-style jobs. Each m
 
 Built for indie hackers, solo developers, and small teams who need to know when scheduled or background work stops running — without standing up a full observability stack.
 
-## Features
+## ✨ Features
 
-### Available now
+### ✅ Available now
 
-- **Ping endpoint** — `GET /ping/:uuid` logs each ping and marks the check as `UP`
-- **Health check** — `GET /health` for basic server monitoring
-- **Data model** — `User`, `Check`, and `PingLog` tables with check status (`NEW`, `UP`, `DOWN`)
-- **Local dev workflow** — one command starts Postgres, Prisma Studio, and the API server
-- **Landing page** — product positioning and onboarding entry point
+- 📡 **Ping endpoint** — `GET /ping/:uuid` logs each ping and marks the check as `UP`
+- 💚 **Health check** — `GET /health` for basic server monitoring
+- 🗄️ **Data model** — `User`, `Check`, and `PingLog` tables with check status (`NEW`, `UP`, `DOWN`)
+- ⚡ **Local dev workflow** — one command starts Postgres, Prisma Studio, and the API server
+- 🌐 **Landing page** — product positioning and onboarding entry point
 
-### In progress
+### 🚧 In progress
 
-- **User authentication** — signup, login, and logout with JWT Bearer tokens
-- **Check management API** — create, list, and delete checks (scaffolding and core libraries in place)
+- 🔐 **User authentication** — signup, login, and logout with JWT Bearer tokens
+- 📋 **Check management API** — create, list, and delete checks (scaffolding and core libraries in place)
 
-### Planned
+### 🔜 Planned
 
-- **Dashboard** — view check status and history in the browser
-- **Missed-ping detection** — background worker marks checks `DOWN` when pings stop
-- **Alerting** — notifications when checks go down
-- **Resolution handling** — alert deduplication and recovery workflows
-- **Production deployment** — hosted offering and self-host guides
+- 📊 **Dashboard** — view check status and history in the browser
+- ⏱️ **Missed-ping detection** — background worker marks checks `DOWN` when pings stop
+- 🔔 **Alerting** — notifications when checks go down
+- ✅ **Resolution handling** — alert deduplication and recovery workflows
+- 🚀 **Production deployment** — hosted offering and self-host guides
 
-## How it works
+## 🔄 How it works
 
-1. Create a check and get a unique ping URL.
-2. Add a one-line HTTP call to your cron job, script, or background worker.
-3. App Pulse Check tracks incoming pings and flags the check when they stop.
+1. ➕ Create a check and get a unique ping URL.
+2. 🔗 Add a one-line HTTP call to your cron job, script, or background worker.
+3. 👀 App Pulse Check tracks incoming pings and flags the check when they stop.
 
-## Tech stack
+## 🛠 Tech stack
 
 | Layer | Stack |
 |-------|-------|
-| API | Node.js, TypeScript, Express |
-| Database | PostgreSQL, Prisma |
-| Auth | bcrypt, JSON Web Tokens, Zod validation |
-| Frontend | Next.js, React, TypeScript, Tailwind CSS, shadcn/ui |
+| ⚙️ API | Node.js, TypeScript, Express |
+| 🐘 Database | PostgreSQL, Prisma |
+| 🔑 Auth | bcrypt, JSON Web Tokens, Zod validation |
+| 🎨 Frontend | Next.js, React, TypeScript, Tailwind CSS, shadcn/ui |
 
-## Getting started
+## 🚀 Getting started
 
 ### Prerequisites
 
-- Node.js
-- Docker (for local Postgres)
+- 🟢 Node.js
+- 🐳 Docker (for local Postgres)
 
-### Backend
+### ⚙️ Backend
 
 ```bash
 cd backend
@@ -63,7 +63,7 @@ npm run dev:backend           # or from repo root: npm run dev:backend
 
 The API runs at `http://localhost:3000`. Prisma Studio opens at `http://localhost:5555`.
 
-### Frontend
+### 🎨 Frontend
 
 ```bash
 cd frontend
@@ -73,7 +73,7 @@ npm run dev                   # or from repo root: npm run dev:frontend
 
 The app runs at `http://localhost:3001`.
 
-## Project structure
+## 📁 Project structure
 
 ```
 AppPulseCheck/
@@ -82,14 +82,14 @@ AppPulseCheck/
 └── package.json      # root scripts: dev:backend, dev:frontend
 ```
 
-## Roadmap
+## 🗺️ Roadmap
 
 | Milestone | Status |
 |-----------|--------|
-| Core API and ping ingestion | Shipped |
-| User auth and check CRUD | In progress |
-| Web dashboard | Planned |
-| Background status worker | Planned |
-| Alerting and notifications | Planned |
-| Resolution and deduplication | Planned |
-| Production deployment | Planned |
+| Core API and ping ingestion | ✅ Shipped |
+| User auth and check CRUD | 🚧 In progress |
+| Web dashboard | 🔜 Planned |
+| Background status worker | 🔜 Planned |
+| Alerting and notifications | 🔜 Planned |
+| Resolution and deduplication | 🔜 Planned |
+| Production deployment | 🔜 Planned |
