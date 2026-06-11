@@ -14,23 +14,23 @@ Built for indie hackers, solo developers, and small teams who need to know when 
 - 💚 **Health check** — `GET /health` for basic server monitoring
 - 🗄️ **Data model** — `User`, `Check`, and `PingLog` tables with check status (`NEW`, `UP`, `DOWN`)
 - ⚡ **Local dev workflow** — one command starts Postgres, Prisma Studio, and the API server
-- 🌐 **Landing page** — product positioning and onboarding entry point
-- 🔐 **User authentication** — signup, login, and logout with JWT Bearer tokens
+- 🔐 **User authentication** — signup, login, and logout with JWT Bearer tokens (API + UI)
 - 📋 **Check management API** — create, list, and delete checks (user-scoped, JWT protected)
+- 🌐 **Landing page** — product positioning with login and signup entry points
+- 📊 **Dashboard** — protected `/dashboard` with check list, status badges (`NEW` / `UP` / `DOWN`), relative last-ping times, copy-ping-URL, create, and delete
+- ⏱️ **Missed-ping detection** — standalone evaluation worker runs every 60s and marks overdue checks `DOWN` (respects `intervalSeconds` + `graceSeconds`, skips paused checks)
 
 ### 🔜 Planned
 
-- 📊 **Dashboard** — view check status and history in the browser
-- ⏱️ **Missed-ping detection** — background worker marks checks `DOWN` when pings stop
-- 🔔 **Alerting** — notifications when checks go down
-- ✅ **Resolution handling** — alert deduplication and recovery workflows
+- 🔔 **Alerting** — Discord, Slack, or email notifications when checks go down
+- ✅ **Resolution handling** — alert deduplication and recovery workflows when pings resume
 - 🚀 **Production deployment** — hosted offering and self-host guides
 
 ## 🔄 How it works
 
-1. ➕ Create a check and get a unique ping URL.
-2. 🔗 Add a one-line HTTP call to your cron job, script, or background worker.
-3. 👀 App Pulse Check tracks incoming pings and flags the check when they stop.
+1. ➕ Sign up and create a check with an expected interval and grace period.
+2. 🔗 Copy the ping URL and add a one-line HTTP call to your cron job, script, or background worker.
+3. 👀 The dashboard shows live status; the evaluation worker flags checks `DOWN` when pings stop arriving on time.
 
 ## 🛠 Tech stack
 
@@ -41,6 +41,7 @@ Built for indie hackers, solo developers, and small teams who need to know when 
 | 🐘 Database | PostgreSQL, Prisma                                  |
 | 🔑 Auth     | bcrypt, JSON Web Tokens, Zod validation             |
 | 🎨 Frontend | Next.js, React, TypeScript, Tailwind CSS, shadcn/ui |
+| ⚙️ Worker   | Standalone Node process (`backend/src/worker/`)     |
 
 
 ## 🚀 Getting started
@@ -66,19 +67,40 @@ The API runs at `http://localhost:3000`. Prisma Studio opens at `http://localhos
 
 ```bash
 cd frontend
+echo 'NEXT_PUBLIC_API_URL=http://localhost:3000' > .env.local
 npm install
 npm run dev                   # or from repo root: npm run dev:frontend
 ```
 
-The app runs at `http://localhost:3001`.
+The app runs at `http://localhost:3001`. Sign up, then open `/dashboard` to manage checks.
+
+### ⏱️ Evaluation worker
+
+Run in a separate terminal while developing (uses the same `DATABASE_URL` as the API):
+
+```bash
+cd backend
+npx tsx src/worker/index.ts
+```
+
+The worker evaluates all non-paused checks every 60 seconds. A check is marked `DOWN` when `now > lastPingedAt + intervalSeconds + graceSeconds`.
 
 ## 📁 Project structure
 
 ```
 AppPulseCheck/
-├── backend/          # Express API, Prisma, auth
-├── frontend/         # Next.js app
-└── package.json      # root scripts: dev:backend, dev:frontend
+├── backend/
+│   ├── prisma/           # schema, migrations, seed
+│   ├── src/
+│   │   ├── routes/       # ping, auth, checks
+│   │   ├── worker/       # missed-ping evaluation loop
+│   │   └── ...
+│   └── scripts/dev.sh    # Docker Postgres + Studio + API
+├── frontend/
+│   └── src/
+│       ├── app/          # landing, login, signup, dashboard
+│       └── components/   # CheckList, StatusBadge, auth UI, etc.
+└── package.json          # root scripts: dev:backend, dev:frontend, stop
 ```
 
 ## 🗺️ Roadmap
@@ -88,10 +110,9 @@ AppPulseCheck/
 | ---------------------------- | -------------- |
 | Core API and ping ingestion  | ✅ Shipped      |
 | User auth and check CRUD     | ✅ Shipped      |
-| Web dashboard                | 🔜 Planned     |
-| Background status worker     | 🔜 Planned     |
+| Web dashboard                | ✅ Shipped      |
+| Background status worker     | ✅ Shipped      |
 | Alerting and notifications   | 🔜 Planned     |
 | Resolution and deduplication | 🔜 Planned     |
 | Production deployment        | 🔜 Planned     |
-
 
