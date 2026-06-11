@@ -1,6 +1,7 @@
 import "../src/load-env";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/client";
+import { hashPassword } from "../src/lib/password";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) {
@@ -11,12 +12,14 @@ const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
+  const passwordHash = await hashPassword("password123");
+
   const user = await prisma.user.upsert({
     where: { email: "test@example.com" },
-    update: {},
+    update: { passwordHash },
     create: {
       email: "test@example.com",
-      passwordHash: "dummy-hash-for-day1",
+      passwordHash,
       checks: {
         create: {
           name: "Test check",
