@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import { authRouter } from "./routes/auth";
 import { checksRouter } from "./routes/checks";
@@ -5,6 +6,7 @@ import { pingRouter } from "./routes/ping";
 
 export const app = express();
 
+app.use(cors({ origin: "http://localhost:3001" }));
 app.use(express.json());
 
 // Check if this server is running
