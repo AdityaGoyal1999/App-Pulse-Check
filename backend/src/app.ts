@@ -3,6 +3,7 @@ import express from "express";
 import { authRouter } from "./routes/auth";
 import { checksRouter } from "./routes/checks";
 import { pingRouter } from "./routes/ping";
+import { userRouter } from "./routes/user";
 
 export const app = express();
 
@@ -19,6 +20,7 @@ app.use("/ping", pingRouter);
 
 app.use("/api/auth", authRouter);
 app.use("/api/checks", checksRouter);
+app.use("/api/user", userRouter);
 
 // 404 handler
 app.use((_req, res) => {

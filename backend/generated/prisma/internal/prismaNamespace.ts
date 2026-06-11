@@ -671,6 +671,8 @@ export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   passwordHash: 'passwordHash',
+  alertWebhookUrl: 'alertWebhookUrl',
+  alertEmail: 'alertEmail',
   createdAt: 'createdAt'
 } as const
 

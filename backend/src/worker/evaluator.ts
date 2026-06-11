@@ -1,4 +1,5 @@
 import { CheckStatus } from "../../generated/prisma/client";
+import { sendDownAlert } from "../lib/alerts";
 import { prisma } from "../db";
 
 const INTERVAL_MS = 60_000;
@@ -16,28 +17,38 @@ export async function evaluateChecks(): Promise<number> {
       lastPingedAt: true,
       intervalSeconds: true,
       graceSeconds: true,
+      user: {
+        select: { alertWebhookUrl: true, alertEmail: true },
+      },
     },
   });
 
   const now = Date.now();
 
-  const overdueIds = candidates
-    .filter((check) => {
-      const deadline =
-        check.lastPingedAt!.getTime() +
-        check.intervalSeconds * 1000 +
-        check.graceSeconds * 1000;
-      return now > deadline;
-    })
-    .map((check) => check.id);
+  const overdueChecks = candidates.filter((check) => {
+    const deadline =
+      check.lastPingedAt!.getTime() +
+      check.intervalSeconds * 1000 +
+      check.graceSeconds * 1000;
+    return now > deadline;
+  });
 
-  if (overdueIds.length === 0) {
+  if (overdueChecks.length === 0) {
     return 0;
   }
 
+  await Promise.allSettled(
+    overdueChecks.map((check) =>
+      sendDownAlert(
+        { name: check.name, lastPingedAt: check.lastPingedAt },
+        check.user,
+      ),
+    ),
+  );
+
   const result = await prisma.check.updateMany({
-    where: { id: { in: overdueIds } },
-    data: { status: CheckStatus.DOWN },
+    where: { id: { in: overdueChecks.map((c) => c.id) } },
+    data: { status: CheckStatus.DOWN, alertSent: true },
   });
 
   console.log(`Marked ${result.count} check(s) DOWN`);
