@@ -16,3 +16,8 @@ export type CreateCheckInput = {
   intervalSeconds: number;
   graceSeconds: number;
 };
+export type CheckNotificationSettings = {
+  name: string;
+  alertWebhookUrl: string | null;
+  alertEmail: string | null;
+};

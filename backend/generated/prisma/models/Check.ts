@@ -47,6 +47,8 @@ export type CheckMinAggregateOutputType = {
   lastPingedAt: Date | null
   paused: boolean | null
   alertSent: boolean | null
+  alertWebhookUrl: string | null
+  alertEmail: string | null
   createdAt: Date | null
 }
 
@@ -61,6 +63,8 @@ export type CheckMaxAggregateOutputType = {
   lastPingedAt: Date | null
   paused: boolean | null
   alertSent: boolean | null
+  alertWebhookUrl: string | null
+  alertEmail: string | null
   createdAt: Date | null
 }
 
@@ -75,6 +79,8 @@ export type CheckCountAggregateOutputType = {
   lastPingedAt: number
   paused: number
   alertSent: number
+  alertWebhookUrl: number
+  alertEmail: number
   createdAt: number
   _all: number
 }
@@ -101,6 +107,8 @@ export type CheckMinAggregateInputType = {
   lastPingedAt?: true
   paused?: true
   alertSent?: true
+  alertWebhookUrl?: true
+  alertEmail?: true
   createdAt?: true
 }
 
@@ -115,6 +123,8 @@ export type CheckMaxAggregateInputType = {
   lastPingedAt?: true
   paused?: true
   alertSent?: true
+  alertWebhookUrl?: true
+  alertEmail?: true
   createdAt?: true
 }
 
@@ -129,6 +139,8 @@ export type CheckCountAggregateInputType = {
   lastPingedAt?: true
   paused?: true
   alertSent?: true
+  alertWebhookUrl?: true
+  alertEmail?: true
   createdAt?: true
   _all?: true
 }
@@ -230,6 +242,8 @@ export type CheckGroupByOutputType = {
   lastPingedAt: Date | null
   paused: boolean
   alertSent: boolean
+  alertWebhookUrl: string | null
+  alertEmail: string | null
   createdAt: Date
   _count: CheckCountAggregateOutputType | null
   _avg: CheckAvgAggregateOutputType | null
@@ -267,6 +281,8 @@ export type CheckWhereInput = {
   lastPingedAt?: Prisma.DateTimeNullableFilter<"Check"> | Date | string | null
   paused?: Prisma.BoolFilter<"Check"> | boolean
   alertSent?: Prisma.BoolFilter<"Check"> | boolean
+  alertWebhookUrl?: Prisma.StringNullableFilter<"Check"> | string | null
+  alertEmail?: Prisma.StringNullableFilter<"Check"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Check"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   pingLogs?: Prisma.PingLogListRelationFilter
@@ -283,6 +299,8 @@ export type CheckOrderByWithRelationInput = {
   lastPingedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   paused?: Prisma.SortOrder
   alertSent?: Prisma.SortOrder
+  alertWebhookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  alertEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   pingLogs?: Prisma.PingLogOrderByRelationAggregateInput
@@ -302,6 +320,8 @@ export type CheckWhereUniqueInput = Prisma.AtLeast<{
   lastPingedAt?: Prisma.DateTimeNullableFilter<"Check"> | Date | string | null
   paused?: Prisma.BoolFilter<"Check"> | boolean
   alertSent?: Prisma.BoolFilter<"Check"> | boolean
+  alertWebhookUrl?: Prisma.StringNullableFilter<"Check"> | string | null
+  alertEmail?: Prisma.StringNullableFilter<"Check"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Check"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   pingLogs?: Prisma.PingLogListRelationFilter
@@ -318,6 +338,8 @@ export type CheckOrderByWithAggregationInput = {
   lastPingedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   paused?: Prisma.SortOrder
   alertSent?: Prisma.SortOrder
+  alertWebhookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  alertEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.CheckCountOrderByAggregateInput
   _avg?: Prisma.CheckAvgOrderByAggregateInput
@@ -340,6 +362,8 @@ export type CheckScalarWhereWithAggregatesInput = {
   lastPingedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Check"> | Date | string | null
   paused?: Prisma.BoolWithAggregatesFilter<"Check"> | boolean
   alertSent?: Prisma.BoolWithAggregatesFilter<"Check"> | boolean
+  alertWebhookUrl?: Prisma.StringNullableWithAggregatesFilter<"Check"> | string | null
+  alertEmail?: Prisma.StringNullableWithAggregatesFilter<"Check"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Check"> | Date | string
 }
 
@@ -353,6 +377,8 @@ export type CheckCreateInput = {
   lastPingedAt?: Date | string | null
   paused?: boolean
   alertSent?: boolean
+  alertWebhookUrl?: string | null
+  alertEmail?: string | null
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutChecksInput
   pingLogs?: Prisma.PingLogCreateNestedManyWithoutCheckInput
@@ -369,6 +395,8 @@ export type CheckUncheckedCreateInput = {
   lastPingedAt?: Date | string | null
   paused?: boolean
   alertSent?: boolean
+  alertWebhookUrl?: string | null
+  alertEmail?: string | null
   createdAt?: Date | string
   pingLogs?: Prisma.PingLogUncheckedCreateNestedManyWithoutCheckInput
 }
@@ -383,6 +411,8 @@ export type CheckUpdateInput = {
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutChecksNestedInput
   pingLogs?: Prisma.PingLogUpdateManyWithoutCheckNestedInput
@@ -399,6 +429,8 @@ export type CheckUncheckedUpdateInput = {
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pingLogs?: Prisma.PingLogUncheckedUpdateManyWithoutCheckNestedInput
 }
@@ -414,6 +446,8 @@ export type CheckCreateManyInput = {
   lastPingedAt?: Date | string | null
   paused?: boolean
   alertSent?: boolean
+  alertWebhookUrl?: string | null
+  alertEmail?: string | null
   createdAt?: Date | string
 }
 
@@ -427,6 +461,8 @@ export type CheckUpdateManyMutationInput = {
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -441,6 +477,8 @@ export type CheckUncheckedUpdateManyInput = {
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -465,6 +503,8 @@ export type CheckCountOrderByAggregateInput = {
   lastPingedAt?: Prisma.SortOrder
   paused?: Prisma.SortOrder
   alertSent?: Prisma.SortOrder
+  alertWebhookUrl?: Prisma.SortOrder
+  alertEmail?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -484,6 +524,8 @@ export type CheckMaxOrderByAggregateInput = {
   lastPingedAt?: Prisma.SortOrder
   paused?: Prisma.SortOrder
   alertSent?: Prisma.SortOrder
+  alertWebhookUrl?: Prisma.SortOrder
+  alertEmail?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -498,6 +540,8 @@ export type CheckMinOrderByAggregateInput = {
   lastPingedAt?: Prisma.SortOrder
   paused?: Prisma.SortOrder
   alertSent?: Prisma.SortOrder
+  alertWebhookUrl?: Prisma.SortOrder
+  alertEmail?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -597,6 +641,8 @@ export type CheckCreateWithoutUserInput = {
   lastPingedAt?: Date | string | null
   paused?: boolean
   alertSent?: boolean
+  alertWebhookUrl?: string | null
+  alertEmail?: string | null
   createdAt?: Date | string
   pingLogs?: Prisma.PingLogCreateNestedManyWithoutCheckInput
 }
@@ -611,6 +657,8 @@ export type CheckUncheckedCreateWithoutUserInput = {
   lastPingedAt?: Date | string | null
   paused?: boolean
   alertSent?: boolean
+  alertWebhookUrl?: string | null
+  alertEmail?: string | null
   createdAt?: Date | string
   pingLogs?: Prisma.PingLogUncheckedCreateNestedManyWithoutCheckInput
 }
@@ -655,6 +703,8 @@ export type CheckScalarWhereInput = {
   lastPingedAt?: Prisma.DateTimeNullableFilter<"Check"> | Date | string | null
   paused?: Prisma.BoolFilter<"Check"> | boolean
   alertSent?: Prisma.BoolFilter<"Check"> | boolean
+  alertWebhookUrl?: Prisma.StringNullableFilter<"Check"> | string | null
+  alertEmail?: Prisma.StringNullableFilter<"Check"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Check"> | Date | string
 }
 
@@ -668,6 +718,8 @@ export type CheckCreateWithoutPingLogsInput = {
   lastPingedAt?: Date | string | null
   paused?: boolean
   alertSent?: boolean
+  alertWebhookUrl?: string | null
+  alertEmail?: string | null
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutChecksInput
 }
@@ -683,6 +735,8 @@ export type CheckUncheckedCreateWithoutPingLogsInput = {
   lastPingedAt?: Date | string | null
   paused?: boolean
   alertSent?: boolean
+  alertWebhookUrl?: string | null
+  alertEmail?: string | null
   createdAt?: Date | string
 }
 
@@ -712,6 +766,8 @@ export type CheckUpdateWithoutPingLogsInput = {
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutChecksNestedInput
 }
@@ -727,6 +783,8 @@ export type CheckUncheckedUpdateWithoutPingLogsInput = {
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -740,6 +798,8 @@ export type CheckCreateManyUserInput = {
   lastPingedAt?: Date | string | null
   paused?: boolean
   alertSent?: boolean
+  alertWebhookUrl?: string | null
+  alertEmail?: string | null
   createdAt?: Date | string
 }
 
@@ -753,6 +813,8 @@ export type CheckUpdateWithoutUserInput = {
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pingLogs?: Prisma.PingLogUpdateManyWithoutCheckNestedInput
 }
@@ -767,6 +829,8 @@ export type CheckUncheckedUpdateWithoutUserInput = {
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pingLogs?: Prisma.PingLogUncheckedUpdateManyWithoutCheckNestedInput
 }
@@ -781,6 +845,8 @@ export type CheckUncheckedUpdateManyWithoutUserInput = {
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -826,6 +892,8 @@ export type CheckSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   lastPingedAt?: boolean
   paused?: boolean
   alertSent?: boolean
+  alertWebhookUrl?: boolean
+  alertEmail?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   pingLogs?: boolean | Prisma.Check$pingLogsArgs<ExtArgs>
@@ -843,6 +911,8 @@ export type CheckSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   lastPingedAt?: boolean
   paused?: boolean
   alertSent?: boolean
+  alertWebhookUrl?: boolean
+  alertEmail?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["check"]>
@@ -858,6 +928,8 @@ export type CheckSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   lastPingedAt?: boolean
   paused?: boolean
   alertSent?: boolean
+  alertWebhookUrl?: boolean
+  alertEmail?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["check"]>
@@ -873,10 +945,12 @@ export type CheckSelectScalar = {
   lastPingedAt?: boolean
   paused?: boolean
   alertSent?: boolean
+  alertWebhookUrl?: boolean
+  alertEmail?: boolean
   createdAt?: boolean
 }
 
-export type CheckOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uuid" | "userId" | "name" | "intervalSeconds" | "graceSeconds" | "status" | "lastPingedAt" | "paused" | "alertSent" | "createdAt", ExtArgs["result"]["check"]>
+export type CheckOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uuid" | "userId" | "name" | "intervalSeconds" | "graceSeconds" | "status" | "lastPingedAt" | "paused" | "alertSent" | "alertWebhookUrl" | "alertEmail" | "createdAt", ExtArgs["result"]["check"]>
 export type CheckInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   pingLogs?: boolean | Prisma.Check$pingLogsArgs<ExtArgs>
@@ -906,6 +980,8 @@ export type $CheckPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     lastPingedAt: Date | null
     paused: boolean
     alertSent: boolean
+    alertWebhookUrl: string | null
+    alertEmail: string | null
     createdAt: Date
   }, ExtArgs["result"]["check"]>
   composites: {}
@@ -1342,6 +1418,8 @@ export interface CheckFieldRefs {
   readonly lastPingedAt: Prisma.FieldRef<"Check", 'DateTime'>
   readonly paused: Prisma.FieldRef<"Check", 'Boolean'>
   readonly alertSent: Prisma.FieldRef<"Check", 'Boolean'>
+  readonly alertWebhookUrl: Prisma.FieldRef<"Check", 'String'>
+  readonly alertEmail: Prisma.FieldRef<"Check", 'String'>
   readonly createdAt: Prisma.FieldRef<"Check", 'DateTime'>
 }
     

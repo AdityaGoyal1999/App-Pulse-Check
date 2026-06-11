@@ -1,4 +1,9 @@
-import type { AuthResponse, Check, CreateCheckInput } from "./types";
+import type {
+  AuthResponse,
+  Check,
+  CheckNotificationSettings,
+  CreateCheckInput,
+} from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 const TOKEN_KEY = "apc_token";
@@ -74,4 +79,26 @@ export function deleteCheck(id: string) {
 
 export function getPingUrl(uuid: string) {
   return `${API_URL}/ping/${uuid}`;
+}
+
+export function getCheckNotifications(checkId: string) {
+  return apiFetch<CheckNotificationSettings>(
+    `/api/checks/${checkId}/notifications`,
+  );
+}
+
+export function updateCheckNotifications(
+  checkId: string,
+  body: {
+    alertWebhookUrl?: string | null;
+    alertEmail?: string | null;
+  },
+) {
+  return apiFetch<CheckNotificationSettings>(
+    `/api/checks/${checkId}/notifications`,
+    {
+      method: "PATCH",
+      body: JSON.stringify(body),
+    },
+  );
 }

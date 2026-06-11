@@ -93,3 +93,47 @@ export function validateCreateCheckForm(
     valid,
   };
 }
+
+export type NotificationFieldErrors = {
+  alertWebhookUrl?: string;
+  alertEmail?: string;
+  form?: string;
+};
+
+export function validateNotificationForm(
+  alertWebhookUrl: string,
+  alertEmail: string,
+) {
+  const trimmedWebhook = alertWebhookUrl.trim();
+  const trimmedEmail = alertEmail.trim().toLowerCase();
+  const errors: NotificationFieldErrors = {};
+
+  const webhookValue = trimmedWebhook || null;
+  const emailValue = trimmedEmail || null;
+
+  if (webhookValue) {
+    try {
+      new URL(webhookValue);
+    } catch {
+      errors.alertWebhookUrl = "Enter a valid URL";
+    }
+  }
+
+  if (emailValue && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+    errors.alertEmail = "Enter a valid email address";
+  }
+
+  if (!webhookValue && !emailValue) {
+    errors.form = "Enter at least a Slack webhook URL or alert email";
+  }
+
+  const valid = Object.keys(errors).length === 0;
+
+  return {
+    values: valid
+      ? { alertWebhookUrl: webhookValue, alertEmail: emailValue }
+      : null,
+    errors,
+    valid,
+  };
+}

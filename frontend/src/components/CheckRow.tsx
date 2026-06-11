@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { Trash2 } from "lucide-react";
+import Link from "next/link";
+import { Bell, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { CopyPingUrlButton } from "@/components/CopyPingUrlButton";
@@ -47,6 +48,16 @@ export function CheckRow({ check, onDeleted }: CheckRowProps) {
       </TableCell>
       <TableCell>
         <CopyPingUrlButton uuid={check.uuid} />
+      </TableCell>
+      <TableCell>
+        <Button
+          variant="outline"
+          size="sm"
+          render={<Link href={`/checks/${check.id}/settings`} />}
+        >
+          <Bell className="size-3.5" />
+          Alerts
+        </Button>
       </TableCell>
       <TableCell>
         <Button

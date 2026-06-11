@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { prisma } from "../db";
 import { requireAuth } from "../middleware/auth";
-import { createCheckSchema } from "../schemas/checks";
+import {
+  createCheckSchema,
+  updateCheckNotificationsSchema,
+} from "../schemas/checks";
 
 export const checksRouter = Router();
 
@@ -63,6 +66,89 @@ checksRouter.get("/", async (req, res) => {
     });
 
     res.status(200).json({ checks: checks.map(toCheckResponse) });
+  } catch {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+const notificationSelect = {
+  name: true,
+  alertWebhookUrl: true,
+  alertEmail: true,
+} as const;
+
+function toNotificationsResponse(check: {
+  name: string;
+  alertWebhookUrl: string | null;
+  alertEmail: string | null;
+}) {
+  return {
+    name: check.name,
+    alertWebhookUrl: check.alertWebhookUrl,
+    alertEmail: check.alertEmail,
+  };
+}
+
+checksRouter.get("/:id/notifications", async (req, res) => {
+  const checkId = req.params.id;
+
+  try {
+    const check = await prisma.check.findFirst({
+      where: { id: checkId, userId: req.user!.id },
+      select: notificationSelect,
+    });
+
+    if (!check) {
+      res.status(404).json({ error: "Check not found" });
+      return;
+    }
+
+    res.status(200).json(toNotificationsResponse(check));
+  } catch {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+checksRouter.patch("/:id/notifications", async (req, res) => {
+  const checkId = req.params.id;
+  const parsed = updateCheckNotificationsSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({
+      error: "Validation failed",
+      details: parsed.error.flatten(),
+    });
+    return;
+  }
+
+  const data: { alertWebhookUrl?: string | null; alertEmail?: string | null } =
+    {};
+
+  if (parsed.data.alertWebhookUrl !== undefined) {
+    data.alertWebhookUrl = parsed.data.alertWebhookUrl;
+  }
+
+  if (parsed.data.alertEmail !== undefined) {
+    data.alertEmail = parsed.data.alertEmail;
+  }
+
+  try {
+    const existing = await prisma.check.findFirst({
+      where: { id: checkId, userId: req.user!.id },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      res.status(404).json({ error: "Check not found" });
+      return;
+    }
+
+    const check = await prisma.check.update({
+      where: { id: existing.id },
+      data,
+      select: notificationSelect,
+    });
+
+    res.status(200).json(toNotificationsResponse(check));
   } catch {
     res.status(500).json({ error: "Internal server error" });
   }

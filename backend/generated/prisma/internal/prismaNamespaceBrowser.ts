@@ -95,6 +95,8 @@ export const CheckScalarFieldEnum = {
   lastPingedAt: 'lastPingedAt',
   paused: 'paused',
   alertSent: 'alertSent',
+  alertWebhookUrl: 'alertWebhookUrl',
+  alertEmail: 'alertEmail',
   createdAt: 'createdAt'
 } as const
 

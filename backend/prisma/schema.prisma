@@ -37,9 +37,11 @@ model Check {
   graceSeconds    Int
   status          CheckStatus @default(NEW)
   lastPingedAt    DateTime?
-  paused          Boolean     @default(false)
-  alertSent       Boolean     @default(false)
-  createdAt       DateTime    @default(now())
+  paused            Boolean     @default(false)
+  alertSent         Boolean     @default(false)
+  alertWebhookUrl   String? // Slack incoming webhook URL
+  alertEmail        String? // destination email (Resend)
+  createdAt         DateTime    @default(now())
   user            User        @relation(fields: [userId], references: [id])
   pingLogs        PingLog[]
 

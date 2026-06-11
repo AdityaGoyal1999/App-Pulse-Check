@@ -17,9 +17,8 @@ export async function evaluateChecks(): Promise<number> {
       lastPingedAt: true,
       intervalSeconds: true,
       graceSeconds: true,
-      user: {
-        select: { alertWebhookUrl: true, alertEmail: true },
-      },
+      alertWebhookUrl: true,
+      alertEmail: true,
     },
   });
 
@@ -41,7 +40,10 @@ export async function evaluateChecks(): Promise<number> {
     overdueChecks.map((check) =>
       sendDownAlert(
         { name: check.name, lastPingedAt: check.lastPingedAt },
-        check.user,
+        {
+          alertWebhookUrl: check.alertWebhookUrl,
+          alertEmail: check.alertEmail,
+        },
       ),
     ),
   );
