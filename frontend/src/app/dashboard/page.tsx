@@ -1,13 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import { Activity } from "lucide-react";
 
+import { CheckList } from "@/components/CheckList";
+import { CreateCheckForm } from "@/components/CreateCheckForm";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function DashboardPage() {
   const { user, logout } = useAuth();
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  function bumpRefreshKey() {
+    setRefreshKey((k) => k + 1);
+  }
 
   return (
     <ProtectedRoute>
@@ -33,13 +41,19 @@ export default function DashboardPage() {
           </div>
         </header>
 
-        <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-6 py-12">
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-            Dashboard
-          </h1>
-          <p className="mt-2 text-muted-foreground">
-            Temporary placeholder — check list and create form coming in Step 5.
-          </p>
+        <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-6 py-12">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+                Your checks
+              </h1>
+              <p className="mt-2 text-muted-foreground">
+                Monitor cron jobs and background tasks.
+              </p>
+            </div>
+            <CreateCheckForm onCreated={bumpRefreshKey} />
+          </div>
+          <CheckList refreshKey={refreshKey} onDeleted={bumpRefreshKey} />
         </main>
       </div>
     </ProtectedRoute>

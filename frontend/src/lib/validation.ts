@@ -43,3 +43,53 @@ export function validateSignupForm(
 
   return result;
 }
+
+export type CreateCheckFieldErrors = {
+  name?: string;
+  intervalSeconds?: string;
+  graceSeconds?: string;
+};
+
+function parsePositiveInt(value: string): number | null {
+  const n = Number(value);
+  if (!Number.isInteger(n)) return null;
+  return n;
+}
+
+export function validateCreateCheckForm(
+  name: string,
+  intervalSeconds: string,
+  graceSeconds: string,
+) {
+  const trimmedName = name.trim();
+  const errors: CreateCheckFieldErrors = {};
+
+  if (!trimmedName || trimmedName.length > 100) {
+    errors.name = "Name must be 1–100 characters";
+  }
+
+  const interval = parsePositiveInt(intervalSeconds);
+  if (interval === null || interval < 60 || interval > 86400) {
+    errors.intervalSeconds = "Interval must be an integer between 60 and 86400";
+  }
+
+  const grace = parsePositiveInt(graceSeconds);
+  if (grace === null || grace < 0 || grace > 3600) {
+    errors.graceSeconds =
+      "Grace period must be an integer between 0 and 3600";
+  }
+
+  const valid = Object.keys(errors).length === 0;
+
+  return {
+    values: valid
+      ? {
+          name: trimmedName,
+          intervalSeconds: interval!,
+          graceSeconds: grace!,
+        }
+      : null,
+    errors,
+    valid,
+  };
+}
