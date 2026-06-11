@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
-import { type AuthFieldErrors, validateAuthForm } from "@/lib/validation";
+import { type AuthFieldErrors, validateSignupForm } from "@/lib/validation";
 
 export default function SignupPage() {
   const { token, isLoading, signup } = useAuth();
@@ -19,6 +19,7 @@ export default function SignupPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [fieldErrors, setFieldErrors] = useState<AuthFieldErrors>({});
   const [apiError, setApiError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -33,7 +34,11 @@ export default function SignupPage() {
     e.preventDefault();
     setApiError("");
 
-    const { trimmed, errors, valid } = validateAuthForm(email, password);
+    const { trimmed, errors, valid } = validateSignupForm(
+      email,
+      password,
+      confirmPassword,
+    );
     setFieldErrors(errors);
     if (!valid) return;
 
@@ -91,6 +96,23 @@ export default function SignupPage() {
           <PasswordRequirements password={password} />
           {fieldErrors.password && (
             <p className="text-sm text-destructive">{fieldErrors.password}</p>
+          )}
+        </div>
+
+        <div className="grid gap-2">
+          <Label htmlFor="confirmPassword">Confirm password</Label>
+          <Input
+            id="confirmPassword"
+            type="password"
+            autoComplete="new-password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            disabled={isSubmitting}
+          />
+          {fieldErrors.confirmPassword && (
+            <p className="text-sm text-destructive">
+              {fieldErrors.confirmPassword}
+            </p>
           )}
         </div>
 

@@ -11,6 +11,7 @@ export const PASSWORD_REQUIREMENTS = [
 export type AuthFieldErrors = {
   email?: string;
   password?: string;
+  confirmPassword?: string;
 };
 
 export function validateAuthForm(email: string, password: string) {
@@ -26,4 +27,19 @@ export function validateAuthForm(email: string, password: string) {
   }
 
   return { trimmed, errors, valid: Object.keys(errors).length === 0 };
+}
+
+export function validateSignupForm(
+  email: string,
+  password: string,
+  confirmPassword: string,
+) {
+  const result = validateAuthForm(email, password);
+
+  if (password !== confirmPassword) {
+    result.errors.confirmPassword = "Passwords do not match";
+    result.valid = false;
+  }
+
+  return result;
 }
