@@ -1,0 +1,77 @@
+import type { AuthResponse, Check, CreateCheckInput } from "./types";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
+const TOKEN_KEY = "apc_token";
+const USER_KEY = "apc_user";
+
+export function getToken(): string | null {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem(TOKEN_KEY);
+}
+
+export function setToken(token: string): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(TOKEN_KEY, token);
+}
+
+export function clearToken(): void {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(USER_KEY);
+}
+
+async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
+  const token = getToken();
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+    ...(options?.headers ?? {}),
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+
+  const res = await fetch(`${API_URL}${path}`, { ...options, headers });
+
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error ?? "Request failed");
+  }
+
+  return res.json();
+}
+
+export function signup(email: string, password: string) {
+  return apiFetch<AuthResponse>("/api/auth/signup", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  });
+}
+
+export function login(email: string, password: string) {
+  return apiFetch<AuthResponse>("/api/auth/login", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  });
+}
+
+export async function logout() {
+  await apiFetch<{ ok: true }>("/api/auth/logout", { method: "POST" });
+  clearToken();
+}
+
+export function getChecks() {
+  return apiFetch<{ checks: Check[] }>("/api/checks");
+}
+
+export function createCheck(body: CreateCheckInput) {
+  return apiFetch<Check>("/api/checks", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+export function deleteCheck(id: string) {
+  return apiFetch<{ ok: true }>(`/api/checks/${id}`, { method: "DELETE" });
+}
+
+export function getPingUrl(uuid: string) {
+  return `${API_URL}/ping/${uuid}`;
+}
