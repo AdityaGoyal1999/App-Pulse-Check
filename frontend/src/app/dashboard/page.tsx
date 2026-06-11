@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { Activity } from "lucide-react";
+import { useRef, useState } from "react";
+import { Activity, RefreshCw } from "lucide-react";
 
-import { CheckList } from "@/components/CheckList";
+import { CheckList, type CheckListRef } from "@/components/CheckList";
 import { CreateCheckForm } from "@/components/CreateCheckForm";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import { useAuth } from "@/contexts/AuthContext";
 export default function DashboardPage() {
   const { user, logout } = useAuth();
   const [refreshKey, setRefreshKey] = useState(0);
+  const checkListRef = useRef<CheckListRef>(null);
 
   function bumpRefreshKey() {
     setRefreshKey((k) => k + 1);
@@ -51,9 +52,23 @@ export default function DashboardPage() {
                 Monitor cron jobs and background tasks.
               </p>
             </div>
-            <CreateCheckForm onCreated={bumpRefreshKey} />
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => checkListRef.current?.refresh()}
+              >
+                <RefreshCw className="size-4" />
+                Refresh
+              </Button>
+              <CreateCheckForm onCreated={bumpRefreshKey} />
+            </div>
           </div>
-          <CheckList refreshKey={refreshKey} onDeleted={bumpRefreshKey} />
+          <CheckList
+            ref={checkListRef}
+            refreshKey={refreshKey}
+            onDeleted={bumpRefreshKey}
+          />
         </main>
       </div>
     </ProtectedRoute>
