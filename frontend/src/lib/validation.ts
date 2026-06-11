@@ -96,20 +96,15 @@ export function validateCreateCheckForm(
 
 export type NotificationFieldErrors = {
   alertWebhookUrl?: string;
-  alertEmail?: string;
+  // alertEmail?: string;
   form?: string;
 };
 
-export function validateNotificationForm(
-  alertWebhookUrl: string,
-  alertEmail: string,
-) {
+export function validateNotificationForm(alertWebhookUrl: string) {
   const trimmedWebhook = alertWebhookUrl.trim();
-  const trimmedEmail = alertEmail.trim().toLowerCase();
   const errors: NotificationFieldErrors = {};
 
   const webhookValue = trimmedWebhook || null;
-  const emailValue = trimmedEmail || null;
 
   if (webhookValue) {
     try {
@@ -119,20 +114,21 @@ export function validateNotificationForm(
     }
   }
 
-  if (emailValue && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
-    errors.alertEmail = "Enter a valid email address";
-  }
+  // Email alerts disabled until verified domain (next ship):
+  // const trimmedEmail = alertEmail.trim().toLowerCase();
+  // const emailValue = trimmedEmail || null;
+  // if (emailValue && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+  //   errors.alertEmail = "Enter a valid email address";
+  // }
 
-  if (!webhookValue && !emailValue) {
-    errors.form = "Enter at least a Slack webhook URL or alert email";
+  if (!webhookValue) {
+    errors.form = "Enter a Slack webhook URL";
   }
 
   const valid = Object.keys(errors).length === 0;
 
   return {
-    values: valid
-      ? { alertWebhookUrl: webhookValue, alertEmail: emailValue }
-      : null,
+    values: valid ? { alertWebhookUrl: webhookValue } : null,
     errors,
     valid,
   };

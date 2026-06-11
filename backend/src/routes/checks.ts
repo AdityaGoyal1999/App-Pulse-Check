@@ -127,9 +127,9 @@ checksRouter.patch("/:id/notifications", async (req, res) => {
     data.alertWebhookUrl = parsed.data.alertWebhookUrl;
   }
 
-  if (parsed.data.alertEmail !== undefined) {
-    data.alertEmail = parsed.data.alertEmail;
-  }
+  // if (parsed.data.alertEmail !== undefined) {
+  //   data.alertEmail = parsed.data.alertEmail;
+  // }
 
   try {
     const existing = await prisma.check.findFirst({

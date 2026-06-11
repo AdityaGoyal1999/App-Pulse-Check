@@ -31,7 +31,7 @@ export default function CheckSettingsPage() {
 
   const [checkName, setCheckName] = useState("");
   const [alertWebhookUrl, setAlertWebhookUrl] = useState("");
-  const [alertEmail, setAlertEmail] = useState("");
+  // const [alertEmail, setAlertEmail] = useState("");
   const [fieldErrors, setFieldErrors] = useState<NotificationFieldErrors>({});
   const [apiError, setApiError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -51,7 +51,7 @@ export default function CheckSettingsPage() {
         if (cancelled) return;
         setCheckName(data.name);
         setAlertWebhookUrl(data.alertWebhookUrl ?? "");
-        setAlertEmail(data.alertEmail ?? "");
+        // setAlertEmail(data.alertEmail ?? "");
       } catch (err) {
         if (cancelled) return;
         const message = err instanceof Error ? err.message : "Request failed";
@@ -75,7 +75,7 @@ export default function CheckSettingsPage() {
     e.preventDefault();
     setApiError("");
 
-    const result = validateNotificationForm(alertWebhookUrl, alertEmail);
+    const result = validateNotificationForm(alertWebhookUrl);
     setFieldErrors(result.errors);
     if (!result.valid || !result.values) return;
 
@@ -84,7 +84,7 @@ export default function CheckSettingsPage() {
       const updated = await updateCheckNotifications(checkId, result.values);
       setCheckName(updated.name);
       setAlertWebhookUrl(updated.alertWebhookUrl ?? "");
-      setAlertEmail(updated.alertEmail ?? "");
+      // setAlertEmail(updated.alertEmail ?? "");
       toast.success("Alert settings saved");
     } catch (err) {
       setApiError(err instanceof Error ? err.message : "Request failed");
@@ -152,7 +152,7 @@ export default function CheckSettingsPage() {
                 <CardTitle>Down alerts</CardTitle>
                 <CardDescription>
                   Get notified when this check goes DOWN. Configure a Slack
-                  incoming webhook and/or an email address.
+                  incoming webhook.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -178,6 +178,7 @@ export default function CheckSettingsPage() {
                     )}
                   </div>
 
+                  {/* Email alerts disabled until verified domain (next ship):
                   <div className="grid gap-2">
                     <Label htmlFor="alert-email">Alert email</Label>
                     <Input
@@ -198,6 +199,7 @@ export default function CheckSettingsPage() {
                       </p>
                     )}
                   </div>
+                  */}
 
                   {fieldErrors.form && (
                     <p className="text-sm text-destructive">{fieldErrors.form}</p>

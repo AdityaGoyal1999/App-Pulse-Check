@@ -19,9 +19,8 @@ Built for indie hackers, solo developers, and small teams who need to know when 
 - 🌐 **Landing page** — product positioning with login and signup entry points
 - 📊 **Dashboard** — protected `/dashboard` with check list, status badges (`NEW` / `UP` / `DOWN`), relative last-ping times, copy-ping-URL, create, and delete
 - ⏱️ **Missed-ping detection** — standalone evaluation worker runs every 60s and marks overdue checks `DOWN` (respects `intervalSeconds` + `graceSeconds`, skips paused checks)
-- 🔔 **Down alerts** — email and Slack notifications when checks go down
-- 📧 **Email notifications** — transactional email via [Resend](https://resend.com) (configure `RESEND_API_KEY` and `RESEND_FROM_EMAIL`)
-- 💬 **Slack webhooks** — per-user Slack Incoming Webhook URLs for alert delivery
+- 🔔 **Down alerts** — Slack notifications when checks go down
+- 💬 **Slack webhooks** — per-check Slack Incoming Webhook URLs for alert delivery
 
 ### 🔜 Planned
 - 🔁 **Resolution handling** — alert deduplication and recovery workflows when pings resume
@@ -43,7 +42,7 @@ Built for indie hackers, solo developers, and small teams who need to know when 
 | 🔑 Auth          | bcrypt, JSON Web Tokens, Zod validation             |
 | 🎨 Frontend      | Next.js, React, TypeScript, Tailwind CSS, shadcn/ui |
 | ⚙️ Worker        | Standalone Node process (`backend/src/worker/`)     |
-| 📧 Notifications | [Resend](https://resend.com) (email), Slack Incoming Webhooks |
+| 💬 Notifications | Slack Incoming Webhooks |
 
 
 ## 🚀 Getting started
@@ -57,7 +56,7 @@ Built for indie hackers, solo developers, and small teams who need to know when 
 
 ```bash
 cd backend
-cp .env.example .env          # fill in DATABASE_URL, PORT, Resend keys for email alerts
+cp .env.example .env          # fill in DATABASE_URL and PORT
 cp .env.example .env.local    # add JWT_SECRET (openssl rand -base64 32)
 npm install
 npm run dev:backend           # or from repo root: npm run dev:backend

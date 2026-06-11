@@ -1,4 +1,4 @@
-import { Resend } from "resend";
+// import { Resend } from "resend";
 
 type AlertCheck = {
   name: string;
@@ -17,14 +17,14 @@ type DownAlertContent = {
   slackPayload: Record<string, unknown>;
 };
 
-let resendClient: Resend | null = null;
-
-function getResendClient(apiKey: string): Resend {
-  if (!resendClient) {
-    resendClient = new Resend(apiKey);
-  }
-  return resendClient;
-}
+// let resendClient: Resend | null = null;
+//
+// function getResendClient(apiKey: string): Resend {
+//   if (!resendClient) {
+//     resendClient = new Resend(apiKey);
+//   }
+//   return resendClient;
+// }
 
 function appName(): string {
   return process.env.APP_NAME ?? "AppPulseCheck";
@@ -35,48 +35,49 @@ function dashboardUrl(): string {
   return `${base.replace(/\/$/, "")}/dashboard`;
 }
 
-function extractEmailAddress(value: string): string {
-  const angleMatch = value.match(/<([^>]+)>/);
-  return (angleMatch?.[1] ?? value).trim();
-}
-
-function isValidEmailAddress(value: string): boolean {
-  return /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(value);
-}
-
-function resolveFromEmail(): string | null {
-  const raw = process.env.RESEND_FROM_EMAIL?.trim();
-  if (!raw) {
-    return null;
-  }
-
-  const address = extractEmailAddress(raw);
-  if (!isValidEmailAddress(address)) {
-    console.error(
-      `RESEND_FROM_EMAIL is invalid (${JSON.stringify(raw)}). ` +
-        'Use a full address like "AppPulseCheck <you@example.com>".',
-    );
-    return null;
-  }
-
-  return raw;
-}
-
-function resolveReplyToEmail(): string | undefined {
-  const raw = process.env.RESEND_REPLY_TO_EMAIL?.trim();
-  if (!raw) {
-    return undefined;
-  }
-
-  if (!isValidEmailAddress(raw)) {
-    console.warn(
-      `RESEND_REPLY_TO_EMAIL is invalid (${JSON.stringify(raw)}); ignoring reply-to.`,
-    );
-    return undefined;
-  }
-
-  return raw;
-}
+// Email alerts disabled until verified domain (next ship):
+// function extractEmailAddress(value: string): string {
+//   const angleMatch = value.match(/<([^>]+)>/);
+//   return (angleMatch?.[1] ?? value).trim();
+// }
+//
+// function isValidEmailAddress(value: string): boolean {
+//   return /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(value);
+// }
+//
+// function resolveFromEmail(): string | null {
+//   const raw = process.env.RESEND_FROM_EMAIL?.trim();
+//   if (!raw) {
+//     return null;
+//   }
+//
+//   const address = extractEmailAddress(raw);
+//   if (!isValidEmailAddress(address)) {
+//     console.error(
+//       `RESEND_FROM_EMAIL is invalid (${JSON.stringify(raw)}). ` +
+//         'Use a full address like "AppPulseCheck <you@example.com>".',
+//     );
+//     return null;
+//   }
+//
+//   return raw;
+// }
+//
+// function resolveReplyToEmail(): string | undefined {
+//   const raw = process.env.RESEND_REPLY_TO_EMAIL?.trim();
+//   if (!raw) {
+//     return undefined;
+//   }
+//
+//   if (!isValidEmailAddress(raw)) {
+//     console.warn(
+//       `RESEND_REPLY_TO_EMAIL is invalid (${JSON.stringify(raw)}); ignoring reply-to.`,
+//     );
+//     return undefined;
+//   }
+//
+//   return raw;
+// }
 
 function escapeHtml(value: string): string {
   return value
@@ -264,56 +265,57 @@ async function sendSlackAlert(
   }
 }
 
-async function sendEmailAlert(
-  to: string,
-  subject: string,
-  text: string,
-  html: string,
-): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.warn("RESEND_API_KEY not set; skipping email alert");
-    return;
-  }
-
-  const from = resolveFromEmail();
-  if (!from) {
-    if (!process.env.RESEND_FROM_EMAIL) {
-      console.warn("RESEND_FROM_EMAIL not set; skipping email alert");
-    }
-    return;
-  }
-
-  const replyTo = resolveReplyToEmail();
-
-  try {
-    const resend = getResendClient(apiKey);
-    const { error } = await resend.emails.send({
-      from,
-      to,
-      subject,
-      text,
-      html,
-      ...(replyTo ? { replyTo } : {}),
-    });
-
-    if (error) {
-      console.error("Email alert failed:", error.message);
-    }
-  } catch (err) {
-    console.error("Email alert failed:", err);
-  }
-}
+// Email alerts disabled until verified domain (next ship):
+// async function sendEmailAlert(
+//   to: string,
+//   subject: string,
+//   text: string,
+//   html: string,
+// ): Promise<void> {
+//   const apiKey = process.env.RESEND_API_KEY;
+//   if (!apiKey) {
+//     console.warn("RESEND_API_KEY not set; skipping email alert");
+//     return;
+//   }
+//
+//   const from = resolveFromEmail();
+//   if (!from) {
+//     if (!process.env.RESEND_FROM_EMAIL) {
+//       console.warn("RESEND_FROM_EMAIL not set; skipping email alert");
+//     }
+//     return;
+//   }
+//
+//   const replyTo = resolveReplyToEmail();
+//
+//   try {
+//     const resend = getResendClient(apiKey);
+//     const { error } = await resend.emails.send({
+//       from,
+//       to,
+//       subject,
+//       text,
+//       html,
+//       ...(replyTo ? { replyTo } : {}),
+//     });
+//
+//     if (error) {
+//       console.error("Email alert failed:", error.message);
+//     }
+//   } catch (err) {
+//     console.error("Email alert failed:", err);
+//   }
+// }
 
 export async function sendDownAlert(
   check: AlertCheck,
   user: AlertUser,
 ): Promise<void> {
-  if (!user.alertWebhookUrl && !user.alertEmail) {
+  if (!user.alertWebhookUrl) {
     return;
   }
 
-  const { subject, text, html, slackPayload } = buildDownAlertMessage(check);
+  const { slackPayload } = buildDownAlertMessage(check);
 
   const tasks: Promise<void>[] = [];
 
@@ -321,9 +323,9 @@ export async function sendDownAlert(
     tasks.push(sendSlackAlert(user.alertWebhookUrl, slackPayload));
   }
 
-  if (user.alertEmail) {
-    tasks.push(sendEmailAlert(user.alertEmail, subject, text, html));
-  }
+  // if (user.alertEmail) {
+  //   tasks.push(sendEmailAlert(user.alertEmail, subject, text, html));
+  // }
 
   await Promise.allSettled(tasks);
 }
