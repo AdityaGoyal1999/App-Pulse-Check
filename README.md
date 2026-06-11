@@ -15,11 +15,8 @@ Built for indie hackers, solo developers, and small teams who need to know when 
 - 🗄️ **Data model** — `User`, `Check`, and `PingLog` tables with check status (`NEW`, `UP`, `DOWN`)
 - ⚡ **Local dev workflow** — one command starts Postgres, Prisma Studio, and the API server
 - 🌐 **Landing page** — product positioning and onboarding entry point
-
-### 🚧 In progress
-
 - 🔐 **User authentication** — signup, login, and logout with JWT Bearer tokens
-- 📋 **Check management API** — create, list, and delete checks (scaffolding and core libraries in place)
+- 📋 **Check management API** — create, list, and delete checks (user-scoped, JWT protected)
 
 ### 🔜 Planned
 
@@ -90,7 +87,7 @@ AppPulseCheck/
 | Milestone                    | Status         |
 | ---------------------------- | -------------- |
 | Core API and ping ingestion  | ✅ Shipped      |
-| User auth and check CRUD     | 🚧 In progress |
+| User auth and check CRUD     | ✅ Shipped      |
 | Web dashboard                | 🔜 Planned     |
 | Background status worker     | 🔜 Planned     |
 | Alerting and notifications   | 🔜 Planned     |
