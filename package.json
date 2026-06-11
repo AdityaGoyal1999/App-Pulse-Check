@@ -2,7 +2,11 @@
   "name": "app-pulse-check",
   "private": true,
   "scripts": {
+    "kill-port": "node scripts/kill-port.mjs",
+    "predev:backend": "node scripts/kill-port.mjs 3000",
     "dev:backend": "npm run dev:backend --prefix backend",
-    "dev:frontend": "npm run dev --prefix frontend"
+    "predev:frontend": "node scripts/kill-port.mjs 3001",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "stop": "node scripts/kill-port.mjs 3000 && node scripts/kill-port.mjs 3001"
   }
 }
