@@ -19,11 +19,13 @@ enum CheckStatus {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  createdAt    DateTime @default(now())
-  checks       Check[]
+  id              String   @id @default(cuid())
+  email           String   @unique
+  passwordHash    String
+  alertWebhookUrl String? // Slack incoming webhook URL
+  alertEmail      String? // destination email (Resend)
+  createdAt       DateTime @default(now())
+  checks          Check[]
 }
 
 model Check {
