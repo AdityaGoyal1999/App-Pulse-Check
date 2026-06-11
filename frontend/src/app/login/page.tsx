@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
 import { AuthPageShell } from "@/components/AuthPageShell";
+import { PasswordRequirements } from "@/components/PasswordRequirements";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -87,6 +88,7 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             disabled={isSubmitting}
           />
+          <PasswordRequirements password={password} />
           {fieldErrors.password && (
             <p className="text-sm text-destructive">{fieldErrors.password}</p>
           )}
