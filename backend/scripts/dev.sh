@@ -33,8 +33,13 @@ echo "Starting Prisma Studio at http://localhost:5555 ..."
 npx prisma studio --port 5555 --browser none &
 STUDIO_PID=$!
 
+echo "Starting evaluation worker..."
+npx tsx watch src/worker/index.ts &
+WORKER_PID=$!
+
 cleanup() {
   kill "${STUDIO_PID}" 2>/dev/null || true
+  kill "${WORKER_PID}" 2>/dev/null || true
 }
 trap cleanup EXIT INT TERM
 

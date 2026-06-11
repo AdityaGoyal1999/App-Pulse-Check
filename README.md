@@ -13,7 +13,7 @@ Built for indie hackers, solo developers, and small teams who need to know when 
 - 📡 **Ping endpoint** — `GET /ping/:uuid` logs each ping and marks the check as `UP`
 - 💚 **Health check** — `GET /health` for basic server monitoring
 - 🗄️ **Data model** — `User`, `Check`, and `PingLog` tables with check status (`NEW`, `UP`, `DOWN`)
-- ⚡ **Local dev workflow** — one command starts Postgres, Prisma Studio, and the API server
+- ⚡ **Local dev workflow** — one command starts Postgres, Prisma Studio, the evaluation worker, and the API server
 - 🔐 **User authentication** — signup, login, and logout with JWT Bearer tokens (API + UI)
 - 📋 **Check management API** — create, list, and delete checks (user-scoped, JWT protected)
 - 🌐 **Landing page** — product positioning with login and signup entry points
@@ -61,7 +61,7 @@ npm install
 npm run dev:backend           # or from repo root: npm run dev:backend
 ```
 
-The API runs at `http://localhost:3000`. Prisma Studio opens at `http://localhost:5555`.
+The API runs at `http://localhost:3000`. Prisma Studio opens at `http://localhost:5555`. The evaluation worker starts automatically in the background (evaluates checks every 60s).
 
 ### 🎨 Frontend
 
@@ -76,14 +76,14 @@ The app runs at `http://localhost:3001`. Sign up, then open `/dashboard` to mana
 
 ### ⏱️ Evaluation worker
 
-Run in a separate terminal while developing (uses the same `DATABASE_URL` as the API):
+The worker starts automatically with `npm run dev:backend` — no separate terminal needed. It evaluates all non-paused checks every 60 seconds. A check is marked `DOWN` when `now > lastPingedAt + intervalSeconds + graceSeconds`.
+
+To run the worker alone (e.g. without the API):
 
 ```bash
-cd backend
-npx tsx src/worker/index.ts
+npm run dev:worker           # from repo root
+# or: cd backend && npm run dev:worker
 ```
-
-The worker evaluates all non-paused checks every 60 seconds. A check is marked `DOWN` when `now > lastPingedAt + intervalSeconds + graceSeconds`.
 
 ## 📁 Project structure
 
@@ -95,12 +95,12 @@ AppPulseCheck/
 │   │   ├── routes/       # ping, auth, checks
 │   │   ├── worker/       # missed-ping evaluation loop
 │   │   └── ...
-│   └── scripts/dev.sh    # Docker Postgres + Studio + API
+│   └── scripts/dev.sh    # Docker Postgres + Studio + worker + API
 ├── frontend/
 │   └── src/
 │       ├── app/          # landing, login, signup, dashboard
 │       └── components/   # CheckList, StatusBadge, auth UI, etc.
-└── package.json          # root scripts: dev:backend, dev:frontend, stop
+└── package.json          # root scripts: dev:backend, dev:frontend, dev:worker, stop
 ```
 
 ## 🗺️ Roadmap
