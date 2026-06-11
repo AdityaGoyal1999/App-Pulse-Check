@@ -13,7 +13,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "App Pulse Check",
   description:
-    "Lightweight heartbeat monitoring for cron jobs, background scripts, and scheduled tasks.",
+    "Lightweight heartbeat monitoring for cron jobs and scripts. Get Slack alerts when checks go down — Discord, Email, and PagerDuty coming soon.",
 };
 
 export default function RootLayout({
