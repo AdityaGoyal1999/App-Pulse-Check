@@ -1,5 +1,6 @@
 import express from "express";
 import { authRouter } from "./routes/auth";
+import { checksRouter } from "./routes/checks";
 import { pingRouter } from "./routes/ping";
 
 export const app = express();
@@ -15,6 +16,7 @@ app.get("/health", (_req, res) => {
 app.use("/ping", pingRouter);
 
 app.use("/api/auth", authRouter);
+app.use("/api/checks", checksRouter);
 
 // 404 handler
 app.use((_req, res) => {
