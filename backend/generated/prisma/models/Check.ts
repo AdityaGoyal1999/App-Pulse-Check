@@ -45,6 +45,8 @@ export type CheckMinAggregateOutputType = {
   graceSeconds: number | null
   status: $Enums.CheckStatus | null
   lastPingedAt: Date | null
+  paused: boolean | null
+  alertSent: boolean | null
   createdAt: Date | null
 }
 
@@ -57,6 +59,8 @@ export type CheckMaxAggregateOutputType = {
   graceSeconds: number | null
   status: $Enums.CheckStatus | null
   lastPingedAt: Date | null
+  paused: boolean | null
+  alertSent: boolean | null
   createdAt: Date | null
 }
 
@@ -69,6 +73,8 @@ export type CheckCountAggregateOutputType = {
   graceSeconds: number
   status: number
   lastPingedAt: number
+  paused: number
+  alertSent: number
   createdAt: number
   _all: number
 }
@@ -93,6 +99,8 @@ export type CheckMinAggregateInputType = {
   graceSeconds?: true
   status?: true
   lastPingedAt?: true
+  paused?: true
+  alertSent?: true
   createdAt?: true
 }
 
@@ -105,6 +113,8 @@ export type CheckMaxAggregateInputType = {
   graceSeconds?: true
   status?: true
   lastPingedAt?: true
+  paused?: true
+  alertSent?: true
   createdAt?: true
 }
 
@@ -117,6 +127,8 @@ export type CheckCountAggregateInputType = {
   graceSeconds?: true
   status?: true
   lastPingedAt?: true
+  paused?: true
+  alertSent?: true
   createdAt?: true
   _all?: true
 }
@@ -216,6 +228,8 @@ export type CheckGroupByOutputType = {
   graceSeconds: number
   status: $Enums.CheckStatus
   lastPingedAt: Date | null
+  paused: boolean
+  alertSent: boolean
   createdAt: Date
   _count: CheckCountAggregateOutputType | null
   _avg: CheckAvgAggregateOutputType | null
@@ -251,6 +265,8 @@ export type CheckWhereInput = {
   graceSeconds?: Prisma.IntFilter<"Check"> | number
   status?: Prisma.EnumCheckStatusFilter<"Check"> | $Enums.CheckStatus
   lastPingedAt?: Prisma.DateTimeNullableFilter<"Check"> | Date | string | null
+  paused?: Prisma.BoolFilter<"Check"> | boolean
+  alertSent?: Prisma.BoolFilter<"Check"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Check"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   pingLogs?: Prisma.PingLogListRelationFilter
@@ -265,6 +281,8 @@ export type CheckOrderByWithRelationInput = {
   graceSeconds?: Prisma.SortOrder
   status?: Prisma.SortOrder
   lastPingedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  paused?: Prisma.SortOrder
+  alertSent?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   pingLogs?: Prisma.PingLogOrderByRelationAggregateInput
@@ -282,6 +300,8 @@ export type CheckWhereUniqueInput = Prisma.AtLeast<{
   graceSeconds?: Prisma.IntFilter<"Check"> | number
   status?: Prisma.EnumCheckStatusFilter<"Check"> | $Enums.CheckStatus
   lastPingedAt?: Prisma.DateTimeNullableFilter<"Check"> | Date | string | null
+  paused?: Prisma.BoolFilter<"Check"> | boolean
+  alertSent?: Prisma.BoolFilter<"Check"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Check"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   pingLogs?: Prisma.PingLogListRelationFilter
@@ -296,6 +316,8 @@ export type CheckOrderByWithAggregationInput = {
   graceSeconds?: Prisma.SortOrder
   status?: Prisma.SortOrder
   lastPingedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  paused?: Prisma.SortOrder
+  alertSent?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.CheckCountOrderByAggregateInput
   _avg?: Prisma.CheckAvgOrderByAggregateInput
@@ -316,6 +338,8 @@ export type CheckScalarWhereWithAggregatesInput = {
   graceSeconds?: Prisma.IntWithAggregatesFilter<"Check"> | number
   status?: Prisma.EnumCheckStatusWithAggregatesFilter<"Check"> | $Enums.CheckStatus
   lastPingedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Check"> | Date | string | null
+  paused?: Prisma.BoolWithAggregatesFilter<"Check"> | boolean
+  alertSent?: Prisma.BoolWithAggregatesFilter<"Check"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Check"> | Date | string
 }
 
@@ -327,6 +351,8 @@ export type CheckCreateInput = {
   graceSeconds: number
   status?: $Enums.CheckStatus
   lastPingedAt?: Date | string | null
+  paused?: boolean
+  alertSent?: boolean
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutChecksInput
   pingLogs?: Prisma.PingLogCreateNestedManyWithoutCheckInput
@@ -341,6 +367,8 @@ export type CheckUncheckedCreateInput = {
   graceSeconds: number
   status?: $Enums.CheckStatus
   lastPingedAt?: Date | string | null
+  paused?: boolean
+  alertSent?: boolean
   createdAt?: Date | string
   pingLogs?: Prisma.PingLogUncheckedCreateNestedManyWithoutCheckInput
 }
@@ -353,6 +381,8 @@ export type CheckUpdateInput = {
   graceSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCheckStatusFieldUpdateOperationsInput | $Enums.CheckStatus
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutChecksNestedInput
   pingLogs?: Prisma.PingLogUpdateManyWithoutCheckNestedInput
@@ -367,6 +397,8 @@ export type CheckUncheckedUpdateInput = {
   graceSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCheckStatusFieldUpdateOperationsInput | $Enums.CheckStatus
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pingLogs?: Prisma.PingLogUncheckedUpdateManyWithoutCheckNestedInput
 }
@@ -380,6 +412,8 @@ export type CheckCreateManyInput = {
   graceSeconds: number
   status?: $Enums.CheckStatus
   lastPingedAt?: Date | string | null
+  paused?: boolean
+  alertSent?: boolean
   createdAt?: Date | string
 }
 
@@ -391,6 +425,8 @@ export type CheckUpdateManyMutationInput = {
   graceSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCheckStatusFieldUpdateOperationsInput | $Enums.CheckStatus
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -403,6 +439,8 @@ export type CheckUncheckedUpdateManyInput = {
   graceSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCheckStatusFieldUpdateOperationsInput | $Enums.CheckStatus
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -425,6 +463,8 @@ export type CheckCountOrderByAggregateInput = {
   graceSeconds?: Prisma.SortOrder
   status?: Prisma.SortOrder
   lastPingedAt?: Prisma.SortOrder
+  paused?: Prisma.SortOrder
+  alertSent?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -442,6 +482,8 @@ export type CheckMaxOrderByAggregateInput = {
   graceSeconds?: Prisma.SortOrder
   status?: Prisma.SortOrder
   lastPingedAt?: Prisma.SortOrder
+  paused?: Prisma.SortOrder
+  alertSent?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -454,6 +496,8 @@ export type CheckMinOrderByAggregateInput = {
   graceSeconds?: Prisma.SortOrder
   status?: Prisma.SortOrder
   lastPingedAt?: Prisma.SortOrder
+  paused?: Prisma.SortOrder
+  alertSent?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -525,6 +569,10 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type CheckCreateNestedOneWithoutPingLogsInput = {
   create?: Prisma.XOR<Prisma.CheckCreateWithoutPingLogsInput, Prisma.CheckUncheckedCreateWithoutPingLogsInput>
   connectOrCreate?: Prisma.CheckCreateOrConnectWithoutPingLogsInput
@@ -547,6 +595,8 @@ export type CheckCreateWithoutUserInput = {
   graceSeconds: number
   status?: $Enums.CheckStatus
   lastPingedAt?: Date | string | null
+  paused?: boolean
+  alertSent?: boolean
   createdAt?: Date | string
   pingLogs?: Prisma.PingLogCreateNestedManyWithoutCheckInput
 }
@@ -559,6 +609,8 @@ export type CheckUncheckedCreateWithoutUserInput = {
   graceSeconds: number
   status?: $Enums.CheckStatus
   lastPingedAt?: Date | string | null
+  paused?: boolean
+  alertSent?: boolean
   createdAt?: Date | string
   pingLogs?: Prisma.PingLogUncheckedCreateNestedManyWithoutCheckInput
 }
@@ -601,6 +653,8 @@ export type CheckScalarWhereInput = {
   graceSeconds?: Prisma.IntFilter<"Check"> | number
   status?: Prisma.EnumCheckStatusFilter<"Check"> | $Enums.CheckStatus
   lastPingedAt?: Prisma.DateTimeNullableFilter<"Check"> | Date | string | null
+  paused?: Prisma.BoolFilter<"Check"> | boolean
+  alertSent?: Prisma.BoolFilter<"Check"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Check"> | Date | string
 }
 
@@ -612,6 +666,8 @@ export type CheckCreateWithoutPingLogsInput = {
   graceSeconds: number
   status?: $Enums.CheckStatus
   lastPingedAt?: Date | string | null
+  paused?: boolean
+  alertSent?: boolean
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutChecksInput
 }
@@ -625,6 +681,8 @@ export type CheckUncheckedCreateWithoutPingLogsInput = {
   graceSeconds: number
   status?: $Enums.CheckStatus
   lastPingedAt?: Date | string | null
+  paused?: boolean
+  alertSent?: boolean
   createdAt?: Date | string
 }
 
@@ -652,6 +710,8 @@ export type CheckUpdateWithoutPingLogsInput = {
   graceSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCheckStatusFieldUpdateOperationsInput | $Enums.CheckStatus
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutChecksNestedInput
 }
@@ -665,6 +725,8 @@ export type CheckUncheckedUpdateWithoutPingLogsInput = {
   graceSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCheckStatusFieldUpdateOperationsInput | $Enums.CheckStatus
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -676,6 +738,8 @@ export type CheckCreateManyUserInput = {
   graceSeconds: number
   status?: $Enums.CheckStatus
   lastPingedAt?: Date | string | null
+  paused?: boolean
+  alertSent?: boolean
   createdAt?: Date | string
 }
 
@@ -687,6 +751,8 @@ export type CheckUpdateWithoutUserInput = {
   graceSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCheckStatusFieldUpdateOperationsInput | $Enums.CheckStatus
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pingLogs?: Prisma.PingLogUpdateManyWithoutCheckNestedInput
 }
@@ -699,6 +765,8 @@ export type CheckUncheckedUpdateWithoutUserInput = {
   graceSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCheckStatusFieldUpdateOperationsInput | $Enums.CheckStatus
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pingLogs?: Prisma.PingLogUncheckedUpdateManyWithoutCheckNestedInput
 }
@@ -711,6 +779,8 @@ export type CheckUncheckedUpdateManyWithoutUserInput = {
   graceSeconds?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumCheckStatusFieldUpdateOperationsInput | $Enums.CheckStatus
   lastPingedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -754,6 +824,8 @@ export type CheckSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   graceSeconds?: boolean
   status?: boolean
   lastPingedAt?: boolean
+  paused?: boolean
+  alertSent?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   pingLogs?: boolean | Prisma.Check$pingLogsArgs<ExtArgs>
@@ -769,6 +841,8 @@ export type CheckSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   graceSeconds?: boolean
   status?: boolean
   lastPingedAt?: boolean
+  paused?: boolean
+  alertSent?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["check"]>
@@ -782,6 +856,8 @@ export type CheckSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   graceSeconds?: boolean
   status?: boolean
   lastPingedAt?: boolean
+  paused?: boolean
+  alertSent?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["check"]>
@@ -795,10 +871,12 @@ export type CheckSelectScalar = {
   graceSeconds?: boolean
   status?: boolean
   lastPingedAt?: boolean
+  paused?: boolean
+  alertSent?: boolean
   createdAt?: boolean
 }
 
-export type CheckOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uuid" | "userId" | "name" | "intervalSeconds" | "graceSeconds" | "status" | "lastPingedAt" | "createdAt", ExtArgs["result"]["check"]>
+export type CheckOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uuid" | "userId" | "name" | "intervalSeconds" | "graceSeconds" | "status" | "lastPingedAt" | "paused" | "alertSent" | "createdAt", ExtArgs["result"]["check"]>
 export type CheckInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   pingLogs?: boolean | Prisma.Check$pingLogsArgs<ExtArgs>
@@ -826,6 +904,8 @@ export type $CheckPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     graceSeconds: number
     status: $Enums.CheckStatus
     lastPingedAt: Date | null
+    paused: boolean
+    alertSent: boolean
     createdAt: Date
   }, ExtArgs["result"]["check"]>
   composites: {}
@@ -1260,6 +1340,8 @@ export interface CheckFieldRefs {
   readonly graceSeconds: Prisma.FieldRef<"Check", 'Int'>
   readonly status: Prisma.FieldRef<"Check", 'CheckStatus'>
   readonly lastPingedAt: Prisma.FieldRef<"Check", 'DateTime'>
+  readonly paused: Prisma.FieldRef<"Check", 'Boolean'>
+  readonly alertSent: Prisma.FieldRef<"Check", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Check", 'DateTime'>
 }
     

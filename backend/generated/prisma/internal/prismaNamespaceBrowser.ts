@@ -91,6 +91,8 @@ export const CheckScalarFieldEnum = {
   graceSeconds: 'graceSeconds',
   status: 'status',
   lastPingedAt: 'lastPingedAt',
+  paused: 'paused',
+  alertSent: 'alertSent',
   createdAt: 'createdAt'
 } as const
 

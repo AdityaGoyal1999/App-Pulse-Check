@@ -686,6 +686,8 @@ export const CheckScalarFieldEnum = {
   graceSeconds: 'graceSeconds',
   status: 'status',
   lastPingedAt: 'lastPingedAt',
+  paused: 'paused',
+  alertSent: 'alertSent',
   createdAt: 'createdAt'
 } as const
 
@@ -784,6 +786,13 @@ export type EnumCheckStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'CheckStatus[]'
  */
 export type ListEnumCheckStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CheckStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 

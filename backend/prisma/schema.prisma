@@ -35,6 +35,8 @@ model Check {
   graceSeconds    Int
   status          CheckStatus @default(NEW)
   lastPingedAt    DateTime?
+  paused          Boolean     @default(false)
+  alertSent       Boolean     @default(false)
   createdAt       DateTime    @default(now())
   user            User        @relation(fields: [userId], references: [id])
   pingLogs        PingLog[]
