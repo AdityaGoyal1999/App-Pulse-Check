@@ -32,9 +32,7 @@ curl https://api-production-b6d49.up.railway.app/ping/7b1b7f6f-e22c-4268-91c1-6e
 - 🔔 **Down alerts** — Slack notifications when checks go down
 - 💬 **Slack webhooks** — per-check Slack Incoming Webhook URLs for alert delivery
 - 🚀 **Production deployment** — API hosted on Railway ([live demo](#-live-demo))
-
-### 🔜 Planned
-- 🔁 **Resolution handling** — alert deduplication and recovery workflows when pings resume
+- 🔁 **Resolution and deduplication** — `alertSent` prevents repeat DOWN alerts; recovery pings mark checks `UP` again and send Slack recovery notifications
 
 ## 🔄 How it works
 
@@ -147,6 +145,6 @@ AppPulseCheck/
 | Background status worker     | ✅ Shipped      |
 | Alerting and notifications   | ✅ Shipped      |
 | E2E integration test         | ✅ Shipped      |
-| Resolution and deduplication | 🔜 Planned     |
+| Resolution and deduplication | ✅ Shipped      |
 | Production deployment        | ✅ Shipped      |
 
