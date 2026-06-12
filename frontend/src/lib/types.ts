@@ -10,6 +10,7 @@ export type Check = {
   status: CheckStatus;
   lastPingedAt: string | null;
   paused: boolean;
+  hasAlerts: boolean;
   createdAt: string;
 };
 export type CreateCheckInput = {

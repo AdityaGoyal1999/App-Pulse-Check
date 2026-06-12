@@ -20,6 +20,7 @@ function toCheckResponse(check: {
   status: string;
   lastPingedAt: Date | null;
   paused: boolean;
+  alertWebhookUrl: string | null;
   createdAt: Date;
 }) {
   return {
@@ -31,6 +32,7 @@ function toCheckResponse(check: {
     status: check.status,
     lastPingedAt: check.lastPingedAt,
     paused: check.paused,
+    hasAlerts: Boolean(check.alertWebhookUrl),
     createdAt: check.createdAt,
   };
 }

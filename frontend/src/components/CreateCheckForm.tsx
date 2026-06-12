@@ -1,7 +1,9 @@
 "use client";
 
 import { type FormEvent, useState } from "react";
+import Link from "next/link";
 
+import { SetupChecklistContent } from "@/components/SetupChecklistContent";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,13 +17,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createCheck } from "@/lib/api";
+import type { Check } from "@/lib/types";
 import {
   type CreateCheckFieldErrors,
   validateCreateCheckForm,
 } from "@/lib/validation";
+import { cn } from "@/lib/utils";
 
 type CreateCheckFormProps = {
-  onCreated: () => void;
+  onCreated: (check: Check) => void;
 };
 
 const DEFAULT_INTERVAL = "300";
@@ -29,6 +33,8 @@ const DEFAULT_GRACE = "60";
 
 export function CreateCheckForm({ onCreated }: CreateCheckFormProps) {
   const [open, setOpen] = useState(false);
+  const [step, setStep] = useState<"create" | "setup">("create");
+  const [createdCheck, setCreatedCheck] = useState<Check | null>(null);
   const [name, setName] = useState("");
   const [intervalSeconds, setIntervalSeconds] = useState(DEFAULT_INTERVAL);
   const [graceSeconds, setGraceSeconds] = useState(DEFAULT_GRACE);
@@ -42,6 +48,15 @@ export function CreateCheckForm({ onCreated }: CreateCheckFormProps) {
     setGraceSeconds(DEFAULT_GRACE);
     setFieldErrors({});
     setApiError("");
+  }
+
+  function handleOpenChange(nextOpen: boolean) {
+    setOpen(nextOpen);
+    if (!nextOpen) {
+      resetForm();
+      setStep("create");
+      setCreatedCheck(null);
+    }
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -58,10 +73,11 @@ export function CreateCheckForm({ onCreated }: CreateCheckFormProps) {
 
     setIsSubmitting(true);
     try {
-      await createCheck(result.values);
-      setOpen(false);
+      const check = await createCheck(result.values);
       resetForm();
-      onCreated();
+      setCreatedCheck(check);
+      setStep("setup");
+      onCreated(check);
     } catch (err) {
       setApiError(err instanceof Error ? err.message : "Request failed");
     } finally {
@@ -70,85 +86,122 @@ export function CreateCheckForm({ onCreated }: CreateCheckFormProps) {
   }
 
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(nextOpen) => {
-        setOpen(nextOpen);
-        if (!nextOpen) resetForm();
-      }}
-    >
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger render={<Button />}>Create Check</DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <form onSubmit={handleSubmit}>
-          <DialogHeader>
-            <DialogTitle>Create check</DialogTitle>
-            <DialogDescription>
-              Add a heartbeat monitor for a cron job or background task.
-            </DialogDescription>
-          </DialogHeader>
+      <DialogContent
+        className={cn(
+          "max-h-[min(90vh,800px)] overflow-y-auto",
+          step === "create" ? "sm:max-w-md" : "sm:max-w-2xl",
+        )}
+      >
+        {step === "create" ? (
+          <form onSubmit={handleSubmit}>
+            <DialogHeader>
+              <DialogTitle>Create check</DialogTitle>
+              <DialogDescription>
+                Add a heartbeat monitor for a cron job or background task.
+              </DialogDescription>
+            </DialogHeader>
 
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="check-name">Name</Label>
-              <Input
-                id="check-name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Nightly backup"
-                disabled={isSubmitting}
-              />
-              {fieldErrors.name && (
-                <p className="text-sm text-destructive">{fieldErrors.name}</p>
+            <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
+                <Label htmlFor="check-name">Name</Label>
+                <Input
+                  id="check-name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Nightly backup"
+                  disabled={isSubmitting}
+                />
+                {fieldErrors.name && (
+                  <p className="text-sm text-destructive">{fieldErrors.name}</p>
+                )}
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="check-interval">Interval (seconds)</Label>
+                <Input
+                  id="check-interval"
+                  type="number"
+                  min={60}
+                  max={86400}
+                  value={intervalSeconds}
+                  onChange={(e) => setIntervalSeconds(e.target.value)}
+                  disabled={isSubmitting}
+                />
+                {fieldErrors.intervalSeconds && (
+                  <p className="text-sm text-destructive">
+                    {fieldErrors.intervalSeconds}
+                  </p>
+                )}
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="check-grace">Grace period (seconds)</Label>
+                <Input
+                  id="check-grace"
+                  type="number"
+                  min={0}
+                  max={3600}
+                  value={graceSeconds}
+                  onChange={(e) => setGraceSeconds(e.target.value)}
+                  disabled={isSubmitting}
+                />
+                {fieldErrors.graceSeconds && (
+                  <p className="text-sm text-destructive">
+                    {fieldErrors.graceSeconds}
+                  </p>
+                )}
+              </div>
+
+              <p className="text-sm text-muted-foreground">
+                Not sure what to pick? See{" "}
+                <Link
+                  href="/docs#interval-grace"
+                  className="font-medium text-primary hover:underline"
+                >
+                  interval &amp; grace presets
+                </Link>{" "}
+                in the docs.
+              </p>
+
+              {apiError && (
+                <p className="text-sm text-destructive">{apiError}</p>
               )}
             </div>
 
-            <div className="grid gap-2">
-              <Label htmlFor="check-interval">Interval (seconds)</Label>
-              <Input
-                id="check-interval"
-                type="number"
-                min={60}
-                max={86400}
-                value={intervalSeconds}
-                onChange={(e) => setIntervalSeconds(e.target.value)}
-                disabled={isSubmitting}
+            <DialogFooter>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Creating…" : "Create check"}
+              </Button>
+            </DialogFooter>
+          </form>
+        ) : (
+          <>
+            <DialogHeader>
+              <DialogTitle>Get started</DialogTitle>
+              <DialogDescription>
+                Follow these steps to finish setting up &quot;
+                {createdCheck?.name}&quot;.
+              </DialogDescription>
+            </DialogHeader>
+            {createdCheck ? (
+              <SetupChecklistContent
+                check={createdCheck}
+                onNavigateAway={() => handleOpenChange(false)}
               />
-              {fieldErrors.intervalSeconds && (
-                <p className="text-sm text-destructive">
-                  {fieldErrors.intervalSeconds}
-                </p>
-              )}
-            </div>
-
-            <div className="grid gap-2">
-              <Label htmlFor="check-grace">Grace period (seconds)</Label>
-              <Input
-                id="check-grace"
-                type="number"
-                min={0}
-                max={3600}
-                value={graceSeconds}
-                onChange={(e) => setGraceSeconds(e.target.value)}
-                disabled={isSubmitting}
-              />
-              {fieldErrors.graceSeconds && (
-                <p className="text-sm text-destructive">
-                  {fieldErrors.graceSeconds}
-                </p>
-              )}
-            </div>
-
-            {apiError && (
-              <p className="text-sm text-destructive">{apiError}</p>
-            )}
-          </div>
-
-          <DialogFooter>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating…" : "Create check"}
-            </Button>
-          </DialogFooter>
-        </form>
+            ) : null}
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => handleOpenChange(false)}
+              >
+                Done
+              </Button>
+            </DialogFooter>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );

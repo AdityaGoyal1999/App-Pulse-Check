@@ -3,6 +3,7 @@ import {
   Activity,
   ArrowRight,
   Bell,
+  BookOpen,
   Clock,
   Copy,
   Shield,
@@ -113,6 +114,13 @@ export default function Home() {
           </span>
         </div>
         <nav className="flex items-center gap-2">
+          <Link
+            href="/docs"
+            className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
+          >
+            <BookOpen className="size-4" />
+            Docs
+          </Link>
           <Link
             href="/login"
             className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
@@ -257,6 +265,20 @@ export default function Home() {
                 </Card>
               ))}
             </div>
+
+            <div className="mt-10 text-center">
+              <Link
+                href="/docs"
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "lg" }),
+                  "gap-2",
+                )}
+              >
+                <BookOpen className="size-4" />
+                View integration guide
+                <ArrowRight className="size-4" />
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -385,7 +407,12 @@ export default function Home() {
             </div>
             <span className="font-medium text-foreground">App Pulse Check</span>
           </div>
-          <p>Heartbeat monitoring for jobs that matter.</p>
+          <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-6">
+            <p>Heartbeat monitoring for jobs that matter.</p>
+            <Link href="/docs" className="font-medium text-foreground hover:text-primary">
+              Documentation
+            </Link>
+          </div>
         </div>
       </footer>
     </div>

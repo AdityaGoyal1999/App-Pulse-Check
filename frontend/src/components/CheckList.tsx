@@ -8,7 +8,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import { BookOpen, Loader2 } from "lucide-react";
 
 import { CheckRow } from "@/components/CheckRow";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ import type { Check } from "@/lib/types";
 type CheckListProps = {
   refreshKey: number;
   onDeleted: () => void;
+  onChecksChange?: (checks: Check[]) => void;
 };
 
 export type CheckListRef = {
@@ -32,7 +34,7 @@ export type CheckListRef = {
 };
 
 export const CheckList = forwardRef<CheckListRef, CheckListProps>(
-  function CheckList({ refreshKey, onDeleted }, ref) {
+  function CheckList({ refreshKey, onDeleted, onChecksChange }, ref) {
     const hasLoadedRef = useRef(false);
     const [checks, setChecks] = useState<Check[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -49,6 +51,7 @@ export const CheckList = forwardRef<CheckListRef, CheckListProps>(
       try {
         const res = await getChecks();
         setChecks(res.checks);
+        onChecksChange?.(res.checks);
         hasLoadedRef.current = true;
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load checks");
@@ -56,7 +59,7 @@ export const CheckList = forwardRef<CheckListRef, CheckListProps>(
         setIsLoading(false);
         setIsRefreshing(false);
       }
-    }, []);
+    }, [onChecksChange]);
 
     useImperativeHandle(
       ref,
@@ -107,6 +110,15 @@ export const CheckList = forwardRef<CheckListRef, CheckListProps>(
           <p className="mt-1 text-sm text-muted-foreground">
             Create your first check to start monitoring a job or cron.
           </p>
+          <Button
+            variant="outline"
+            size="sm"
+            className="mt-4"
+            render={<Link href="/docs#quick-start" />}
+          >
+            <BookOpen className="size-3.5" />
+            Read the quick start guide
+          </Button>
         </div>
       );
     }

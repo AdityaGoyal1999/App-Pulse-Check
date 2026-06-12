@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Activity, RefreshCw } from "lucide-react";
+import Link from "next/link";
+import { Activity, BookOpen, RefreshCw } from "lucide-react";
 
 import { CheckList, type CheckListRef } from "@/components/CheckList";
 import { CreateCheckForm } from "@/components/CreateCheckForm";
@@ -36,6 +37,14 @@ export default function DashboardPage() {
                 {user.email}
               </span>
             )}
+            <Button
+              variant="outline"
+              size="sm"
+              render={<Link href="/docs" />}
+            >
+              <BookOpen className="size-3.5" />
+              Docs
+            </Button>
             <Button variant="outline" size="sm" onClick={() => logout()}>
               Log out
             </Button>

@@ -111,6 +111,13 @@ export default function CheckSettingsPage() {
                 {user.email}
               </span>
             )}
+            <Button
+              variant="outline"
+              size="sm"
+              render={<Link href="/docs#alerts" />}
+            >
+              Docs
+            </Button>
             <Button variant="outline" size="sm" onClick={() => logout()}>
               Log out
             </Button>
@@ -152,7 +159,13 @@ export default function CheckSettingsPage() {
                 <CardTitle>Down alerts</CardTitle>
                 <CardDescription>
                   Get notified when this check goes DOWN. Configure a Slack
-                  incoming webhook.
+                  incoming webhook.{" "}
+                  <Link
+                    href="/docs#alerts"
+                    className="font-medium text-primary hover:underline"
+                  >
+                    View setup guide
+                  </Link>
                 </CardDescription>
               </CardHeader>
               <CardContent>
