@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { IntegrationIcon } from "@/components/landing/IntegrationIcon";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -114,6 +115,7 @@ export default function Home() {
           </span>
         </div>
         <nav className="flex items-center gap-2">
+          <ThemeToggle />
           <Link
             href="/docs"
             className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
@@ -141,7 +143,7 @@ export default function Home() {
         <section className="relative overflow-hidden border-b border-border">
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(0,102,204,0.08),transparent)]"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(0,102,204,0.08),transparent)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(0,102,204,0.04),transparent)]"
           />
           <div className="mx-auto grid w-full max-w-6xl gap-12 px-6 pb-20 pt-12 lg:grid-cols-2 lg:items-center lg:gap-16 lg:pb-28 lg:pt-16">
             <div>
@@ -374,12 +376,16 @@ export default function Home() {
         {/* CTA */}
         <section className="py-20 sm:py-24">
           <div className="mx-auto w-full max-w-6xl px-6">
-            <Card className="overflow-hidden bg-primary text-primary-foreground ring-primary/20">
-              <CardContent className="flex flex-col items-center px-6 py-14 text-center sm:px-12">
-                <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            <div className="relative overflow-hidden rounded-2xl bg-primary px-6 py-16 text-center shadow-lg ring-1 ring-primary/20 sm:px-12 sm:py-20">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(255,255,255,0.14),transparent)]"
+              />
+              <div className="relative flex flex-col items-center">
+                <h2 className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl">
                   Stop finding out from your users
                 </h2>
-                <p className="mt-4 max-w-xl text-base leading-relaxed text-primary-foreground/85 sm:text-lg">
+                <p className="mt-5 max-w-xl text-base leading-relaxed text-primary-foreground/90 sm:text-lg">
                   Set up your first check in minutes. Know the moment a cron
                   job, backup script, or background worker goes quiet.
                 </p>
@@ -387,14 +393,14 @@ export default function Home() {
                   href="/signup"
                   className={cn(
                     buttonVariants({ size: "lg" }),
-                    "mt-8 bg-white text-primary hover:bg-white/90",
+                    "mt-10 bg-white text-primary shadow-md hover:bg-white/95",
                   )}
                 >
                   Create your first check
                   <ArrowRight />
                 </Link>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </section>
       </main>

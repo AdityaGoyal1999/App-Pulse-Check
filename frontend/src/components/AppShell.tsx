@@ -10,6 +10,7 @@ import {
   Settings,
 } from "lucide-react";
 
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import {
   Sidebar,
@@ -137,6 +138,10 @@ function AppSidebar() {
               {user.email}
             </p>
           )}
+          <div className="mt-3 flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">Appearance</span>
+            <ThemeToggle />
+          </div>
           <Button
             variant="outline"
             size="sm"
@@ -167,6 +172,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <Activity className="size-3.5" strokeWidth={2.25} />
               </div>
               <span className="text-sm font-semibold">App Pulse Check</span>
+            </div>
+            <div className="ml-auto">
+              <ThemeToggle />
             </div>
           </header>
 

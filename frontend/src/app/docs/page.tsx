@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { CodeBlock } from "@/components/docs/CodeBlock";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { IntegrationIcon } from "@/components/landing/IntegrationIcon";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -138,6 +139,7 @@ export default function DocsPage() {
             </span>
           </Link>
           <nav className="flex items-center gap-2">
+            <ThemeToggle />
             <Link
               href="/docs"
               className={cn(
