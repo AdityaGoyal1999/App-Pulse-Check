@@ -9,6 +9,7 @@ export type Check = {
   graceSeconds: number;
   status: CheckStatus;
   lastPingedAt: string | null;
+  paused: boolean;
   createdAt: string;
 };
 export type CreateCheckInput = {

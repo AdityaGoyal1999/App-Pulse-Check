@@ -22,3 +22,9 @@ export type UpdateCheckNotificationsBody = z.infer<
   typeof updateCheckNotificationsSchema
 >;
 
+export const updateCheckPausedSchema = z.object({
+  paused: z.boolean(),
+});
+
+export type UpdateCheckPausedBody = z.infer<typeof updateCheckPausedSchema>;
+

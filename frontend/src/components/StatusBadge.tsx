@@ -16,12 +16,28 @@ const STATUS_CONFIG: Record<
   DOWN: { label: "Down", variant: "destructive" },
 };
 
-export function StatusBadge({ status }: { status: CheckStatus }) {
+export function StatusBadge({
+  status,
+  paused = false,
+}: {
+  status: CheckStatus;
+  paused?: boolean;
+}) {
   const config = STATUS_CONFIG[status];
 
   return (
-    <Badge variant={config.variant} className={cn(config.className)}>
-      {config.label}
-    </Badge>
+    <div className="flex flex-wrap items-center gap-1.5">
+      <Badge variant={config.variant} className={cn(config.className)}>
+        {config.label}
+      </Badge>
+      {paused && (
+        <Badge
+          variant="outline"
+          className="border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-300"
+        >
+          Paused
+        </Badge>
+      )}
+    </div>
   );
 }

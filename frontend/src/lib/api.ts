@@ -77,6 +77,13 @@ export function deleteCheck(id: string) {
   return apiFetch<{ ok: true }>(`/api/checks/${id}`, { method: "DELETE" });
 }
 
+export function updateCheckPaused(id: string, paused: boolean) {
+  return apiFetch<Check>(`/api/checks/${id}/paused`, {
+    method: "PATCH",
+    body: JSON.stringify({ paused }),
+  });
+}
+
 export function getPingUrl(uuid: string) {
   return `${API_URL}/ping/${uuid}`;
 }

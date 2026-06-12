@@ -4,6 +4,7 @@ import { requireAuth } from "../middleware/auth";
 import {
   createCheckSchema,
   updateCheckNotificationsSchema,
+  updateCheckPausedSchema,
 } from "../schemas/checks";
 
 export const checksRouter = Router();
@@ -18,6 +19,7 @@ function toCheckResponse(check: {
   graceSeconds: number;
   status: string;
   lastPingedAt: Date | null;
+  paused: boolean;
   createdAt: Date;
 }) {
   return {
@@ -28,6 +30,7 @@ function toCheckResponse(check: {
     graceSeconds: check.graceSeconds,
     status: check.status,
     lastPingedAt: check.lastPingedAt,
+    paused: check.paused,
     createdAt: check.createdAt,
   };
 }
@@ -104,6 +107,39 @@ checksRouter.get("/:id/notifications", async (req, res) => {
     }
 
     res.status(200).json(toNotificationsResponse(check));
+  } catch {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+checksRouter.patch("/:id/paused", async (req, res) => {
+  const checkId = req.params.id;
+  const parsed = updateCheckPausedSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({
+      error: "Validation failed",
+      details: parsed.error.flatten(),
+    });
+    return;
+  }
+
+  try {
+    const existing = await prisma.check.findFirst({
+      where: { id: checkId, userId: req.user!.id },
+      select: { id: true },
+    });
+
+    if (!existing) {
+      res.status(404).json({ error: "Check not found" });
+      return;
+    }
+
+    const check = await prisma.check.update({
+      where: { id: existing.id },
+      data: { paused: parsed.data.paused },
+    });
+
+    res.status(200).json(toCheckResponse(check));
   } catch {
     res.status(500).json({ error: "Internal server error" });
   }

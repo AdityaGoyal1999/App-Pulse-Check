@@ -4,13 +4,46 @@ import { prisma } from "../db";
 
 const INTERVAL_MS = 60_000;
 
+export const EVALUATOR_CANDIDATE_WHERE = {
+  paused: false,
+  lastPingedAt: { not: null },
+  status: { in: [CheckStatus.NEW, CheckStatus.UP] },
+};
+
+export type EvaluatorCandidate = {
+  id: string;
+  name: string;
+  lastPingedAt: Date;
+  intervalSeconds: number;
+  graceSeconds: number;
+  alertWebhookUrl: string | null;
+  alertEmail: string | null;
+};
+
+export function isCheckOverdue(
+  check: Pick<
+    EvaluatorCandidate,
+    "lastPingedAt" | "intervalSeconds" | "graceSeconds"
+  >,
+  now: number,
+): boolean {
+  const deadline =
+    check.lastPingedAt.getTime() +
+    check.intervalSeconds * 1000 +
+    check.graceSeconds * 1000;
+  return now > deadline;
+}
+
+export function filterOverdueChecks(
+  candidates: EvaluatorCandidate[],
+  now: number,
+): EvaluatorCandidate[] {
+  return candidates.filter((check) => isCheckOverdue(check, now));
+}
+
 export async function evaluateChecks(): Promise<number> {
   const candidates = await prisma.check.findMany({
-    where: {
-      paused: false,
-      lastPingedAt: { not: null },
-      status: { in: [CheckStatus.NEW, CheckStatus.UP] },
-    },
+    where: EVALUATOR_CANDIDATE_WHERE,
     select: {
       id: true,
       name: true,
@@ -24,13 +57,24 @@ export async function evaluateChecks(): Promise<number> {
 
   const now = Date.now();
 
-  const overdueChecks = candidates.filter((check) => {
-    const deadline =
-      check.lastPingedAt!.getTime() +
-      check.intervalSeconds * 1000 +
-      check.graceSeconds * 1000;
-    return now > deadline;
-  });
+  const overdueChecks = filterOverdueChecks(
+    candidates.flatMap((check) =>
+      check.lastPingedAt
+        ? [
+            {
+              id: check.id,
+              name: check.name,
+              lastPingedAt: check.lastPingedAt,
+              intervalSeconds: check.intervalSeconds,
+              graceSeconds: check.graceSeconds,
+              alertWebhookUrl: check.alertWebhookUrl,
+              alertEmail: check.alertEmail,
+            },
+          ]
+        : [],
+    ),
+    now,
+  );
 
   if (overdueChecks.length === 0) {
     return 0;

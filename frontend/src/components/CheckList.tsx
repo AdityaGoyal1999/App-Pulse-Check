@@ -126,7 +126,12 @@ export const CheckList = forwardRef<CheckListRef, CheckListProps>(
           </TableHeader>
           <TableBody>
             {checks.map((check) => (
-              <CheckRow key={check.id} check={check} onDeleted={onDeleted} />
+              <CheckRow
+                key={check.id}
+                check={check}
+                onDeleted={onDeleted}
+                onUpdated={() => fetchChecks(true)}
+              />
             ))}
           </TableBody>
         </Table>
