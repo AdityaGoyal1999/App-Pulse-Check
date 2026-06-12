@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import { prisma } from "./db";
 import { authRouter } from "./routes/auth";
 import { checksRouter } from "./routes/checks";
 import { pingRouter } from "./routes/ping";
@@ -7,12 +8,17 @@ import { userRouter } from "./routes/user";
 
 export const app = express();
 
-app.use(cors({ origin: "http://localhost:3001" }));
+const frontendUrl = process.env.FRONTEND_URL ?? "http://localhost:3001";
+app.use(cors({ origin: frontendUrl }));
 app.use(express.json());
 
-// Check if this server is running
-app.get("/health", (_req, res) => {
-  res.json({ status: "ok" });
+app.get("/health", async (_req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({ status: "ok", db: "connected" });
+  } catch {
+    res.status(503).json({ status: "error", db: "disconnected" });
+  }
 });
 
 // Ping endpoint
