@@ -120,8 +120,9 @@ export const CheckList = forwardRef<CheckListRef, CheckListProps>(
               <TableHead>Last Pinged</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Ping URL</TableHead>
-              <TableHead>Alerts</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className="w-12">
+                <span className="sr-only">Options</span>
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

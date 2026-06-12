@@ -3,12 +3,22 @@
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
-import { Bell, Pause, Play, Trash2 } from "lucide-react";
+import { Bell, MoreVertical, Pause, Play, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { CopyPingUrlButton } from "@/components/CopyPingUrlButton";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLinkItem,
+  DropdownMenuPortal,
+  DropdownMenuPositioner,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { deleteCheck, updateCheckPaused } from "@/lib/api";
 import type { Check } from "@/lib/types";
@@ -22,6 +32,7 @@ type CheckRowProps = {
 export function CheckRow({ check, onDeleted, onUpdated }: CheckRowProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isTogglingPause, setIsTogglingPause] = useState(false);
+  const isBusy = isDeleting || isTogglingPause;
 
   async function handleDelete() {
     if (!window.confirm("Delete this check?")) return;
@@ -67,47 +78,54 @@ export function CheckRow({ check, onDeleted, onUpdated }: CheckRowProps) {
       <TableCell>
         <CopyPingUrlButton uuid={check.uuid} />
       </TableCell>
-      <TableCell>
-        <Button
-          variant="outline"
-          size="sm"
-          render={<Link href={`/checks/${check.id}/settings`} />}
-        >
-          <Bell className="size-3.5" />
-          Alerts
-        </Button>
-      </TableCell>
-      <TableCell>
-        <div className="flex items-center gap-1">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            disabled={isTogglingPause || isDeleting}
-            onClick={handleTogglePause}
+      <TableCell className="w-12 text-right">
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            disabled={isBusy}
+            render={
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label={`Options for ${check.name}`}
+              />
+            }
           >
-            {check.paused ? (
-              <Play className="size-3.5" />
-            ) : (
-              <Pause className="size-3.5" />
-            )}
-            {isTogglingPause
-              ? "Saving…"
-              : check.paused
-                ? "Resume"
-                : "Pause"}
-          </Button>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            disabled={isDeleting || isTogglingPause}
-            onClick={handleDelete}
-          >
-            <Trash2 className="size-3.5" />
-            {isDeleting ? "Deleting…" : "Delete"}
-          </Button>
-        </div>
+            <MoreVertical className="size-4" />
+          </DropdownMenuTrigger>
+          <DropdownMenuPortal>
+            <DropdownMenuPositioner align="end">
+              <DropdownMenuContent>
+                <DropdownMenuLinkItem
+                  closeOnClick
+                  render={<Link href={`/checks/${check.id}/settings`} />}
+                >
+                  <Bell />
+                  Alert settings
+                </DropdownMenuLinkItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  disabled={isBusy}
+                  onClick={() => void handleTogglePause()}
+                >
+                  {check.paused ? <Play /> : <Pause />}
+                  {isTogglingPause
+                    ? "Saving…"
+                    : check.paused
+                      ? "Resume"
+                      : "Pause"}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  disabled={isBusy}
+                  className="text-destructive data-highlighted:bg-destructive/10 data-highlighted:text-destructive"
+                  onClick={() => void handleDelete()}
+                >
+                  <Trash2 />
+                  {isDeleting ? "Deleting…" : "Delete"}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenuPositioner>
+          </DropdownMenuPortal>
+        </DropdownMenu>
       </TableCell>
     </TableRow>
   );
