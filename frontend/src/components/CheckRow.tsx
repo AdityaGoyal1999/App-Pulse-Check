@@ -76,15 +76,7 @@ export function CheckRow({ check, onDeleted, onUpdated }: CheckRowProps) {
         <StatusBadge status={check.status} paused={check.paused} />
       </TableCell>
       <TableCell>
-        <div className="flex flex-col items-start gap-1">
-          <CopyPingUrlButton uuid={check.uuid} />
-          <Link
-            href="/docs#integrating"
-            className="text-xs text-muted-foreground hover:text-primary hover:underline"
-          >
-            How to use
-          </Link>
-        </div>
+        <CopyPingUrlButton uuid={check.uuid} />
       </TableCell>
       <TableCell className="w-12 text-right">
         <DropdownMenu>
