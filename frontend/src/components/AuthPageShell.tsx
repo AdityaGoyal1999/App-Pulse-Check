@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { Activity, ArrowLeft } from "lucide-react";
+import { Activity } from "lucide-react";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 
 type AuthPageShellProps = {
   title: string;
@@ -26,23 +24,14 @@ export function AuthPageShell({
   return (
     <div className="flex min-h-full flex-col bg-background">
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 py-6">
-        <div className="flex items-center gap-4">
-          <Link
-            href="/"
-            className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
-          >
-            <ArrowLeft />
-            Back
-          </Link>
-          <div className="flex items-center gap-2.5">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <Activity className="size-4" strokeWidth={2.25} />
-            </div>
-            <span className="text-base font-semibold tracking-tight text-foreground">
-              App Pulse Check
-            </span>
+        <Link href="/" className="flex items-center gap-2.5">
+          <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+            <Activity className="size-4" strokeWidth={2.25} />
           </div>
-        </div>
+          <span className="text-base font-semibold tracking-tight text-foreground">
+            App Pulse Check
+          </span>
+        </Link>
         <ThemeToggle />
       </header>
 

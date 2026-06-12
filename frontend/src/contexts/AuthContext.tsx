@@ -77,7 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await apiLogout();
     setTokenState(null);
     setUser(null);
-    router.replace("/login");
+    router.replace("/");
   }, [router]);
 
   const value = useMemo(
