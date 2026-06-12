@@ -6,6 +6,16 @@ App Pulse Check is a lightweight uptime monitor for heartbeat-style jobs. Each m
 
 Built for indie hackers, solo developers, and small teams who need to know when scheduled or background work stops running — without standing up a full observability stack.
 
+## 🌐 Live demo
+
+The API is deployed on Railway. Hit the ping endpoint to see it in action:
+
+**https://api-production-b6d49.up.railway.app/ping/7b1b7f6f-e22c-4268-91c1-6e6ca08047e4**
+
+```bash
+curl https://api-production-b6d49.up.railway.app/ping/7b1b7f6f-e22c-4268-91c1-6e6ca08047e4
+```
+
 ## ✨ Features
 
 ### ✅ Available now
@@ -21,10 +31,10 @@ Built for indie hackers, solo developers, and small teams who need to know when 
 - ⏱️ **Missed-ping detection** — standalone evaluation worker runs every 60s and marks overdue checks `DOWN` (respects `intervalSeconds` + `graceSeconds`, skips paused checks)
 - 🔔 **Down alerts** — Slack notifications when checks go down
 - 💬 **Slack webhooks** — per-check Slack Incoming Webhook URLs for alert delivery
+- 🚀 **Production deployment** — API hosted on Railway ([live demo](#-live-demo))
 
 ### 🔜 Planned
 - 🔁 **Resolution handling** — alert deduplication and recovery workflows when pings resume
-- 🚀 **Production deployment** — hosted offering and self-host guides
 
 ## 🔄 How it works
 
@@ -138,5 +148,5 @@ AppPulseCheck/
 | Alerting and notifications   | ✅ Shipped      |
 | E2E integration test         | ✅ Shipped      |
 | Resolution and deduplication | 🔜 Planned     |
-| Production deployment        | 🔜 Planned     |
+| Production deployment        | ✅ Shipped      |
 
