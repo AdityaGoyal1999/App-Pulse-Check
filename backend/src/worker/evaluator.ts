@@ -8,6 +8,7 @@ export const EVALUATOR_CANDIDATE_WHERE = {
   paused: false,
   lastPingedAt: { not: null },
   status: { in: [CheckStatus.NEW, CheckStatus.UP] },
+  alertSent: false,
 };
 
 export type EvaluatorCandidate = {

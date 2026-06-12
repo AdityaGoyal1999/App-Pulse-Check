@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
-import { Bell, MoreVertical, Pause, Play, Trash2 } from "lucide-react";
+import { MoreVertical, Pause, Play, Settings, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { CopyPingUrlButton } from "@/components/CopyPingUrlButton";
@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { useChecks } from "@/contexts/ChecksContext";
 import { deleteCheck, updateCheckPaused } from "@/lib/api";
 import type { Check } from "@/lib/types";
 
@@ -30,6 +31,7 @@ type CheckRowProps = {
 };
 
 export function CheckRow({ check, onDeleted, onUpdated }: CheckRowProps) {
+  const { refreshChecks } = useChecks();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isTogglingPause, setIsTogglingPause] = useState(false);
   const isBusy = isDeleting || isTogglingPause;
@@ -40,6 +42,7 @@ export function CheckRow({ check, onDeleted, onUpdated }: CheckRowProps) {
     setIsDeleting(true);
     try {
       await deleteCheck(check.id);
+      void refreshChecks();
       onDeleted();
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to delete check");
@@ -54,6 +57,7 @@ export function CheckRow({ check, onDeleted, onUpdated }: CheckRowProps) {
     try {
       await updateCheckPaused(check.id, nextPaused);
       toast.success(nextPaused ? "Check paused" : "Check resumed");
+      void refreshChecks();
       onUpdated();
     } catch (err) {
       toast.error(
@@ -99,8 +103,8 @@ export function CheckRow({ check, onDeleted, onUpdated }: CheckRowProps) {
                   closeOnClick
                   render={<Link href={`/checks/${check.id}/settings`} />}
                 >
-                  <Bell />
-                  Alert settings
+                  <Settings />
+                  Settings
                 </DropdownMenuLinkItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem

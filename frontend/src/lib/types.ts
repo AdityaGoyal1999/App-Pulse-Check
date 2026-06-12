@@ -23,3 +23,15 @@ export type CheckNotificationSettings = {
   alertWebhookUrl: string | null;
   alertEmail: string | null;
 };
+export type CheckSettings = {
+  id: string;
+  uuid: string;
+  name: string;
+  intervalSeconds: number;
+  graceSeconds: number;
+  status: CheckStatus;
+  lastPingedAt: string | null;
+  paused: boolean;
+  alertWebhookUrl: string | null;
+  alertEmail: string | null;
+};

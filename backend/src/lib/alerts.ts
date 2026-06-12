@@ -17,6 +17,13 @@ type DownAlertContent = {
   slackPayload: Record<string, unknown>;
 };
 
+type RecoveryAlertContent = {
+  subject: string;
+  text: string;
+  html: string;
+  slackPayload: Record<string, unknown>;
+};
+
 // let resendClient: Resend | null = null;
 //
 // function getResendClient(apiKey: string): Resend {
@@ -244,6 +251,151 @@ function buildDownAlertMessage(check: AlertCheck): DownAlertContent {
   };
 }
 
+function buildRecoveryAlertMessage(check: AlertCheck): RecoveryAlertContent {
+  const lastPing = formatLastPing(check.lastPingedAt);
+  const link = dashboardUrl();
+  const name = appName();
+  const safeCheckName = escapeHtml(check.name);
+
+  const text = [
+    `Check UP: ${check.name}`,
+    `Last ping: ${lastPing}`,
+    `Open dashboard: ${link}`,
+    "",
+    `— ${name}`,
+  ].join("\n");
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check UP: ${safeCheckName}</title>
+</head>
+<body style="margin:0;padding:0;background-color:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f5;padding:32px 16px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background-color:#ffffff;border-radius:12px;border:1px solid #e4e4e7;overflow:hidden;">
+          <tr>
+            <td style="background-color:#16a34a;padding:20px 28px;">
+              <p style="margin:0;font-size:13px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:#bbf7d0;">Alert</p>
+              <h1 style="margin:8px 0 0;font-size:22px;font-weight:700;line-height:1.3;color:#ffffff;">Check is UP</h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:28px;">
+              <p style="margin:0 0 20px;font-size:15px;line-height:1.6;color:#52525b;">
+                One of your monitored checks received a ping again.
+              </p>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#fafafa;border:1px solid #e4e4e7;border-radius:8px;">
+                <tr>
+                  <td style="padding:16px 18px;border-bottom:1px solid #e4e4e7;">
+                    <p style="margin:0 0 4px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;color:#71717a;">Check</p>
+                    <p style="margin:0;font-size:16px;font-weight:600;color:#18181b;">${safeCheckName}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:16px 18px;">
+                    <p style="margin:0 0 4px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;color:#71717a;">Last ping</p>
+                    <p style="margin:0;font-size:15px;color:#18181b;">${escapeHtml(lastPing)}</p>
+                  </td>
+                </tr>
+              </table>
+              <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:24px;">
+                <tr>
+                  <td style="border-radius:8px;background-color:#18181b;">
+                    <a href="${link}" style="display:inline-block;padding:12px 22px;font-size:14px;font-weight:600;color:#ffffff;text-decoration:none;">Open dashboard</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:16px 28px;border-top:1px solid #e4e4e7;background-color:#fafafa;">
+              <p style="margin:0;font-size:12px;line-height:1.5;color:#a1a1aa;text-align:center;">
+                Sent by ${escapeHtml(name)} · <a href="${link}" style="color:#71717a;text-decoration:underline;">Manage alerts</a>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
+  const slackPayload = {
+    text: `Check UP: ${check.name}`,
+    attachments: [
+      {
+        color: "#16A34A",
+        blocks: [
+          {
+            type: "header",
+            text: {
+              type: "plain_text",
+              text: "Check is UP",
+              emoji: true,
+            },
+          },
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: `*${check.name}* received a ping again.`,
+            },
+          },
+          {
+            type: "section",
+            fields: [
+              {
+                type: "mrkdwn",
+                text: `*Check*\n${check.name}`,
+              },
+              {
+                type: "mrkdwn",
+                text: `*Last ping*\n${lastPing}`,
+              },
+            ],
+          },
+          {
+            type: "actions",
+            elements: [
+              {
+                type: "button",
+                text: {
+                  type: "plain_text",
+                  text: "Open dashboard",
+                  emoji: true,
+                },
+                url: link,
+                style: "primary",
+              },
+            ],
+          },
+          {
+            type: "context",
+            elements: [
+              {
+                type: "mrkdwn",
+                text: `Sent by *${name}*`,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  };
+
+  return {
+    subject: `Check UP: ${check.name}`,
+    text,
+    html,
+    slackPayload,
+  };
+}
+
 async function sendSlackAlert(
   webhookUrl: string,
   payload: Record<string, unknown>,
@@ -316,6 +468,29 @@ export async function sendDownAlert(
   }
 
   const { slackPayload } = buildDownAlertMessage(check);
+
+  const tasks: Promise<void>[] = [];
+
+  if (user.alertWebhookUrl) {
+    tasks.push(sendSlackAlert(user.alertWebhookUrl, slackPayload));
+  }
+
+  // if (user.alertEmail) {
+  //   tasks.push(sendEmailAlert(user.alertEmail, subject, text, html));
+  // }
+
+  await Promise.allSettled(tasks);
+}
+
+export async function sendRecoveryAlert(
+  check: AlertCheck,
+  user: AlertUser,
+): Promise<void> {
+  if (!user.alertWebhookUrl) {
+    return;
+  }
+
+  const { slackPayload } = buildRecoveryAlertMessage(check);
 
   const tasks: Promise<void>[] = [];
 

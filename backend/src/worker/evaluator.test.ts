@@ -89,6 +89,7 @@ describe("EVALUATOR_CANDIDATE_WHERE", () => {
       CheckStatus.NEW,
       CheckStatus.UP,
     ]);
+    expect(EVALUATOR_CANDIDATE_WHERE.alertSent).toBe(false);
   });
 });
 

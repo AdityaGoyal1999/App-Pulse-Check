@@ -76,6 +76,65 @@ checksRouter.get("/", async (req, res) => {
   }
 });
 
+const settingsSelect = {
+  id: true,
+  uuid: true,
+  name: true,
+  intervalSeconds: true,
+  graceSeconds: true,
+  status: true,
+  lastPingedAt: true,
+  paused: true,
+  alertWebhookUrl: true,
+  alertEmail: true,
+} as const;
+
+function toSettingsResponse(check: {
+  id: string;
+  uuid: string;
+  name: string;
+  intervalSeconds: number;
+  graceSeconds: number;
+  status: string;
+  lastPingedAt: Date | null;
+  paused: boolean;
+  alertWebhookUrl: string | null;
+  alertEmail: string | null;
+}) {
+  return {
+    id: check.id,
+    uuid: check.uuid,
+    name: check.name,
+    intervalSeconds: check.intervalSeconds,
+    graceSeconds: check.graceSeconds,
+    status: check.status,
+    lastPingedAt: check.lastPingedAt,
+    paused: check.paused,
+    alertWebhookUrl: check.alertWebhookUrl,
+    alertEmail: check.alertEmail,
+  };
+}
+
+checksRouter.get("/:id", async (req, res) => {
+  const checkId = req.params.id;
+
+  try {
+    const check = await prisma.check.findFirst({
+      where: { id: checkId, userId: req.user!.id },
+      select: settingsSelect,
+    });
+
+    if (!check) {
+      res.status(404).json({ error: "Check not found" });
+      return;
+    }
+
+    res.status(200).json(toSettingsResponse(check));
+  } catch {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 const notificationSelect = {
   name: true,
   alertWebhookUrl: true,

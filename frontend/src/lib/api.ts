@@ -2,6 +2,7 @@ import type {
   AuthResponse,
   Check,
   CheckNotificationSettings,
+  CheckSettings,
   CreateCheckInput,
 } from "./types";
 
@@ -64,6 +65,10 @@ export async function logout() {
 
 export function getChecks() {
   return apiFetch<{ checks: Check[] }>("/api/checks");
+}
+
+export function getCheck(id: string) {
+  return apiFetch<CheckSettings>(`/api/checks/${id}`);
 }
 
 export function createCheck(body: CreateCheckInput) {
