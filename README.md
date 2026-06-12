@@ -86,6 +86,26 @@ npm run dev:worker           # from repo root
 # or: cd backend && npm run dev:worker
 ```
 
+### 🧪 Testing
+
+**Unit tests** (fast, no running server):
+
+```bash
+cd backend && npm test
+```
+
+**E2E integration test** (full check lifecycle over HTTP — signup, ping UP, wait for DOWN, recovery, delete):
+
+Prerequisites:
+- API + worker + Postgres already running (`npm run dev:backend` from repo root)
+- `curl` and `jq` installed (`brew install jq` on macOS)
+
+```bash
+cd backend && npm run test:e2e
+```
+
+Expect **~2–3 minutes** runtime (the script polls for up to 150s while waiting for the worker to mark the check DOWN). Override the API URL with `API_BASE` or `PORT` if needed.
+
 ## 📁 Project structure
 
 ```
@@ -96,7 +116,9 @@ AppPulseCheck/
 │   │   ├── routes/       # ping, auth, checks
 │   │   ├── worker/       # missed-ping evaluation loop
 │   │   └── ...
-│   └── scripts/dev.sh    # Docker Postgres + Studio + worker + API
+│   └── scripts/
+│       ├── dev.sh         # Docker Postgres + Studio + worker + API
+│       └── e2e-test.sh    # curl-based E2E lifecycle test
 ├── frontend/
 │   └── src/
 │       ├── app/          # landing, login, signup, dashboard
@@ -114,6 +136,7 @@ AppPulseCheck/
 | Web dashboard                | ✅ Shipped      |
 | Background status worker     | ✅ Shipped      |
 | Alerting and notifications   | ✅ Shipped      |
+| E2E integration test         | ✅ Shipped      |
 | Resolution and deduplication | 🔜 Planned     |
 | Production deployment        | 🔜 Planned     |
 
