@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createCheck } from "@/lib/api";
+import { createCheck, ApiError } from "@/lib/api";
 import type { Check } from "@/lib/types";
 import {
   type CreateCheckFieldErrors,
@@ -26,12 +26,13 @@ import { cn } from "@/lib/utils";
 
 type CreateCheckFormProps = {
   onCreated: (check: Check) => void;
+  atLimit?: boolean;
 };
 
 const DEFAULT_INTERVAL = "300";
 const DEFAULT_GRACE = "60";
 
-export function CreateCheckForm({ onCreated }: CreateCheckFormProps) {
+export function CreateCheckForm({ onCreated, atLimit = false }: CreateCheckFormProps) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<"create" | "setup">("create");
   const [createdCheck, setCreatedCheck] = useState<Check | null>(null);
@@ -79,7 +80,16 @@ export function CreateCheckForm({ onCreated }: CreateCheckFormProps) {
       setStep("setup");
       onCreated(check);
     } catch (err) {
-      setApiError(err instanceof Error ? err.message : "Request failed");
+      if (err instanceof ApiError && err.status === 403) {
+        const limit = err.body.limit;
+        setApiError(
+          typeof limit === "number"
+            ? `Check limit reached (${limit} checks on your plan).`
+            : err.message,
+        );
+      } else {
+        setApiError(err instanceof Error ? err.message : "Request failed");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -87,7 +97,11 @@ export function CreateCheckForm({ onCreated }: CreateCheckFormProps) {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger render={<Button />}>Create Check</DialogTrigger>
+      <DialogTrigger
+        render={<Button disabled={atLimit} />}
+      >
+        Create Check
+      </DialogTrigger>
       <DialogContent
         className={cn(
           "max-h-[min(90vh,800px)] overflow-y-auto",
@@ -99,7 +113,9 @@ export function CreateCheckForm({ onCreated }: CreateCheckFormProps) {
             <DialogHeader>
               <DialogTitle>Create check</DialogTitle>
               <DialogDescription>
-                Add a heartbeat monitor for a cron job or background task.
+                {atLimit
+                  ? "You've reached your plan limit. Delete a check to create a new one."
+                  : "Add a heartbeat monitor for a cron job or background task."}
               </DialogDescription>
             </DialogHeader>
 

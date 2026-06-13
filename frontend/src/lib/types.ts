@@ -12,6 +12,12 @@ export type UserMe = {
   checkCount: number;
   limits: PlanLimits;
 };
+export type CheckLimitErrorResponse = {
+  error: "Check limit reached";
+  limit: number;
+  plan: Plan;
+  checkCount: number;
+};
 export type CheckStatus = "NEW" | "UP" | "DOWN";
 export type Check = {
   id: string;

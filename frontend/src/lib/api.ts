@@ -27,6 +27,17 @@ export function clearToken(): void {
   localStorage.removeItem(USER_KEY);
 }
 
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public status: number,
+    public body: Record<string, unknown>,
+  ) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
+
 async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
   const token = getToken();
   const headers: HeadersInit = {
@@ -39,7 +50,7 @@ async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new Error(body.error ?? "Request failed");
+    throw new ApiError(body.error ?? "Request failed", res.status, body);
   }
 
   return res.json();

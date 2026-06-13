@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { prisma } from "../db";
+import { assertCanCreateCheck, CheckLimitError } from "../lib/limits";
 import { requireAuth } from "../middleware/auth";
 import {
   createCheckSchema,
@@ -48,6 +49,8 @@ checksRouter.post("/", async (req, res) => {
   }
 
   try {
+    await assertCanCreateCheck(req.user!.id);
+
     const check = await prisma.check.create({
       data: {
         name: parsed.data.name,
@@ -58,7 +61,16 @@ checksRouter.post("/", async (req, res) => {
     });
 
     res.status(201).json(toCheckResponse(check));
-  } catch {
+  } catch (err) {
+    if (err instanceof CheckLimitError) {
+      res.status(403).json({
+        error: "Check limit reached",
+        limit: err.limit,
+        plan: err.plan,
+        checkCount: err.checkCount,
+      });
+      return;
+    }
     res.status(500).json({ error: "Internal server error" });
   }
 });
