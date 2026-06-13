@@ -5,12 +5,11 @@ import { usePathname } from "next/navigation";
 import {
   Activity,
   BookOpen,
-  History,
   LayoutDashboard,
   LogOut,
-  Settings,
 } from "lucide-react";
 
+import { CheckSidebarMenu } from "@/components/CheckSidebarMenu";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,9 +24,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   SidebarProvider,
   SidebarRail,
   SidebarSeparator,
@@ -37,7 +33,6 @@ import {
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/contexts/AuthContext";
 import { useChecks } from "@/contexts/ChecksContext";
-import { cn } from "@/lib/utils";
 
 function AppSidebar() {
   const pathname = usePathname();
@@ -110,61 +105,11 @@ function AppSidebar() {
                 No checks yet
               </p>
             ) : (
-              <SidebarMenu>
-                {checks.map((check) => {
-                  const isCheckActive = activeCheckId === check.id;
-
-                  return (
-                    <SidebarMenuItem key={check.id}>
-                      <div
-                        className={cn(
-                          "truncate px-2 py-1.5 text-xs font-semibold tracking-wide uppercase",
-                          isCheckActive
-                            ? "text-sidebar-accent-foreground"
-                            : "text-sidebar-foreground/60",
-                        )}
-                        title={check.name}
-                      >
-                        {check.name}
-                      </div>
-                      <SidebarMenuSub>
-                        <SidebarMenuSubItem>
-                          <SidebarMenuSubButton
-                            isActive={
-                              isCheckActive && activeCheckSection === "settings"
-                            }
-                            render={
-                              <Link
-                                href={`/checks/${check.id}/settings`}
-                                onClick={closeMobile}
-                              />
-                            }
-                          >
-                            <Settings />
-                            <span>Settings</span>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                        <SidebarMenuSubItem>
-                          <SidebarMenuSubButton
-                            isActive={
-                              isCheckActive && activeCheckSection === "history"
-                            }
-                            render={
-                              <Link
-                                href={`/checks/${check.id}/history`}
-                                onClick={closeMobile}
-                              />
-                            }
-                          >
-                            <History />
-                            <span>History</span>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      </SidebarMenuSub>
-                    </SidebarMenuItem>
-                  );
-                })}
-              </SidebarMenu>
+              <CheckSidebarMenu
+                checks={checks}
+                activeCheckId={activeCheckId}
+                activeCheckSection={activeCheckSection}
+              />
             )}
           </SidebarGroupContent>
         </SidebarGroup>
