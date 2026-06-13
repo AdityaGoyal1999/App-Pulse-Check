@@ -2,6 +2,7 @@ import cors from "cors";
 import express from "express";
 import { prisma } from "./db";
 import { authRouter } from "./routes/auth";
+import { billingRouter, billingWebhookHandler } from "./routes/billing";
 import { checksRouter } from "./routes/checks";
 import { pingRouter } from "./routes/ping";
 import { userRouter } from "./routes/user";
@@ -10,6 +11,13 @@ export const app = express();
 
 const frontendUrl = process.env.FRONTEND_URL ?? "http://localhost:3001";
 app.use(cors({ origin: frontendUrl }));
+
+app.post(
+  "/api/billing/webhook",
+  express.raw({ type: "application/json" }),
+  billingWebhookHandler,
+);
+
 app.use(express.json());
 
 app.get("/health", async (_req, res) => {
@@ -25,6 +33,7 @@ app.get("/health", async (_req, res) => {
 app.use("/ping", pingRouter);
 
 app.use("/api/auth", authRouter);
+app.use("/api/billing", billingRouter);
 app.use("/api/checks", checksRouter);
 app.use("/api/user", userRouter);
 

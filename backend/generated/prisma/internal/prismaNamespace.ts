@@ -674,6 +674,8 @@ export const UserScalarFieldEnum = {
   alertWebhookUrl: 'alertWebhookUrl',
   alertEmail: 'alertEmail',
   plan: 'plan',
+  stripeCustomerId: 'stripeCustomerId',
+  stripeSubscriptionId: 'stripeSubscriptionId',
   createdAt: 'createdAt'
 } as const
 

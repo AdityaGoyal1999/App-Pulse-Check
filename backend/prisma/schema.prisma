@@ -26,14 +26,16 @@ enum Plan {
 }
 
 model User {
-  id              String   @id @default(cuid())
-  email           String   @unique
-  passwordHash    String
-  alertWebhookUrl String? // Slack incoming webhook URL
-  alertEmail      String? // destination email (Resend)
-  plan            Plan     @default(FREE)
-  createdAt       DateTime @default(now())
-  checks          Check[]
+  id                   String   @id @default(cuid())
+  email                String   @unique
+  passwordHash         String
+  alertWebhookUrl      String? // Slack incoming webhook URL
+  alertEmail           String? // destination email (Resend)
+  plan                 Plan     @default(FREE)
+  stripeCustomerId     String?  @unique
+  stripeSubscriptionId String?  @unique
+  createdAt            DateTime @default(now())
+  checks               Check[]
 }
 
 model Check {

@@ -12,6 +12,13 @@ export type UserMe = {
   checkCount: number;
   limits: PlanLimits;
 };
+export type BillingStatus = {
+  plan: Plan;
+  subscriptionStatus: string | null;
+  currentPeriodEnd: string | null;
+};
+export type CheckoutSessionResponse = { url: string };
+export type PortalSessionResponse = { url: string };
 export type CheckLimitErrorResponse = {
   error: "Check limit reached";
   limit: number;

@@ -46,7 +46,7 @@ export const MARKETING_PLANS: MarketingPlan[] = [
     description: "Same limits as Free — support ongoing development.",
     maxChecks: 20,
     maxPingLogsPerCheck: 100,
-    available: false,
+    available: true,
     features: [
       "Everything in Free",
       "Supporter badge",

@@ -5,11 +5,13 @@ import { usePathname } from "next/navigation";
 import {
   Activity,
   BookOpen,
+  CreditCard,
   LayoutDashboard,
   LogOut,
 } from "lucide-react";
 
 import { CheckSidebarSection } from "@/components/CheckSidebarSection";
+import { UserPlanBadge } from "@/components/PlanBadge";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -45,6 +47,7 @@ function AppSidebar() {
   };
 
   const isDashboard = pathname === "/dashboard";
+  const isBilling = pathname === "/settings/billing";
   const checkRouteMatch = pathname.match(
     /^\/checks\/([^/]+)\/(settings|history)$/,
   );
@@ -84,6 +87,17 @@ function AppSidebar() {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton
+                  isActive={isBilling}
+                  render={
+                    <Link href="/settings/billing" onClick={closeMobile} />
+                  }
+                >
+                  <CreditCard />
+                  <span>Billing</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
                   isActive={pathname.startsWith("/docs")}
                   render={<Link href="/docs" onClick={closeMobile} />}
                 >
@@ -111,9 +125,12 @@ function AppSidebar() {
         <SidebarSeparator />
         <div className="rounded-lg border border-sidebar-border bg-background px-3 py-3">
           {user?.email && (
-            <p className="truncate text-sm text-foreground" title={user.email}>
-              {user.email}
-            </p>
+            <div>
+              <p className="truncate text-sm text-foreground" title={user.email}>
+                {user.email}
+              </p>
+              <UserPlanBadge />
+            </div>
           )}
           <div className="mt-3 flex items-center justify-between">
             <span className="text-sm text-muted-foreground">Appearance</span>
@@ -150,7 +167,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </div>
               <span className="text-sm font-semibold">App Pulse Check</span>
             </div>
-            <div className="ml-auto">
+            <div className="ml-auto flex items-center gap-2">
+              <UserPlanBadge className="mt-0" />
               <ThemeToggle />
             </div>
           </header>

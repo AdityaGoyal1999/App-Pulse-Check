@@ -31,6 +31,8 @@ export type UserMinAggregateOutputType = {
   alertWebhookUrl: string | null
   alertEmail: string | null
   plan: $Enums.Plan | null
+  stripeCustomerId: string | null
+  stripeSubscriptionId: string | null
   createdAt: Date | null
 }
 
@@ -41,6 +43,8 @@ export type UserMaxAggregateOutputType = {
   alertWebhookUrl: string | null
   alertEmail: string | null
   plan: $Enums.Plan | null
+  stripeCustomerId: string | null
+  stripeSubscriptionId: string | null
   createdAt: Date | null
 }
 
@@ -51,6 +55,8 @@ export type UserCountAggregateOutputType = {
   alertWebhookUrl: number
   alertEmail: number
   plan: number
+  stripeCustomerId: number
+  stripeSubscriptionId: number
   createdAt: number
   _all: number
 }
@@ -63,6 +69,8 @@ export type UserMinAggregateInputType = {
   alertWebhookUrl?: true
   alertEmail?: true
   plan?: true
+  stripeCustomerId?: true
+  stripeSubscriptionId?: true
   createdAt?: true
 }
 
@@ -73,6 +81,8 @@ export type UserMaxAggregateInputType = {
   alertWebhookUrl?: true
   alertEmail?: true
   plan?: true
+  stripeCustomerId?: true
+  stripeSubscriptionId?: true
   createdAt?: true
 }
 
@@ -83,6 +93,8 @@ export type UserCountAggregateInputType = {
   alertWebhookUrl?: true
   alertEmail?: true
   plan?: true
+  stripeCustomerId?: true
+  stripeSubscriptionId?: true
   createdAt?: true
   _all?: true
 }
@@ -166,6 +178,8 @@ export type UserGroupByOutputType = {
   alertWebhookUrl: string | null
   alertEmail: string | null
   plan: $Enums.Plan
+  stripeCustomerId: string | null
+  stripeSubscriptionId: string | null
   createdAt: Date
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
@@ -197,6 +211,8 @@ export type UserWhereInput = {
   alertWebhookUrl?: Prisma.StringNullableFilter<"User"> | string | null
   alertEmail?: Prisma.StringNullableFilter<"User"> | string | null
   plan?: Prisma.EnumPlanFilter<"User"> | $Enums.Plan
+  stripeCustomerId?: Prisma.StringNullableFilter<"User"> | string | null
+  stripeSubscriptionId?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   checks?: Prisma.CheckListRelationFilter
 }
@@ -208,6 +224,8 @@ export type UserOrderByWithRelationInput = {
   alertWebhookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   alertEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   plan?: Prisma.SortOrder
+  stripeCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  stripeSubscriptionId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   checks?: Prisma.CheckOrderByRelationAggregateInput
 }
@@ -215,6 +233,8 @@ export type UserOrderByWithRelationInput = {
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   email?: string
+  stripeCustomerId?: string
+  stripeSubscriptionId?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -224,7 +244,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   plan?: Prisma.EnumPlanFilter<"User"> | $Enums.Plan
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   checks?: Prisma.CheckListRelationFilter
-}, "id" | "email">
+}, "id" | "email" | "stripeCustomerId" | "stripeSubscriptionId">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -233,6 +253,8 @@ export type UserOrderByWithAggregationInput = {
   alertWebhookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   alertEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   plan?: Prisma.SortOrder
+  stripeCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  stripeSubscriptionId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -249,6 +271,8 @@ export type UserScalarWhereWithAggregatesInput = {
   alertWebhookUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   alertEmail?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   plan?: Prisma.EnumPlanWithAggregatesFilter<"User"> | $Enums.Plan
+  stripeCustomerId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  stripeSubscriptionId?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
 
@@ -259,6 +283,8 @@ export type UserCreateInput = {
   alertWebhookUrl?: string | null
   alertEmail?: string | null
   plan?: $Enums.Plan
+  stripeCustomerId?: string | null
+  stripeSubscriptionId?: string | null
   createdAt?: Date | string
   checks?: Prisma.CheckCreateNestedManyWithoutUserInput
 }
@@ -270,6 +296,8 @@ export type UserUncheckedCreateInput = {
   alertWebhookUrl?: string | null
   alertEmail?: string | null
   plan?: $Enums.Plan
+  stripeCustomerId?: string | null
+  stripeSubscriptionId?: string | null
   createdAt?: Date | string
   checks?: Prisma.CheckUncheckedCreateNestedManyWithoutUserInput
 }
@@ -281,6 +309,8 @@ export type UserUpdateInput = {
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checks?: Prisma.CheckUpdateManyWithoutUserNestedInput
 }
@@ -292,6 +322,8 @@ export type UserUncheckedUpdateInput = {
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checks?: Prisma.CheckUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -303,6 +335,8 @@ export type UserCreateManyInput = {
   alertWebhookUrl?: string | null
   alertEmail?: string | null
   plan?: $Enums.Plan
+  stripeCustomerId?: string | null
+  stripeSubscriptionId?: string | null
   createdAt?: Date | string
 }
 
@@ -313,6 +347,8 @@ export type UserUpdateManyMutationInput = {
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -323,6 +359,8 @@ export type UserUncheckedUpdateManyInput = {
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -333,6 +371,8 @@ export type UserCountOrderByAggregateInput = {
   alertWebhookUrl?: Prisma.SortOrder
   alertEmail?: Prisma.SortOrder
   plan?: Prisma.SortOrder
+  stripeCustomerId?: Prisma.SortOrder
+  stripeSubscriptionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -343,6 +383,8 @@ export type UserMaxOrderByAggregateInput = {
   alertWebhookUrl?: Prisma.SortOrder
   alertEmail?: Prisma.SortOrder
   plan?: Prisma.SortOrder
+  stripeCustomerId?: Prisma.SortOrder
+  stripeSubscriptionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -353,6 +395,8 @@ export type UserMinOrderByAggregateInput = {
   alertWebhookUrl?: Prisma.SortOrder
   alertEmail?: Prisma.SortOrder
   plan?: Prisma.SortOrder
+  stripeCustomerId?: Prisma.SortOrder
+  stripeSubscriptionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -398,6 +442,8 @@ export type UserCreateWithoutChecksInput = {
   alertWebhookUrl?: string | null
   alertEmail?: string | null
   plan?: $Enums.Plan
+  stripeCustomerId?: string | null
+  stripeSubscriptionId?: string | null
   createdAt?: Date | string
 }
 
@@ -408,6 +454,8 @@ export type UserUncheckedCreateWithoutChecksInput = {
   alertWebhookUrl?: string | null
   alertEmail?: string | null
   plan?: $Enums.Plan
+  stripeCustomerId?: string | null
+  stripeSubscriptionId?: string | null
   createdAt?: Date | string
 }
 
@@ -434,6 +482,8 @@ export type UserUpdateWithoutChecksInput = {
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -444,6 +494,8 @@ export type UserUncheckedUpdateWithoutChecksInput = {
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.EnumPlanFieldUpdateOperationsInput | $Enums.Plan
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -485,6 +537,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   alertWebhookUrl?: boolean
   alertEmail?: boolean
   plan?: boolean
+  stripeCustomerId?: boolean
+  stripeSubscriptionId?: boolean
   createdAt?: boolean
   checks?: boolean | Prisma.User$checksArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -497,6 +551,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   alertWebhookUrl?: boolean
   alertEmail?: boolean
   plan?: boolean
+  stripeCustomerId?: boolean
+  stripeSubscriptionId?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["user"]>
 
@@ -507,6 +563,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   alertWebhookUrl?: boolean
   alertEmail?: boolean
   plan?: boolean
+  stripeCustomerId?: boolean
+  stripeSubscriptionId?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["user"]>
 
@@ -517,10 +575,12 @@ export type UserSelectScalar = {
   alertWebhookUrl?: boolean
   alertEmail?: boolean
   plan?: boolean
+  stripeCustomerId?: boolean
+  stripeSubscriptionId?: boolean
   createdAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "alertWebhookUrl" | "alertEmail" | "plan" | "createdAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "alertWebhookUrl" | "alertEmail" | "plan" | "stripeCustomerId" | "stripeSubscriptionId" | "createdAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   checks?: boolean | Prisma.User$checksArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -540,6 +600,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     alertWebhookUrl: string | null
     alertEmail: string | null
     plan: $Enums.Plan
+    stripeCustomerId: string | null
+    stripeSubscriptionId: string | null
     createdAt: Date
   }, ExtArgs["result"]["user"]>
   composites: {}
@@ -971,6 +1033,8 @@ export interface UserFieldRefs {
   readonly alertWebhookUrl: Prisma.FieldRef<"User", 'String'>
   readonly alertEmail: Prisma.FieldRef<"User", 'String'>
   readonly plan: Prisma.FieldRef<"User", 'Plan'>
+  readonly stripeCustomerId: Prisma.FieldRef<"User", 'String'>
+  readonly stripeSubscriptionId: Prisma.FieldRef<"User", 'String'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     

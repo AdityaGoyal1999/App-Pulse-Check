@@ -1,11 +1,14 @@
 import type {
   AuthResponse,
+  BillingStatus,
   Check,
   CheckNotificationSettings,
   CheckSettings,
   ChecksListResponse,
+  CheckoutSessionResponse,
   CreateCheckInput,
   PingLogsResponse,
+  PortalSessionResponse,
   UserMe,
 } from "./types";
 
@@ -141,4 +144,34 @@ export function updateCheckNotifications(
       body: JSON.stringify(body),
     },
   );
+}
+
+export function getBillingStatus() {
+  return apiFetch<BillingStatus>("/api/billing/status");
+}
+
+export function createCheckoutSession(plan: "SUPPORTER") {
+  return apiFetch<CheckoutSessionResponse>("/api/billing/checkout", {
+    method: "POST",
+    body: JSON.stringify({ plan }),
+  });
+}
+
+export function createPortalSession() {
+  return apiFetch<PortalSessionResponse>("/api/billing/portal", {
+    method: "POST",
+  });
+}
+
+export function confirmCheckoutSession(sessionId: string) {
+  return apiFetch<BillingStatus>("/api/billing/confirm", {
+    method: "POST",
+    body: JSON.stringify({ sessionId }),
+  });
+}
+
+export function syncBilling() {
+  return apiFetch<BillingStatus>("/api/billing/sync", {
+    method: "POST",
+  });
 }

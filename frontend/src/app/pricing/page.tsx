@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Activity, ArrowRight, BookOpen, Check } from "lucide-react";
+import { Activity, BookOpen, Check } from "lucide-react";
 
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Badge } from "@/components/ui/badge";
@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { MARKETING_PLANS, PLAN_DIFFERENTIATORS } from "@/lib/plans";
+import { PricingPlanActions } from "@/components/PricingPlanActions";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -124,25 +125,7 @@ export default function PricingPage() {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  {plan.available ? (
-                    <Link
-                      href="/signup"
-                      className={cn(buttonVariants({ className: "w-full" }))}
-                    >
-                      Get started free
-                      <ArrowRight />
-                    </Link>
-                  ) : (
-                    <button
-                      type="button"
-                      disabled
-                      className={cn(
-                        buttonVariants({ variant: "outline", className: "w-full" }),
-                      )}
-                    >
-                      Coming soon
-                    </button>
-                  )}
+                  <PricingPlanActions plan={plan} />
                 </CardFooter>
               </Card>
             ))}
