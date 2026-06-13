@@ -1,6 +1,6 @@
 export type User = { id: string; email: string };
 export type AuthResponse = { token: string; user: User };
-export type Plan = "HOBBYIST" | "SUPPORTER" | "BUSINESS" | "BUSINESS_PLUS";
+export type Plan = "FREE" | "SUPPORTER" | "ENTERPRISE" | "ENTERPRISE_PLUS";
 export type PlanLimits = {
   maxChecks: number;
   maxPingLogsPerCheck: number;

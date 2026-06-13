@@ -19,10 +19,10 @@ enum CheckStatus {
 }
 
 enum Plan {
-  HOBBYIST
+  FREE
   SUPPORTER
-  BUSINESS
-  BUSINESS_PLUS
+  ENTERPRISE
+  ENTERPRISE_PLUS
 }
 
 model User {
@@ -31,7 +31,7 @@ model User {
   passwordHash    String
   alertWebhookUrl String? // Slack incoming webhook URL
   alertEmail      String? // destination email (Resend)
-  plan            Plan     @default(HOBBYIST)
+  plan            Plan     @default(FREE)
   createdAt       DateTime @default(now())
   checks          Check[]
 }

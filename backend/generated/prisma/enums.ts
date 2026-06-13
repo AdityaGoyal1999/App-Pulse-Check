@@ -19,10 +19,10 @@ export type CheckStatus = (typeof CheckStatus)[keyof typeof CheckStatus]
 
 
 export const Plan = {
-  HOBBYIST: 'HOBBYIST',
+  FREE: 'FREE',
   SUPPORTER: 'SUPPORTER',
-  BUSINESS: 'BUSINESS',
-  BUSINESS_PLUS: 'BUSINESS_PLUS'
+  ENTERPRISE: 'ENTERPRISE',
+  ENTERPRISE_PLUS: 'ENTERPRISE_PLUS'
 } as const
 
 export type Plan = (typeof Plan)[keyof typeof Plan]
