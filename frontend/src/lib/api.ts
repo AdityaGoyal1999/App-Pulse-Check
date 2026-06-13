@@ -4,6 +4,7 @@ import type {
   CheckNotificationSettings,
   CheckSettings,
   CreateCheckInput,
+  UserMe,
 } from "./types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
@@ -61,6 +62,10 @@ export function login(email: string, password: string) {
 export async function logout() {
   await apiFetch<{ ok: true }>("/api/auth/logout", { method: "POST" });
   clearToken();
+}
+
+export function getCurrentUser() {
+  return apiFetch<UserMe>("/api/user/me");
 }
 
 export function getChecks() {

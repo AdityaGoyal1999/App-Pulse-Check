@@ -30,6 +30,7 @@ export type UserMinAggregateOutputType = {
   passwordHash: string | null
   alertWebhookUrl: string | null
   alertEmail: string | null
+  plan: $Enums.Plan | null
   createdAt: Date | null
 }
 
@@ -39,6 +40,7 @@ export type UserMaxAggregateOutputType = {
   passwordHash: string | null
   alertWebhookUrl: string | null
   alertEmail: string | null
+  plan: $Enums.Plan | null
   createdAt: Date | null
 }
 
@@ -48,6 +50,7 @@ export type UserCountAggregateOutputType = {
   passwordHash: number
   alertWebhookUrl: number
   alertEmail: number
+  plan: number
   createdAt: number
   _all: number
 }
@@ -59,6 +62,7 @@ export type UserMinAggregateInputType = {
   passwordHash?: true
   alertWebhookUrl?: true
   alertEmail?: true
+  plan?: true
   createdAt?: true
 }
 
@@ -68,6 +72,7 @@ export type UserMaxAggregateInputType = {
   passwordHash?: true
   alertWebhookUrl?: true
   alertEmail?: true
+  plan?: true
   createdAt?: true
 }
 
@@ -77,6 +82,7 @@ export type UserCountAggregateInputType = {
   passwordHash?: true
   alertWebhookUrl?: true
   alertEmail?: true
+  plan?: true
   createdAt?: true
   _all?: true
 }
@@ -159,6 +165,7 @@ export type UserGroupByOutputType = {
   passwordHash: string
   alertWebhookUrl: string | null
   alertEmail: string | null
+  plan: $Enums.Plan
   createdAt: Date
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
@@ -189,6 +196,7 @@ export type UserWhereInput = {
   passwordHash?: Prisma.StringFilter<"User"> | string
   alertWebhookUrl?: Prisma.StringNullableFilter<"User"> | string | null
   alertEmail?: Prisma.StringNullableFilter<"User"> | string | null
+  plan?: Prisma.EnumPlanFilter<"User"> | $Enums.Plan
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   checks?: Prisma.CheckListRelationFilter
 }
@@ -199,6 +207,7 @@ export type UserOrderByWithRelationInput = {
   passwordHash?: Prisma.SortOrder
   alertWebhookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   alertEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  plan?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   checks?: Prisma.CheckOrderByRelationAggregateInput
 }
@@ -212,6 +221,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   passwordHash?: Prisma.StringFilter<"User"> | string
   alertWebhookUrl?: Prisma.StringNullableFilter<"User"> | string | null
   alertEmail?: Prisma.StringNullableFilter<"User"> | string | null
+  plan?: Prisma.EnumPlanFilter<"User"> | $Enums.Plan
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   checks?: Prisma.CheckListRelationFilter
 }, "id" | "email">
@@ -222,6 +232,7 @@ export type UserOrderByWithAggregationInput = {
   passwordHash?: Prisma.SortOrder
   alertWebhookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   alertEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  plan?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -237,6 +248,7 @@ export type UserScalarWhereWithAggregatesInput = {
   passwordHash?: Prisma.StringWithAggregatesFilter<"User"> | string
   alertWebhookUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   alertEmail?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  plan?: Prisma.EnumPlanWithAggregatesFilter<"User"> | $Enums.Plan
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
 
@@ -246,6 +258,7 @@ export type UserCreateInput = {
   passwordHash: string
   alertWebhookUrl?: string | null
   alertEmail?: string | null
+  plan?: $Enums.Plan
   createdAt?: Date | string
   checks?: Prisma.CheckCreateNestedManyWithoutUserInput
 }
@@ -256,6 +269,7 @@ export type UserUncheckedCreateInput = {
   passwordHash: string
   alertWebhookUrl?: string | null
   alertEmail?: string | null
+  plan?: $Enums.Plan
   createdAt?: Date | string
   checks?: Prisma.CheckUncheckedCreateNestedManyWithoutUserInput
 }
@@ -266,6 +280,7 @@ export type UserUpdateInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumPlanFieldUpdateOperationsInput | $Enums.Plan
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checks?: Prisma.CheckUpdateManyWithoutUserNestedInput
 }
@@ -276,6 +291,7 @@ export type UserUncheckedUpdateInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumPlanFieldUpdateOperationsInput | $Enums.Plan
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   checks?: Prisma.CheckUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -286,6 +302,7 @@ export type UserCreateManyInput = {
   passwordHash: string
   alertWebhookUrl?: string | null
   alertEmail?: string | null
+  plan?: $Enums.Plan
   createdAt?: Date | string
 }
 
@@ -295,6 +312,7 @@ export type UserUpdateManyMutationInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumPlanFieldUpdateOperationsInput | $Enums.Plan
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -304,6 +322,7 @@ export type UserUncheckedUpdateManyInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumPlanFieldUpdateOperationsInput | $Enums.Plan
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -313,6 +332,7 @@ export type UserCountOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   alertWebhookUrl?: Prisma.SortOrder
   alertEmail?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -322,6 +342,7 @@ export type UserMaxOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   alertWebhookUrl?: Prisma.SortOrder
   alertEmail?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -331,6 +352,7 @@ export type UserMinOrderByAggregateInput = {
   passwordHash?: Prisma.SortOrder
   alertWebhookUrl?: Prisma.SortOrder
   alertEmail?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -345,6 +367,10 @@ export type StringFieldUpdateOperationsInput = {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+}
+
+export type EnumPlanFieldUpdateOperationsInput = {
+  set?: $Enums.Plan
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -371,6 +397,7 @@ export type UserCreateWithoutChecksInput = {
   passwordHash: string
   alertWebhookUrl?: string | null
   alertEmail?: string | null
+  plan?: $Enums.Plan
   createdAt?: Date | string
 }
 
@@ -380,6 +407,7 @@ export type UserUncheckedCreateWithoutChecksInput = {
   passwordHash: string
   alertWebhookUrl?: string | null
   alertEmail?: string | null
+  plan?: $Enums.Plan
   createdAt?: Date | string
 }
 
@@ -405,6 +433,7 @@ export type UserUpdateWithoutChecksInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumPlanFieldUpdateOperationsInput | $Enums.Plan
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -414,6 +443,7 @@ export type UserUncheckedUpdateWithoutChecksInput = {
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumPlanFieldUpdateOperationsInput | $Enums.Plan
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -454,6 +484,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   passwordHash?: boolean
   alertWebhookUrl?: boolean
   alertEmail?: boolean
+  plan?: boolean
   createdAt?: boolean
   checks?: boolean | Prisma.User$checksArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -465,6 +496,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   passwordHash?: boolean
   alertWebhookUrl?: boolean
   alertEmail?: boolean
+  plan?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["user"]>
 
@@ -474,6 +506,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   passwordHash?: boolean
   alertWebhookUrl?: boolean
   alertEmail?: boolean
+  plan?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["user"]>
 
@@ -483,10 +516,11 @@ export type UserSelectScalar = {
   passwordHash?: boolean
   alertWebhookUrl?: boolean
   alertEmail?: boolean
+  plan?: boolean
   createdAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "alertWebhookUrl" | "alertEmail" | "createdAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "passwordHash" | "alertWebhookUrl" | "alertEmail" | "plan" | "createdAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   checks?: boolean | Prisma.User$checksArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -505,6 +539,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     passwordHash: string
     alertWebhookUrl: string | null
     alertEmail: string | null
+    plan: $Enums.Plan
     createdAt: Date
   }, ExtArgs["result"]["user"]>
   composites: {}
@@ -935,6 +970,7 @@ export interface UserFieldRefs {
   readonly passwordHash: Prisma.FieldRef<"User", 'String'>
   readonly alertWebhookUrl: Prisma.FieldRef<"User", 'String'>
   readonly alertEmail: Prisma.FieldRef<"User", 'String'>
+  readonly plan: Prisma.FieldRef<"User", 'Plan'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     

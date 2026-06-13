@@ -1,11 +1,44 @@
 import { Router } from "express";
 import { prisma } from "../db";
+import { getLimitsForPlan } from "../lib/plans";
 import { requireAuth } from "../middleware/auth";
 import { updateNotificationsSchema } from "../schemas/user";
 
 export const userRouter = Router();
 
 userRouter.use(requireAuth);
+
+userRouter.get("/me", async (req, res) => {
+  try {
+    const userId = req.user!.id;
+    const [user, checkCount] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id: userId },
+        select: { id: true, email: true, plan: true },
+      }),
+      prisma.check.count({ where: { userId } }),
+    ]);
+
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const limits = getLimitsForPlan(user.plan);
+    res.status(200).json({
+      id: user.id,
+      email: user.email,
+      plan: user.plan,
+      checkCount,
+      limits: {
+        maxChecks: limits.maxChecks,
+        maxPingLogsPerCheck: limits.maxPingLogsPerCheck,
+      },
+    });
+  } catch {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 const notificationSelect = {
   alertWebhookUrl: true,

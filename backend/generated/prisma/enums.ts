@@ -16,3 +16,13 @@ export const CheckStatus = {
 } as const
 
 export type CheckStatus = (typeof CheckStatus)[keyof typeof CheckStatus]
+
+
+export const Plan = {
+  HOBBYIST: 'HOBBYIST',
+  SUPPORTER: 'SUPPORTER',
+  BUSINESS: 'BUSINESS',
+  BUSINESS_PLUS: 'BUSINESS_PLUS'
+} as const
+
+export type Plan = (typeof Plan)[keyof typeof Plan]

@@ -18,12 +18,20 @@ enum CheckStatus {
   DOWN
 }
 
+enum Plan {
+  HOBBYIST
+  SUPPORTER
+  BUSINESS
+  BUSINESS_PLUS
+}
+
 model User {
   id              String   @id @default(cuid())
   email           String   @unique
   passwordHash    String
   alertWebhookUrl String? // Slack incoming webhook URL
   alertEmail      String? // destination email (Resend)
+  plan            Plan     @default(HOBBYIST)
   createdAt       DateTime @default(now())
   checks          Check[]
 }
