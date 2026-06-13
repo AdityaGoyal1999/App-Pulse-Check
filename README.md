@@ -147,4 +147,16 @@ AppPulseCheck/
 | E2E integration test         | ✅ Shipped      |
 | Resolution and deduplication | ✅ Shipped      |
 | Production deployment        | ✅ Shipped      |
+| Subscription plans           | 🚧 In progress  |
+
+### Subscription plans (up next)
+
+We're rolling out tiered plans with usage limits and a pricing page:
+
+| Plan            | Description                                      |
+| --------------- | ------------------------------------------------ |
+| **Free**        | Get started at no cost — monitors, alerts, dashboard |
+| **Supporter**   | Paid tier for indie hackers who want to support the project |
+| **Enterprise**  | Higher limits for teams running more checks      |
+| **Enterprise+** | Top tier for large-scale monitoring workloads    |
 
