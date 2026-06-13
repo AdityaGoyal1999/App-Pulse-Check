@@ -21,6 +21,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { MARKETING_PLANS } from "@/lib/plans";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -32,6 +33,7 @@ export const metadata: Metadata = {
 const TOC = [
   { id: "overview", label: "What & why" },
   { id: "what-we-offer", label: "What we offer" },
+  { id: "plans", label: "Plans & limits" },
   { id: "quick-start", label: "Quick start" },
   { id: "ping-api", label: "Ping API" },
   { id: "interval-grace", label: "Interval & grace" },
@@ -140,6 +142,12 @@ export default function DocsPage() {
           </Link>
           <nav className="flex items-center gap-2">
             <ThemeToggle />
+            <Link
+              href="/pricing"
+              className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
+            >
+              Pricing
+            </Link>
             <Link
               href="/docs"
               className={cn(
@@ -256,6 +264,87 @@ export default function DocsPage() {
               <li>Configurable interval and grace period per job</li>
               <li>JWT-protected API for creating and managing checks</li>
             </ul>
+          </DocSection>
+
+          <DocSection id="plans" title="Plans & limits">
+            <p>
+              App Pulse Check offers four plans:{" "}
+              <strong className="font-medium text-foreground">Free</strong>,{" "}
+              <strong className="font-medium text-foreground">Supporter</strong>,{" "}
+              <strong className="font-medium text-foreground">Enterprise</strong>, and{" "}
+              <strong className="font-medium text-foreground">Enterprise Plus</strong>.
+              New accounts start on Free. Paid tiers unlock higher limits and additional alert
+              channels as they launch.
+            </p>
+            <div className="not-prose my-6 overflow-x-auto rounded-lg border border-border">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border bg-muted/40">
+                    <th className="px-4 py-2.5 text-left font-medium text-foreground">
+                      Plan
+                    </th>
+                    <th className="px-4 py-2.5 text-left font-medium text-foreground">
+                      Max checks
+                    </th>
+                    <th className="px-4 py-2.5 text-left font-medium text-foreground">
+                      Ping logs per check
+                    </th>
+                    <th className="px-4 py-2.5 text-left font-medium text-foreground">
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {MARKETING_PLANS.map((plan) => (
+                    <tr key={plan.id} className="border-b border-border last:border-0">
+                      <td className="px-4 py-2.5 font-medium text-foreground">
+                        {plan.name}
+                      </td>
+                      <td className="px-4 py-2.5">{plan.maxChecks}</td>
+                      <td className="px-4 py-2.5">{plan.maxPingLogsPerCheck}</td>
+                      <td className="px-4 py-2.5">
+                        {plan.available ? (
+                          <Badge className="text-xs">Available</Badge>
+                        ) : (
+                          <Badge variant="outline" className="text-xs">
+                            Coming soon
+                          </Badge>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <DocH3>Ping log retention</DocH3>
+            <p>
+              Every successful ping creates a log entry on that check&apos;s history page. Each
+              plan caps how many entries are kept per check. When a new ping would exceed your
+              plan&apos;s limit, the{" "}
+              <strong className="font-medium text-foreground">oldest</strong> log entries are
+              deleted automatically — both when pings arrive and during a periodic retention
+              cleanup.
+            </p>
+            <p>
+              On Free and Supporter, up to{" "}
+              <strong className="font-medium text-foreground">100</strong> pings per check are
+              retained. Enterprise and Enterprise Plus retain up to{" "}
+              <strong className="font-medium text-foreground">1,000</strong> per check.
+            </p>
+            <DocH3>Check limits</DocH3>
+            <p>
+              Each plan also limits how many checks you can create. The dashboard shows your
+              current usage (for example, &quot;12 / 20 checks&quot;). When you reach the limit,
+              existing checks keep running but you cannot create new ones until you delete a check
+              or upgrade your plan.
+            </p>
+            <p>
+              See the full comparison on the{" "}
+              <Link href="/pricing" className="font-medium text-primary hover:underline">
+                pricing page
+              </Link>
+              .
+            </p>
           </DocSection>
 
           <DocSection id="quick-start" title="Quick start">
@@ -676,6 +765,9 @@ curl -fsS -o /dev/null "$PULSECHECK_URL"`}</CodeBlock>
             <span className="font-medium text-foreground">App Pulse Check</span>
           </Link>
           <div className="flex items-center gap-4">
+            <Link href="/pricing" className="hover:text-foreground">
+              Pricing
+            </Link>
             <Link href="/docs" className="hover:text-foreground">
               Documentation
             </Link>

@@ -3,6 +3,7 @@ import type {
   Check,
   CheckNotificationSettings,
   CheckSettings,
+  ChecksListResponse,
   CreateCheckInput,
   PingLogsResponse,
   UserMe,
@@ -80,8 +81,12 @@ export function getCurrentUser() {
   return apiFetch<UserMe>("/api/user/me");
 }
 
-export function getChecks() {
-  return apiFetch<{ checks: Check[] }>("/api/checks");
+export function getChecks(params?: { q?: string }) {
+  const search = new URLSearchParams();
+  const q = params?.q?.trim();
+  if (q) search.set("q", q);
+  const qs = search.toString();
+  return apiFetch<ChecksListResponse>(`/api/checks${qs ? `?${qs}` : ""}`);
 }
 
 export function getCheck(id: string) {

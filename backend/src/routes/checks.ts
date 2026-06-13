@@ -8,6 +8,7 @@ import {
 import { requireAuth } from "../middleware/auth";
 import {
   createCheckSchema,
+  listChecksQuerySchema,
   updateCheckNotificationsSchema,
   updateCheckPausedSchema,
 } from "../schemas/checks";
@@ -80,13 +81,34 @@ checksRouter.post("/", async (req, res) => {
 });
 
 checksRouter.get("/", async (req, res) => {
-  try {
-    const checks = await prisma.check.findMany({
-      where: { userId: req.user!.id },
-      orderBy: { createdAt: "desc" },
+  const parsed = listChecksQuerySchema.safeParse(req.query);
+  if (!parsed.success) {
+    res.status(400).json({
+      error: "Validation failed",
+      details: parsed.error.flatten(),
     });
+    return;
+  }
 
-    res.status(200).json({ checks: checks.map(toCheckResponse) });
+  const q = parsed.data.q?.trim();
+  const where = {
+    userId: req.user!.id,
+    ...(q ? { name: { contains: q, mode: "insensitive" as const } } : {}),
+  };
+
+  try {
+    const [checks, total] = await Promise.all([
+      prisma.check.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.check.count({ where }),
+    ]);
+
+    res.status(200).json({
+      checks: checks.map(toCheckResponse),
+      total,
+    });
   } catch {
     res.status(500).json({ error: "Internal server error" });
   }

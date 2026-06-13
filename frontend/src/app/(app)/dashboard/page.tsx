@@ -4,16 +4,19 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { RefreshCw } from "lucide-react";
 
 import { CheckList, type CheckListRef } from "@/components/CheckList";
+import { CheckSearchInput } from "@/components/CheckSearchInput";
 import { CreateCheckForm } from "@/components/CreateCheckForm";
 import { Button } from "@/components/ui/button";
 import { useChecks } from "@/contexts/ChecksContext";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { getCurrentUser } from "@/lib/api";
 import type { UserMe } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export default function DashboardPage() {
-  const { refreshChecks } = useChecks();
-  const [refreshKey, setRefreshKey] = useState(0);
+  const { refreshChecks, refreshKey } = useChecks();
+  const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearch = useDebouncedValue(searchQuery, 300);
   const [userMe, setUserMe] = useState<UserMe | null>(null);
   const checkListRef = useRef<CheckListRef>(null);
 
@@ -31,8 +34,7 @@ export default function DashboardPage() {
   }, [refreshUsage]);
 
   function bumpRefreshKey() {
-    setRefreshKey((k) => k + 1);
-    void refreshChecks();
+    refreshChecks();
     void refreshUsage();
   }
 
@@ -75,9 +77,16 @@ export default function DashboardPage() {
         </p>
       )}
 
+      <CheckSearchInput
+        value={searchQuery}
+        onChange={setSearchQuery}
+        className="max-w-sm"
+      />
+
       <CheckList
         ref={checkListRef}
         refreshKey={refreshKey}
+        searchQuery={debouncedSearch}
         onDeleted={bumpRefreshKey}
       />
     </div>

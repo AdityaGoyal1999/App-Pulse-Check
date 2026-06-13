@@ -4,46 +4,27 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from "react";
 
-import { getChecks } from "@/lib/api";
-import type { Check } from "@/lib/types";
-
 type ChecksContextValue = {
-  checks: Check[];
-  isLoading: boolean;
-  refreshChecks: () => Promise<void>;
+  refreshKey: number;
+  refreshChecks: () => void;
 };
 
 const ChecksContext = createContext<ChecksContextValue | null>(null);
 
 export function ChecksProvider({ children }: { children: React.ReactNode }) {
-  const [checks, setChecks] = useState<Check[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  const refreshChecks = useCallback(async () => {
-    try {
-      const res = await getChecks();
-      setChecks(res.checks);
-    } catch {
-      // Leave existing list on transient errors.
-    } finally {
-      setIsLoading(false);
-    }
+  const refreshChecks = useCallback(() => {
+    setRefreshKey((k) => k + 1);
   }, []);
 
-  useEffect(() => {
-    // Load sidebar checks after mount; same pattern as AuthContext hydration.
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional client-only fetch
-    void refreshChecks();
-  }, [refreshChecks]);
-
   const value = useMemo(
-    () => ({ checks, isLoading, refreshChecks }),
-    [checks, isLoading, refreshChecks],
+    () => ({ refreshKey, refreshChecks }),
+    [refreshKey, refreshChecks],
   );
 
   return (

@@ -28,3 +28,9 @@ export const updateCheckPausedSchema = z.object({
 
 export type UpdateCheckPausedBody = z.infer<typeof updateCheckPausedSchema>;
 
+export const listChecksQuerySchema = z.object({
+  q: z.string().trim().max(100).optional(),
+});
+
+export type ListChecksQuery = z.infer<typeof listChecksQuerySchema>;
+

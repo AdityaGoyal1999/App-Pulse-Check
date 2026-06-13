@@ -117,6 +117,12 @@ export default function Home() {
         <nav className="flex items-center gap-2">
           <ThemeToggle />
           <Link
+            href="/pricing"
+            className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
+          >
+            Pricing
+          </Link>
+          <Link
             href="/docs"
             className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
           >
@@ -171,12 +177,12 @@ export default function Home() {
                   <ArrowRight />
                 </Link>
                 <Link
-                  href="/login"
+                  href="/pricing"
                   className={cn(
                     buttonVariants({ size: "lg", variant: "outline" }),
                   )}
                 >
-                  Log in
+                  View pricing
                 </Link>
               </div>
 
@@ -415,6 +421,9 @@ export default function Home() {
           </div>
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-6">
             <p>Heartbeat monitoring for jobs that matter.</p>
+            <Link href="/pricing" className="font-medium text-foreground hover:text-primary">
+              Pricing
+            </Link>
             <Link href="/docs" className="font-medium text-foreground hover:text-primary">
               Documentation
             </Link>

@@ -9,7 +9,7 @@ import {
   LogOut,
 } from "lucide-react";
 
-import { CheckSidebarMenu } from "@/components/CheckSidebarMenu";
+import { CheckSidebarSection } from "@/components/CheckSidebarSection";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -37,7 +37,7 @@ import { useChecks } from "@/contexts/ChecksContext";
 function AppSidebar() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
-  const { checks, isLoading } = useChecks();
+  const { refreshKey } = useChecks();
   const { isMobile, setOpenMobile } = useSidebar();
 
   const closeMobile = () => {
@@ -98,19 +98,11 @@ function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel>Your checks</SidebarGroupLabel>
           <SidebarGroupContent>
-            {isLoading ? (
-              <p className="px-2 text-sm text-muted-foreground">Loading…</p>
-            ) : checks.length === 0 ? (
-              <p className="px-2 text-sm text-muted-foreground">
-                No checks yet
-              </p>
-            ) : (
-              <CheckSidebarMenu
-                checks={checks}
-                activeCheckId={activeCheckId}
-                activeCheckSection={activeCheckSection}
-              />
-            )}
+            <CheckSidebarSection
+              refreshKey={refreshKey}
+              activeCheckId={activeCheckId}
+              activeCheckSection={activeCheckSection}
+            />
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>

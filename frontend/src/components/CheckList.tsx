@@ -25,6 +25,7 @@ import type { Check } from "@/lib/types";
 
 type CheckListProps = {
   refreshKey: number;
+  searchQuery?: string;
   onDeleted: () => void;
   onChecksChange?: (checks: Check[]) => void;
 };
@@ -34,32 +35,41 @@ export type CheckListRef = {
 };
 
 export const CheckList = forwardRef<CheckListRef, CheckListProps>(
-  function CheckList({ refreshKey, onDeleted, onChecksChange }, ref) {
+  function CheckList(
+    { refreshKey, searchQuery = "", onDeleted, onChecksChange },
+    ref,
+  ) {
     const hasLoadedRef = useRef(false);
     const [checks, setChecks] = useState<Check[]>([]);
+    const [total, setTotal] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [error, setError] = useState("");
 
-    const fetchChecks = useCallback(async (background = false) => {
-      if (background) {
-        setIsRefreshing(true);
-      } else {
-        setIsLoading(true);
-      }
-      setError("");
-      try {
-        const res = await getChecks();
-        setChecks(res.checks);
-        onChecksChange?.(res.checks);
-        hasLoadedRef.current = true;
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load checks");
-      } finally {
-        setIsLoading(false);
-        setIsRefreshing(false);
-      }
-    }, [onChecksChange]);
+    const fetchChecks = useCallback(
+      async (background = false) => {
+        if (background) {
+          setIsRefreshing(true);
+        } else {
+          setIsLoading(true);
+        }
+        setError("");
+        try {
+          const q = searchQuery.trim();
+          const res = await getChecks(q ? { q } : undefined);
+          setChecks(res.checks);
+          setTotal(res.total);
+          onChecksChange?.(res.checks);
+          hasLoadedRef.current = true;
+        } catch (err) {
+          setError(err instanceof Error ? err.message : "Failed to load checks");
+        } finally {
+          setIsLoading(false);
+          setIsRefreshing(false);
+        }
+      },
+      [onChecksChange, searchQuery],
+    );
 
     useImperativeHandle(
       ref,
@@ -103,28 +113,42 @@ export const CheckList = forwardRef<CheckListRef, CheckListProps>(
       );
     }
 
-    if (checks.length === 0) {
+    if (total === 0) {
+      const isSearching = searchQuery.trim().length > 0;
       return (
         <div className="rounded-xl border border-dashed border-border py-16 text-center">
-          <p className="text-sm font-medium text-foreground">No checks yet</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Create your first check to start monitoring a job or cron.
+          <p className="text-sm font-medium text-foreground">
+            {isSearching ? "No checks match your search" : "No checks yet"}
           </p>
-          <Button
-            variant="outline"
-            size="sm"
-            className="mt-4"
-            render={<Link href="/docs#quick-start" />}
-          >
-            <BookOpen className="size-3.5" />
-            Read the quick start guide
-          </Button>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {isSearching
+              ? "Try a different name or clear the search."
+              : "Create your first check to start monitoring a job or cron."}
+          </p>
+          {!isSearching && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-4"
+              render={<Link href="/docs#quick-start" />}
+            >
+              <BookOpen className="size-3.5" />
+              Read the quick start guide
+            </Button>
+          )}
         </div>
       );
     }
 
+    const isSearching = searchQuery.trim().length > 0;
+
     return (
       <div className={isRefreshing ? "opacity-60 transition-opacity" : undefined}>
+        {isSearching && (
+          <p className="mb-3 text-sm text-muted-foreground">
+            Showing {checks.length} of {total} matching checks
+          </p>
+        )}
         <Table>
           <TableHeader>
             <TableRow>

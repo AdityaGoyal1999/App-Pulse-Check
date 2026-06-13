@@ -31,6 +31,10 @@ export type Check = {
   hasAlerts: boolean;
   createdAt: string;
 };
+export type ChecksListResponse = {
+  checks: Check[];
+  total: number;
+};
 export type CreateCheckInput = {
   name: string;
   intervalSeconds: number;
