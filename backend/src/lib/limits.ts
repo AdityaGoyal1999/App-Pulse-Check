@@ -1,6 +1,8 @@
-import type { Plan } from "../../generated/prisma/client";
+import type { Plan, Prisma } from "../../generated/prisma/client";
 import { prisma } from "../db";
 import { getLimitsForPlan } from "./plans";
+
+type DbClient = Prisma.TransactionClient | typeof prisma;
 
 export class CheckLimitError extends Error {
   constructor(
@@ -33,4 +35,26 @@ export async function assertCanCreateCheck(userId: string): Promise<void> {
   if (checkCount >= limits.maxChecks) {
     throw new CheckLimitError(plan, limits.maxChecks, checkCount);
   }
+}
+
+export async function trimExcessPingLogs(
+  checkId: string,
+  maxPingLogsPerCheck: number,
+  db: DbClient = prisma,
+): Promise<number> {
+  const count = await db.pingLog.count({ where: { checkId } });
+  const excess = count - maxPingLogsPerCheck;
+  if (excess <= 0) return 0;
+
+  const oldest = await db.pingLog.findMany({
+    where: { checkId },
+    orderBy: { pingedAt: "asc" },
+    take: excess,
+    select: { id: true },
+  });
+
+  const result = await db.pingLog.deleteMany({
+    where: { id: { in: oldest.map((row) => row.id) } },
+  });
+  return result.count;
 }

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { CheckStatus } from "../../generated/prisma/client";
 import { sendRecoveryAlert } from "../lib/alerts";
+import { getUserLimits, trimExcessPingLogs } from "../lib/limits";
 import { prisma } from "../db";
 
 export const pingRouter = Router();
@@ -11,6 +12,15 @@ pingRouter.get("/:uuid", async (req, res) => {
   try {
     const check = await prisma.check.findUnique({
       where: { uuid },
+      select: {
+        id: true,
+        userId: true,
+        name: true,
+        status: true,
+        lastPingedAt: true,
+        alertWebhookUrl: true,
+        alertEmail: true,
+      },
     });
 
     if (!check) {
@@ -18,6 +28,7 @@ pingRouter.get("/:uuid", async (req, res) => {
       return;
     }
 
+    const { limits } = await getUserLimits(check.userId);
     const pingedAt = new Date();
     const isRecovery = check.status === CheckStatus.DOWN;
 
@@ -33,6 +44,7 @@ pingRouter.get("/:uuid", async (req, res) => {
           ...(isRecovery ? { alertSent: false } : {}),
         },
       });
+      await trimExcessPingLogs(check.id, limits.maxPingLogsPerCheck, tx);
     });
 
     if (isRecovery) {
