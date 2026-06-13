@@ -9,5 +9,8 @@
     "predev:frontend": "node scripts/kill-port.mjs 3001",
     "dev:frontend": "npm run dev --prefix frontend",
     "stop": "node scripts/kill-port.mjs 3000 && node scripts/kill-port.mjs 3001"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
   }
 }

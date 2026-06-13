@@ -149,3 +149,4 @@ pass "Check deleted"
 
 echo ""
 echo "All E2E steps passed."
+echo "Run limits tests separately: npm run test:limits-e2e"

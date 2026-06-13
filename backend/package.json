@@ -6,6 +6,7 @@
   "scripts": {
     "test": "vitest run",
     "test:e2e": "bash scripts/e2e-test.sh",
+    "test:limits-e2e": "bash scripts/limits-e2e-test.sh",
     "dev:backend": "bash scripts/dev.sh",
     "dev:backend:server": "tsx watch src/index.ts",
     "dev:worker": "tsx watch src/worker/index.ts",
