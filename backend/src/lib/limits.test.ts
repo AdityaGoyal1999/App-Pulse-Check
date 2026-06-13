@@ -133,7 +133,7 @@ describe("trimExcessPingLogs", () => {
       findMany: pingLogFindMany,
       deleteMany: pingLogDeleteMany,
     },
-  };
+  } as Parameters<typeof trimExcessPingLogs>[2];
 
   beforeEach(() => {
     pingLogCount.mockReset();

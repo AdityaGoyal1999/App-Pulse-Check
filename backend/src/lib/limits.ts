@@ -3,6 +3,7 @@ import { prisma } from "../db";
 import { getLimitsForPlan } from "./plans";
 
 type DbClient = Prisma.TransactionClient | typeof prisma;
+type PingLogDb = Pick<DbClient, "pingLog">;
 
 export class CheckLimitError extends Error {
   constructor(
@@ -40,7 +41,7 @@ export async function assertCanCreateCheck(userId: string): Promise<void> {
 export async function trimExcessPingLogs(
   checkId: string,
   maxPingLogsPerCheck: number,
-  db: DbClient = prisma,
+  db: PingLogDb = prisma,
 ): Promise<number> {
   const count = await db.pingLog.count({ where: { checkId } });
   const excess = count - maxPingLogsPerCheck;
