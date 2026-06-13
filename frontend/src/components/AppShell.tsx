@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   Activity,
   BookOpen,
+  History,
   LayoutDashboard,
   LogOut,
   Settings,
@@ -24,6 +25,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarProvider,
   SidebarRail,
   SidebarSeparator,
@@ -46,9 +50,14 @@ function AppSidebar() {
   };
 
   const isDashboard = pathname === "/dashboard";
-  const activeCheckId = pathname.match(
+  const checkRouteMatch = pathname.match(
     /^\/checks\/([^/]+)\/(settings|history)$/,
-  )?.[1];
+  );
+  const activeCheckId = checkRouteMatch?.[1];
+  const activeCheckSection = checkRouteMatch?.[2] as
+    | "settings"
+    | "history"
+    | undefined;
 
   return (
     <Sidebar collapsible="offcanvas">
@@ -103,26 +112,55 @@ function AppSidebar() {
             ) : (
               <SidebarMenu>
                 {checks.map((check) => {
-                  const isActive = activeCheckId === check.id;
+                  const isCheckActive = activeCheckId === check.id;
 
                   return (
                     <SidebarMenuItem key={check.id}>
-                      <SidebarMenuButton
-                        isActive={isActive}
+                      <div
                         className={cn(
-                          isActive &&
-                            "bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary hover:text-sidebar-primary-foreground data-active:bg-sidebar-primary data-active:text-sidebar-primary-foreground",
+                          "truncate px-2 py-1.5 text-xs font-semibold tracking-wide uppercase",
+                          isCheckActive
+                            ? "text-sidebar-accent-foreground"
+                            : "text-sidebar-foreground/60",
                         )}
-                        render={
-                          <Link
-                            href={`/checks/${check.id}/settings`}
-                            onClick={closeMobile}
-                          />
-                        }
+                        title={check.name}
                       >
-                        <Settings className="opacity-70" />
-                        <span>{check.name}</span>
-                      </SidebarMenuButton>
+                        {check.name}
+                      </div>
+                      <SidebarMenuSub>
+                        <SidebarMenuSubItem>
+                          <SidebarMenuSubButton
+                            isActive={
+                              isCheckActive && activeCheckSection === "settings"
+                            }
+                            render={
+                              <Link
+                                href={`/checks/${check.id}/settings`}
+                                onClick={closeMobile}
+                              />
+                            }
+                          >
+                            <Settings />
+                            <span>Settings</span>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                        <SidebarMenuSubItem>
+                          <SidebarMenuSubButton
+                            isActive={
+                              isCheckActive && activeCheckSection === "history"
+                            }
+                            render={
+                              <Link
+                                href={`/checks/${check.id}/history`}
+                                onClick={closeMobile}
+                              />
+                            }
+                          >
+                            <History />
+                            <span>History</span>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      </SidebarMenuSub>
                     </SidebarMenuItem>
                   );
                 })}

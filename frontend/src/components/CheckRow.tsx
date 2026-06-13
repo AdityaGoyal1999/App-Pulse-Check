@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
-import { MoreVertical, Pause, Play, Settings, Trash2 } from "lucide-react";
+import { MoreVertical, History, Pause, Play, Settings, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { CopyPingUrlButton } from "@/components/CopyPingUrlButton";
@@ -74,7 +74,14 @@ export function CheckRow({ check, onDeleted, onUpdated }: CheckRowProps) {
 
   return (
     <TableRow>
-      <TableCell className="font-medium">{check.name}</TableCell>
+      <TableCell className="font-medium">
+        <Link
+          href={`/checks/${check.id}/settings`}
+          className="hover:text-primary hover:underline"
+        >
+          {check.name}
+        </Link>
+      </TableCell>
       <TableCell className="text-muted-foreground">{lastPinged}</TableCell>
       <TableCell>
         <StatusBadge status={check.status} paused={check.paused} />
@@ -82,8 +89,25 @@ export function CheckRow({ check, onDeleted, onUpdated }: CheckRowProps) {
       <TableCell>
         <CopyPingUrlButton uuid={check.uuid} />
       </TableCell>
-      <TableCell className="w-12 text-right">
-        <DropdownMenu>
+      <TableCell className="w-28 text-right">
+        <div className="flex items-center justify-end gap-0.5">
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            render={<Link href={`/checks/${check.id}/settings`} />}
+            aria-label={`Settings for ${check.name}`}
+          >
+            <Settings className="size-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            render={<Link href={`/checks/${check.id}/history`} />}
+            aria-label={`History for ${check.name}`}
+          >
+            <History className="size-4" />
+          </Button>
+          <DropdownMenu>
           <DropdownMenuTrigger
             disabled={isBusy}
             render={
@@ -105,6 +129,13 @@ export function CheckRow({ check, onDeleted, onUpdated }: CheckRowProps) {
                 >
                   <Settings />
                   Settings
+                </DropdownMenuLinkItem>
+                <DropdownMenuLinkItem
+                  closeOnClick
+                  render={<Link href={`/checks/${check.id}/history`} />}
+                >
+                  <History />
+                  History
                 </DropdownMenuLinkItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -130,6 +161,7 @@ export function CheckRow({ check, onDeleted, onUpdated }: CheckRowProps) {
             </DropdownMenuPositioner>
           </DropdownMenuPortal>
         </DropdownMenu>
+        </div>
       </TableCell>
     </TableRow>
   );

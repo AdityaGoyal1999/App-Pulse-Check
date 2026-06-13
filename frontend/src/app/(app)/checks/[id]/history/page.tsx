@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { format, formatDistanceToNow } from "date-fns";
 import { Loader2 } from "lucide-react";
 
+import { CheckPageNav } from "@/components/CheckPageNav";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -75,26 +76,11 @@ export default function CheckHistoryPage() {
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-6 py-8 lg:py-12">
-      <div>
-        <Link
-          href={`/checks/${checkId}/settings`}
-          className={cn(
-            buttonVariants({ variant: "link", size: "sm" }),
-            "mb-2 h-auto px-0 text-muted-foreground",
-          )}
-        >
-          Back to settings
-        </Link>
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-          Ping history
-        </h1>
-        {checkName && (
-          <p className="mt-2 text-muted-foreground">
-            Recent pings for{" "}
-            <span className="font-medium text-foreground">{checkName}</span>
-          </p>
-        )}
-      </div>
+      <CheckPageNav
+        checkId={checkId}
+        checkName={checkName}
+        active="history"
+      />
 
       {isLoading ? (
         <div className="flex items-center gap-2 text-muted-foreground">

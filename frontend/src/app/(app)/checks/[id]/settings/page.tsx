@@ -8,6 +8,7 @@ import { Loader2, Pause, Play } from "lucide-react";
 import { toast } from "sonner";
 
 import { CopyPingUrlButton } from "@/components/CopyPingUrlButton";
+import { CheckPageNav } from "@/components/CheckPageNav";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -136,17 +137,11 @@ export default function CheckSettingsPage() {
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-6 py-8 lg:py-12">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-          Check settings
-        </h1>
-        {settings?.name && (
-          <p className="mt-2 text-muted-foreground">
-            Manage monitoring and alerts for{" "}
-            <span className="font-medium text-foreground">{settings.name}</span>
-          </p>
-        )}
-      </div>
+      <CheckPageNav
+        checkId={checkId}
+        checkName={settings?.name}
+        active="settings"
+      />
 
       {isLoading ? (
         <div className="flex items-center gap-2 text-muted-foreground">
@@ -182,15 +177,6 @@ export default function CheckSettingsPage() {
                   <dd className="mt-1 font-medium text-foreground">
                     {lastPinged}
                   </dd>
-                  <Link
-                    href={`/checks/${checkId}/history`}
-                    className={cn(
-                      buttonVariants({ variant: "link", size: "sm" }),
-                      "mt-1 h-auto px-0",
-                    )}
-                  >
-                    View ping history
-                  </Link>
                 </div>
                 <div>
                   <dt className="text-muted-foreground">Expected interval</dt>
