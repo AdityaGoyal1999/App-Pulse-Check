@@ -1,4 +1,10 @@
-# App Pulse Check 
+# App Pulse Check
+
+![Checks](https://img.shields.io/github/checks-status/AdityaGoyal1999/App-Pulse-Check/master)
+[![Frontend](https://img.shields.io/badge/Frontend-Vercel-black?logo=vercel)](https://app-pulse-check.vercel.app)
+[![API](https://img.shields.io/badge/API-Railway-blue?logo=railway)](https://api-production-b6d49.up.railway.app/health)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-black?logo=next.js)
 
 **The heartbeat monitor for background jobs, cron tasks, and scripts.**
 
