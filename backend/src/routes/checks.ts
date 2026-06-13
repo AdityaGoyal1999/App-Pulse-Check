@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { prisma } from "../db";
-import { assertCanCreateCheck, CheckLimitError } from "../lib/limits";
+import {
+  assertCanCreateCheck,
+  CheckLimitError,
+  getUserLimits,
+} from "../lib/limits";
 import { requireAuth } from "../middleware/auth";
 import {
   createCheckSchema,
@@ -180,6 +184,62 @@ checksRouter.get("/:id/notifications", async (req, res) => {
     }
 
     res.status(200).json(toNotificationsResponse(check));
+  } catch {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+const MAX_PING_LOGS_QUERY = 1000;
+
+function parsePingLogsLimit(raw: unknown): number | null {
+  if (raw === undefined) return 100;
+
+  const parsed = Number(raw);
+  if (!Number.isInteger(parsed) || parsed < 1 || parsed > MAX_PING_LOGS_QUERY) {
+    return null;
+  }
+
+  return parsed;
+}
+
+checksRouter.get("/:id/ping-logs", async (req, res) => {
+  const checkId = req.params.id;
+  const requestedLimit = parsePingLogsLimit(req.query.limit);
+
+  if (requestedLimit === null) {
+    res.status(400).json({ error: "Invalid limit" });
+    return;
+  }
+
+  try {
+    const check = await prisma.check.findFirst({
+      where: { id: checkId, userId: req.user!.id },
+      select: { id: true },
+    });
+
+    if (!check) {
+      res.status(404).json({ error: "Check not found" });
+      return;
+    }
+
+    const { limits } = await getUserLimits(req.user!.id);
+    const effectiveLimit = Math.min(
+      requestedLimit,
+      limits.maxPingLogsPerCheck,
+    );
+
+    const logs = await prisma.pingLog.findMany({
+      where: { checkId: check.id },
+      orderBy: { pingedAt: "desc" },
+      take: effectiveLimit,
+      select: { id: true, pingedAt: true },
+    });
+
+    res.status(200).json({
+      logs,
+      limit: effectiveLimit,
+      retentionLimit: limits.maxPingLogsPerCheck,
+    });
   } catch {
     res.status(500).json({ error: "Internal server error" });
   }

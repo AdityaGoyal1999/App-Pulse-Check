@@ -53,3 +53,9 @@ export type CheckSettings = {
   alertWebhookUrl: string | null;
   alertEmail: string | null;
 };
+export type PingLogEntry = { id: string; pingedAt: string };
+export type PingLogsResponse = {
+  logs: PingLogEntry[];
+  limit: number;
+  retentionLimit: number;
+};

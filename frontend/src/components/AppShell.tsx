@@ -46,7 +46,9 @@ function AppSidebar() {
   };
 
   const isDashboard = pathname === "/dashboard";
-  const activeCheckId = pathname.match(/^\/checks\/([^/]+)\/settings$/)?.[1];
+  const activeCheckId = pathname.match(
+    /^\/checks\/([^/]+)\/(settings|history)$/,
+  )?.[1];
 
   return (
     <Sidebar collapsible="offcanvas">

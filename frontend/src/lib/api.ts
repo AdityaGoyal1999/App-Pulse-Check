@@ -4,6 +4,7 @@ import type {
   CheckNotificationSettings,
   CheckSettings,
   CreateCheckInput,
+  PingLogsResponse,
   UserMe,
 } from "./types";
 
@@ -85,6 +86,12 @@ export function getChecks() {
 
 export function getCheck(id: string) {
   return apiFetch<CheckSettings>(`/api/checks/${id}`);
+}
+
+export function getCheckPingLogs(checkId: string, limit = 100) {
+  return apiFetch<PingLogsResponse>(
+    `/api/checks/${checkId}/ping-logs?limit=${limit}`,
+  );
 }
 
 export function createCheck(body: CreateCheckInput) {

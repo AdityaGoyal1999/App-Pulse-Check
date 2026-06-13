@@ -182,6 +182,15 @@ export default function CheckSettingsPage() {
                   <dd className="mt-1 font-medium text-foreground">
                     {lastPinged}
                   </dd>
+                  <Link
+                    href={`/checks/${checkId}/history`}
+                    className={cn(
+                      buttonVariants({ variant: "link", size: "sm" }),
+                      "mt-1 h-auto px-0",
+                    )}
+                  >
+                    View ping history
+                  </Link>
                 </div>
                 <div>
                   <dt className="text-muted-foreground">Expected interval</dt>
