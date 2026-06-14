@@ -6,19 +6,20 @@ import { RefreshCw } from "lucide-react";
 import { CheckList, type CheckListRef } from "@/components/CheckList";
 import { CheckSearchInput } from "@/components/CheckSearchInput";
 import { CreateCheckForm } from "@/components/CreateCheckForm";
+import { DashboardStats } from "@/components/DashboardStats";
+import { DashboardStatsSkeleton } from "@/components/skeletons/DashboardStatsSkeleton";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useChecks } from "@/contexts/ChecksContext";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
-import { getCurrentUser } from "@/lib/api";
-import type { UserMe } from "@/lib/types";
-import { cn } from "@/lib/utils";
+import { getChecks, getCurrentUser } from "@/lib/api";
+import type { Check, UserMe } from "@/lib/types";
 
 export default function DashboardPage() {
   const { refreshChecks, refreshKey } = useChecks();
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearch = useDebouncedValue(searchQuery, 300);
   const [userMe, setUserMe] = useState<UserMe | null | undefined>(undefined);
+  const [allChecks, setAllChecks] = useState<Check[]>([]);
   const checkListRef = useRef<CheckListRef>(null);
 
   const refreshUsage = useCallback(async () => {
@@ -33,6 +34,33 @@ export default function DashboardPage() {
   useEffect(() => {
     void refreshUsage();
   }, [refreshUsage]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchAllChecks() {
+      try {
+        const res = await getChecks();
+        if (!cancelled) setAllChecks(res.checks);
+      } catch {
+        if (!cancelled) setAllChecks([]);
+      }
+    }
+
+    void fetchAllChecks();
+    return () => {
+      cancelled = true;
+    };
+  }, [refreshKey]);
+
+  const handleChecksChange = useCallback(
+    (checks: Check[]) => {
+      if (!debouncedSearch.trim()) {
+        setAllChecks(checks);
+      }
+    },
+    [debouncedSearch],
+  );
 
   function bumpRefreshKey() {
     refreshChecks();
@@ -67,17 +95,9 @@ export default function DashboardPage() {
       </div>
 
       {userMe === undefined ? (
-        <Skeleton className="h-4 w-28" aria-label="Loading usage" />
+        <DashboardStatsSkeleton />
       ) : userMe ? (
-        <p
-          className={cn(
-            "text-sm",
-            atLimit ? "text-destructive" : "text-muted-foreground",
-          )}
-        >
-          {userMe.checkCount} / {userMe.limits.maxChecks} checks
-          {atLimit ? " — limit reached" : ""}
-        </p>
+        <DashboardStats userMe={userMe} checks={allChecks} />
       ) : null}
 
       <CheckSearchInput
@@ -91,6 +111,7 @@ export default function DashboardPage() {
         refreshKey={refreshKey}
         searchQuery={debouncedSearch}
         onDeleted={bumpRefreshKey}
+        onChecksChange={handleChecksChange}
       />
     </div>
   );

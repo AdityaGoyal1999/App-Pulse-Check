@@ -1,3 +1,4 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -39,28 +40,33 @@ type CheckListSkeletonProps = {
 
 export function CheckListSkeleton({ rows = 5 }: CheckListSkeletonProps) {
   return (
-    <div aria-busy="true" aria-label="Loading checks">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Last Pinged</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Ping URL</TableHead>
-            <TableHead className="w-28 text-right">
-              <span className="sr-only">Actions</span>
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {Array.from({ length: rows }).map((_, index) => (
-            <CheckRowSkeleton
-              key={index}
-              nameWidth={ROW_WIDTHS[index % ROW_WIDTHS.length]}
-            />
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+    <Card aria-busy="true" aria-label="Loading checks">
+      <CardHeader className="sr-only">
+        <CardTitle>Checks</CardTitle>
+      </CardHeader>
+      <CardContent className="px-0">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Last Pinged</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Ping URL</TableHead>
+              <TableHead className="w-28 text-right">
+                <span className="sr-only">Actions</span>
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {Array.from({ length: rows }).map((_, index) => (
+              <CheckRowSkeleton
+                key={index}
+                nameWidth={ROW_WIDTHS[index % ROW_WIDTHS.length]}
+              />
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
   );
 }

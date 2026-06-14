@@ -1,6 +1,7 @@
 import { Activity } from "lucide-react";
 
 import { CheckListSkeleton } from "@/components/skeletons/CheckListSkeleton";
+import { DashboardStatsSkeleton } from "@/components/skeletons/DashboardStatsSkeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Sidebar,
@@ -107,7 +108,7 @@ export function AppShellSkeleton() {
               <Skeleton className="h-9 w-32" />
             </div>
           </div>
-          <Skeleton className="h-4 w-28" />
+          <DashboardStatsSkeleton />
           <Skeleton className="h-9 w-full max-w-sm" />
           <CheckListSkeleton />
         </div>

@@ -15,6 +15,13 @@ import { CheckRow } from "@/components/CheckRow";
 import { CheckListSkeleton } from "@/components/skeletons/CheckListSkeleton";
 import { Button } from "@/components/ui/button";
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
   Table,
   TableBody,
   TableHead,
@@ -101,75 +108,88 @@ export const CheckList = forwardRef<CheckListRef, CheckListProps>(
 
     if (error) {
       return (
-        <div className="flex flex-col items-center gap-3 py-16 text-center">
-          <p className="text-sm text-destructive">{error}</p>
-          <Button variant="outline" size="sm" onClick={() => fetchChecks(false)}>
-            Retry
-          </Button>
-        </div>
+        <Card>
+          <CardContent className="flex flex-col items-center gap-3 py-16 text-center">
+            <p className="text-sm text-destructive">{error}</p>
+            <Button variant="outline" size="sm" onClick={() => fetchChecks(false)}>
+              Retry
+            </Button>
+          </CardContent>
+        </Card>
       );
     }
 
     if (total === 0) {
       const isSearching = searchQuery.trim().length > 0;
       return (
-        <div className="rounded-xl border border-dashed border-border py-16 text-center">
-          <p className="text-sm font-medium text-foreground">
-            {isSearching ? "No checks match your search" : "No checks yet"}
-          </p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            {isSearching
-              ? "Try a different name or clear the search."
-              : "Create your first check to start monitoring a job or cron."}
-          </p>
-          {!isSearching && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="mt-4"
-              render={<Link href="/docs#quick-start" />}
-            >
-              <BookOpen className="size-3.5" />
-              Read the quick start guide
-            </Button>
-          )}
-        </div>
+        <Card>
+          <CardContent className="border border-dashed border-border py-16 text-center">
+            <p className="text-sm font-medium text-foreground">
+              {isSearching ? "No checks match your search" : "No checks yet"}
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {isSearching
+                ? "Try a different name or clear the search."
+                : "Create your first check to start monitoring a job or cron."}
+            </p>
+            {!isSearching && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="mt-4"
+                render={<Link href="/docs#quick-start" />}
+              >
+                <BookOpen className="size-3.5" />
+                Read the quick start guide
+              </Button>
+            )}
+          </CardContent>
+        </Card>
       );
     }
 
     const isSearching = searchQuery.trim().length > 0;
 
     return (
-      <div className={isRefreshing ? "opacity-60 transition-opacity" : undefined}>
-        {isSearching && (
-          <p className="mb-3 text-sm text-muted-foreground">
-            Showing {checks.length} of {total} matching checks
-          </p>
-        )}
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Last Pinged</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Ping URL</TableHead>
-              <TableHead className="w-28 text-right">
-                <span className="sr-only">Actions</span>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {checks.map((check) => (
-              <CheckRow
-                key={check.id}
-                check={check}
-                onDeleted={onDeleted}
-                onUpdated={() => fetchChecks(true)}
-              />
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+      <Card className={isRefreshing ? "opacity-60 transition-opacity" : undefined}>
+        <CardHeader className={isSearching ? "border-b" : "sr-only"}>
+          {isSearching ? (
+            <>
+              <CardTitle>Search results</CardTitle>
+              <CardDescription>
+                Showing {checks.length} of {total} matching checks
+              </CardDescription>
+            </>
+          ) : (
+            <CardTitle>Checks</CardTitle>
+          )}
+        </CardHeader>
+        <CardContent className="px-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Last Pinged</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Ping URL</TableHead>
+                <TableHead className="w-28 text-right">
+                  <span className="sr-only">Actions</span>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {checks.map((check) => (
+                <CheckRow
+                  key={check.id}
+                  check={check}
+                  onDeleted={onDeleted}
+                  onUpdated={() => fetchChecks(true)}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     );
   },
 );
