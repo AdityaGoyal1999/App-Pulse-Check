@@ -7,6 +7,7 @@ import { CheckList, type CheckListRef } from "@/components/CheckList";
 import { CheckSearchInput } from "@/components/CheckSearchInput";
 import { CreateCheckForm } from "@/components/CreateCheckForm";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useChecks } from "@/contexts/ChecksContext";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { getCurrentUser } from "@/lib/api";
@@ -17,7 +18,7 @@ export default function DashboardPage() {
   const { refreshChecks, refreshKey } = useChecks();
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearch = useDebouncedValue(searchQuery, 300);
-  const [userMe, setUserMe] = useState<UserMe | null>(null);
+  const [userMe, setUserMe] = useState<UserMe | null | undefined>(undefined);
   const checkListRef = useRef<CheckListRef>(null);
 
   const refreshUsage = useCallback(async () => {
@@ -39,7 +40,7 @@ export default function DashboardPage() {
   }
 
   const atLimit =
-    userMe !== null && userMe.checkCount >= userMe.limits.maxChecks;
+    userMe != null && userMe.checkCount >= userMe.limits.maxChecks;
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-8 lg:py-12">
@@ -65,7 +66,9 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {userMe && (
+      {userMe === undefined ? (
+        <Skeleton className="h-4 w-28" aria-label="Loading usage" />
+      ) : userMe ? (
         <p
           className={cn(
             "text-sm",
@@ -75,7 +78,7 @@ export default function DashboardPage() {
           {userMe.checkCount} / {userMe.limits.maxChecks} checks
           {atLimit ? " — limit reached" : ""}
         </p>
-      )}
+      ) : null}
 
       <CheckSearchInput
         value={searchQuery}

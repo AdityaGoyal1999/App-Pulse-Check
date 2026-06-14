@@ -9,9 +9,10 @@ import {
   useState,
 } from "react";
 import Link from "next/link";
-import { BookOpen, Loader2 } from "lucide-react";
+import { BookOpen } from "lucide-react";
 
 import { CheckRow } from "@/components/CheckRow";
+import { CheckListSkeleton } from "@/components/skeletons/CheckListSkeleton";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -95,11 +96,7 @@ export const CheckList = forwardRef<CheckListRef, CheckListProps>(
     }, [fetchChecks]);
 
     if (isLoading) {
-      return (
-        <div className="flex justify-center py-16">
-          <Loader2 className="size-6 animate-spin text-muted-foreground" />
-        </div>
-      );
+      return <CheckListSkeleton />;
     }
 
     if (error) {

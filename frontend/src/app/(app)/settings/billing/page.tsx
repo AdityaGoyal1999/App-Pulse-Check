@@ -6,6 +6,7 @@ import { CreditCard, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { PlanBadge } from "@/components/PlanBadge";
+import { BillingSkeleton } from "@/components/skeletons/BillingSkeleton";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -174,10 +175,7 @@ export default function BillingSettingsPage() {
       </div>
 
       {isLoading ? (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Loader2 className="size-4 animate-spin" />
-          Loading billing details...
-        </div>
+        <BillingSkeleton />
       ) : (
         <div className="space-y-6">
           <Card>

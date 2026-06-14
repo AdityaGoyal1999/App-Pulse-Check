@@ -3,9 +3,9 @@
 import { type FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
 
 import { AuthPageShell } from "@/components/AuthPageShell";
+import { AuthPageSkeleton } from "@/components/skeletons/AuthPageSkeleton";
 import { PasswordRequirements } from "@/components/PasswordRequirements";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,9 +50,10 @@ export default function LoginPage() {
 
   if (isLoading || token) {
     return (
-      <div className="flex min-h-full items-center justify-center">
-        <Loader2 className="size-6 animate-spin text-muted-foreground" />
-      </div>
+      <AuthPageSkeleton
+        title="Sign in"
+        description="Enter your email and password to access your dashboard."
+      />
     );
   }
 

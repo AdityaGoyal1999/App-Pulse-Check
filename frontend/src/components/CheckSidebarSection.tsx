@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Loader2, Search, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 import { CheckSidebarMenu } from "@/components/CheckSidebarMenu";
 import { Button } from "@/components/ui/button";
-import { SidebarInput } from "@/components/ui/sidebar";
+import { SidebarInput, SidebarMenuSkeleton } from "@/components/ui/sidebar";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { getChecks } from "@/lib/api";
 import type { Check } from "@/lib/types";
@@ -76,9 +76,14 @@ export function CheckSidebarSection({
       </div>
 
       {isLoading ? (
-        <div className="flex items-center gap-2 px-1 py-1 text-sm text-muted-foreground">
-          <Loader2 className="size-3.5 animate-spin" />
-          Loading…
+        <div
+          className="flex flex-col gap-1 px-1 py-1"
+          aria-busy="true"
+          aria-label="Loading checks"
+        >
+          {Array.from({ length: 4 }).map((_, index) => (
+            <SidebarMenuSkeleton key={index} />
+          ))}
         </div>
       ) : total === 0 ? (
         <p className="px-1 text-sm text-muted-foreground">

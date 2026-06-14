@@ -2,8 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
-
+import { AppShellSkeleton } from "@/components/skeletons/AppShellSkeleton";
 import { useAuth } from "@/contexts/AuthContext";
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -17,11 +16,7 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }, [isLoading, token, router]);
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-full items-center justify-center">
-        <Loader2 className="size-6 animate-spin text-muted-foreground" />
-      </div>
-    );
+    return <AppShellSkeleton />;
   }
 
   if (!token) return null;

@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { format, formatDistanceToNow } from "date-fns";
-import { Loader2 } from "lucide-react";
-
 import { CheckPageNav } from "@/components/CheckPageNav";
+import { CheckHistorySkeleton } from "@/components/skeletons/CheckHistorySkeleton";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -83,10 +82,7 @@ export default function CheckHistoryPage() {
       />
 
       {isLoading ? (
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <Loader2 className="size-4 animate-spin" />
-          Loading ping history…
-        </div>
+        <CheckHistorySkeleton />
       ) : notFound ? (
         <div className="space-y-3">
           <p className="text-destructive">Check not found.</p>

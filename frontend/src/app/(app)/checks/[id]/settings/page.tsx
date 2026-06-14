@@ -4,11 +4,12 @@ import { type FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
-import { Loader2, Pause, Play } from "lucide-react";
+import { Pause, Play } from "lucide-react";
 import { toast } from "sonner";
 
 import { CopyPingUrlButton } from "@/components/CopyPingUrlButton";
 import { CheckPageNav } from "@/components/CheckPageNav";
+import { CheckSettingsSkeleton } from "@/components/skeletons/CheckSettingsSkeleton";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -144,10 +145,7 @@ export default function CheckSettingsPage() {
       />
 
       {isLoading ? (
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <Loader2 className="size-4 animate-spin" />
-          Loading settings…
-        </div>
+        <CheckSettingsSkeleton />
       ) : notFound ? (
         <div className="space-y-3">
           <p className="text-destructive">Check not found.</p>
