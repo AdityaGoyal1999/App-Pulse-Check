@@ -75,7 +75,7 @@ export default function CheckHistoryPage() {
   }, [checkId]);
 
   return (
-    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-6 py-8 lg:py-12">
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-8 sm:px-6 lg:py-12">
       <CheckPageNav
         checkId={checkId}
         checkName={check?.name}
@@ -132,7 +132,21 @@ export default function CheckHistoryPage() {
                 </div>
               ) : (
                 <>
-                  <Table>
+                  <div className="divide-y divide-border md:hidden">
+                    {logs.map((log) => (
+                      <div key={log.id} className="py-3 first:pt-0 last:pb-0">
+                        <p className="font-medium">
+                          {formatDistanceToNow(new Date(log.pingedAt), {
+                            addSuffix: true,
+                          })}
+                        </p>
+                        <p className="mt-0.5 text-sm text-muted-foreground">
+                          {format(new Date(log.pingedAt), "PPp")}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  <Table className="hidden md:table">
                     <TableHeader>
                       <TableRow>
                         <TableHead>Pinged</TableHead>

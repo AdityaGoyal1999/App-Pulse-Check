@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import { Activity, BookOpen, Search } from "lucide-react";
 
-import { CheckRow } from "@/components/CheckRow";
+import { CheckCard, CheckRow } from "@/components/CheckRow";
 import { CheckListSkeleton } from "@/components/skeletons/CheckListSkeleton";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -192,29 +192,41 @@ export const CheckList = forwardRef<CheckListRef, CheckListProps>(
           )}
         </CardHeader>
         <CardContent className="px-0">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Last Pinged</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Ping URL</TableHead>
-                <TableHead className="w-28 text-right">
-                  <span className="sr-only">Actions</span>
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {checks.map((check) => (
-                <CheckRow
-                  key={check.id}
-                  check={check}
-                  onDeleted={onDeleted}
-                  onUpdated={() => fetchChecks(true)}
-                />
-              ))}
-            </TableBody>
-          </Table>
+          <div className="md:hidden">
+            {checks.map((check) => (
+              <CheckCard
+                key={check.id}
+                check={check}
+                onDeleted={onDeleted}
+                onUpdated={() => fetchChecks(true)}
+              />
+            ))}
+          </div>
+          <div className="hidden md:block">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Last Pinged</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Ping URL</TableHead>
+                  <TableHead className="w-28 text-right">
+                    <span className="sr-only">Actions</span>
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {checks.map((check) => (
+                  <CheckRow
+                    key={check.id}
+                    check={check}
+                    onDeleted={onDeleted}
+                    onUpdated={() => fetchChecks(true)}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     );

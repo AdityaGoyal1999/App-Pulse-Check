@@ -32,6 +32,24 @@ function CheckRowSkeleton({ nameWidth }: { nameWidth: string }) {
   );
 }
 
+function CheckCardSkeleton({ nameWidth }: { nameWidth: string }) {
+  return (
+    <div className="border-b border-border p-4 last:border-b-0">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1 space-y-2">
+          <Skeleton className={cn("h-4", nameWidth)} />
+          <Skeleton className="h-3.5 w-20" />
+        </div>
+        <Skeleton className="h-5 w-16 shrink-0 rounded-full" />
+      </div>
+      <div className="mt-3 flex items-center justify-between gap-2">
+        <Skeleton className="h-8 w-24" />
+        <Skeleton className="h-8 w-8 rounded-md" />
+      </div>
+    </div>
+  );
+}
+
 const ROW_WIDTHS = ["w-28", "w-36", "w-32", "w-40", "w-24"];
 
 type CheckListSkeletonProps = {
@@ -45,27 +63,37 @@ export function CheckListSkeleton({ rows = 5 }: CheckListSkeletonProps) {
         <CardTitle>Checks</CardTitle>
       </CardHeader>
       <CardContent className="px-0">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Last Pinged</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Ping URL</TableHead>
-              <TableHead className="w-28 text-right">
-                <span className="sr-only">Actions</span>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {Array.from({ length: rows }).map((_, index) => (
-              <CheckRowSkeleton
-                key={index}
-                nameWidth={ROW_WIDTHS[index % ROW_WIDTHS.length]}
-              />
-            ))}
-          </TableBody>
-        </Table>
+        <div className="md:hidden">
+          {Array.from({ length: rows }).map((_, index) => (
+            <CheckCardSkeleton
+              key={index}
+              nameWidth={ROW_WIDTHS[index % ROW_WIDTHS.length]}
+            />
+          ))}
+        </div>
+        <div className="hidden md:block">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Last Pinged</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Ping URL</TableHead>
+                <TableHead className="w-28 text-right">
+                  <span className="sr-only">Actions</span>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {Array.from({ length: rows }).map((_, index) => (
+                <CheckRowSkeleton
+                  key={index}
+                  nameWidth={ROW_WIDTHS[index % ROW_WIDTHS.length]}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   );

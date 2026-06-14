@@ -52,7 +52,7 @@ export function CheckPageNav({ checkId, checkName, active }: CheckPageNavProps) 
         footer={
           <nav
             aria-label="Check sections"
-            className="inline-flex rounded-lg bg-background/80 p-1 shadow-sm ring-1 ring-border/60"
+            className="flex w-full rounded-lg bg-background/80 p-1 shadow-sm ring-1 ring-border/60 sm:inline-flex sm:w-auto"
           >
             {navItems.map(({ key, label, icon: Icon, suffix }) => {
               const isActive = active === key;
@@ -62,7 +62,7 @@ export function CheckPageNav({ checkId, checkName, active }: CheckPageNavProps) 
                   href={`/checks/${checkId}/${suffix}`}
                   aria-current={isActive ? "page" : undefined}
                   className={cn(
-                    "inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-all",
+                    "inline-flex flex-1 items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-all sm:flex-initial",
                     isActive
                       ? "bg-background text-foreground shadow-sm"
                       : "text-muted-foreground hover:text-foreground",

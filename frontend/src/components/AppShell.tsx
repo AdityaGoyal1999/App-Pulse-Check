@@ -159,18 +159,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4 md:hidden">
-            <SidebarTrigger className="-ml-1" />
-            <div className="flex items-center gap-2">
-              <div className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
+          <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border px-3 sm:gap-3 sm:px-4 md:hidden">
+            <SidebarTrigger className="-ml-1 shrink-0" />
+            <div className="flex min-w-0 flex-1 items-center gap-2">
+              <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground">
                 <Activity className="size-3.5" strokeWidth={2.25} />
               </div>
-              <span className="text-sm font-semibold">App Pulse Check</span>
+              <span className="truncate text-sm font-semibold">
+                App Pulse Check
+              </span>
             </div>
-            <div className="ml-auto flex items-center gap-2">
-              <UserPlanBadge className="mt-0" />
-              <ThemeToggle />
-            </div>
+            <ThemeToggle />
           </header>
 
           <div className="flex-1 overflow-auto">{children}</div>

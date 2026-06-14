@@ -34,6 +34,21 @@ function PingLogRowSkeleton({
   );
 }
 
+function PingLogCardSkeleton({
+  relativeWidth,
+  timestampWidth,
+}: {
+  relativeWidth: string;
+  timestampWidth: string;
+}) {
+  return (
+    <div className="border-b border-border py-3 first:pt-0 last:border-b-0 last:pb-0">
+      <Skeleton className="h-4" style={{ width: relativeWidth }} />
+      <Skeleton className="mt-2 h-3.5" style={{ width: timestampWidth }} />
+    </div>
+  );
+}
+
 type CheckHistorySkeletonProps = {
   rows?: number;
 };
@@ -58,34 +73,43 @@ export function CheckHistorySkeleton({ rows = 6 }: CheckHistorySkeletonProps) {
       </div>
 
       <Card>
-      <CardHeader>
-        <CardTitle>Recent pings</CardTitle>
-        <CardDescription>
-          Newest pings first. Older entries are removed once your plan retention
-          limit is reached.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Pinged</TableHead>
-              <TableHead>Timestamp</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
+        <CardHeader>
+          <CardTitle>Recent pings</CardTitle>
+          <CardDescription>
+            Newest pings first. Older entries are removed once your plan retention
+            limit is reached.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="md:hidden">
             {Array.from({ length: rows }).map((_, index) => (
-              <PingLogRowSkeleton
+              <PingLogCardSkeleton
                 key={index}
                 relativeWidth={index % 2 === 0 ? "5.5rem" : "6.5rem"}
-                timestampWidth={index % 2 === 0 ? "12rem" : "13rem"}
+                timestampWidth={index % 2 === 0 ? "9rem" : "10rem"}
               />
             ))}
-          </TableBody>
-        </Table>
-        <Skeleton className="mt-4 h-4 w-56" />
-      </CardContent>
-    </Card>
+          </div>
+          <Table className="hidden md:table">
+            <TableHeader>
+              <TableRow>
+                <TableHead>Pinged</TableHead>
+                <TableHead>Timestamp</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {Array.from({ length: rows }).map((_, index) => (
+                <PingLogRowSkeleton
+                  key={index}
+                  relativeWidth={index % 2 === 0 ? "5.5rem" : "6.5rem"}
+                  timestampWidth={index % 2 === 0 ? "12rem" : "13rem"}
+                />
+              ))}
+            </TableBody>
+          </Table>
+          <Skeleton className="mt-4 h-4 w-56" />
+        </CardContent>
+      </Card>
     </div>
   );
 }

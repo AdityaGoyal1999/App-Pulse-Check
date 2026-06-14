@@ -114,7 +114,7 @@ export const CreateCheckForm = forwardRef<
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger
-        render={<Button disabled={atLimit} />}
+        render={<Button disabled={atLimit} className="w-full sm:w-auto" />}
       >
         Create Check
       </DialogTrigger>

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Activity, BookOpen, Check } from "lucide-react";
+import { Activity, Check } from "lucide-react";
 
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { MarketingHeader } from "@/components/MarketingHeader";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -26,48 +26,11 @@ export const metadata: Metadata = {
 export default function PricingPage() {
   return (
     <div className="flex min-h-full flex-col bg-background">
-      <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 py-6">
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Activity className="size-4" strokeWidth={2.25} />
-          </div>
-          <span className="text-base font-semibold tracking-tight text-foreground">
-            App Pulse Check
-          </span>
-        </Link>
-        <nav className="flex items-center gap-2">
-          <ThemeToggle />
-          <Link
-            href="/pricing"
-            className={cn(
-              buttonVariants({ variant: "ghost", size: "sm" }),
-              "text-foreground",
-            )}
-          >
-            Pricing
-          </Link>
-          <Link
-            href="/docs"
-            className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
-          >
-            <BookOpen className="size-4" />
-            Docs
-          </Link>
-          <Link
-            href="/login"
-            className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
-          >
-            Log in
-          </Link>
-          <Link href="/signup" className={cn(buttonVariants({ size: "sm" }))}>
-            Sign up
-          </Link>
-        </nav>
-      </header>
+      <MarketingHeader activeNav="pricing" />
 
       <main className="flex-1">
         <section className="border-b border-border py-16 sm:py-20">
-          <div className="mx-auto w-full max-w-6xl px-6 text-center">
+          <div className="mx-auto w-full max-w-6xl px-4 text-center sm:px-6">
             <Badge variant="secondary" className="mb-4">
               Simple, honest pricing
             </Badge>
@@ -82,7 +45,7 @@ export default function PricingPage() {
         </section>
 
         <section className="py-16 sm:py-20">
-          <div className="mx-auto grid w-full max-w-6xl gap-6 px-6 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 sm:grid-cols-2 sm:px-6 xl:grid-cols-4">
             {MARKETING_PLANS.map((plan) => (
               <Card
                 key={plan.id}
@@ -133,7 +96,7 @@ export default function PricingPage() {
         </section>
 
         <section className="border-t border-border bg-secondary/40 py-16 sm:py-20">
-          <div className="mx-auto w-full max-w-6xl px-6">
+          <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="text-3xl font-bold tracking-tight text-foreground">
                 Built-in from day one
@@ -158,7 +121,7 @@ export default function PricingPage() {
         </section>
 
         <section className="py-16 sm:py-20">
-          <div className="mx-auto w-full max-w-3xl px-6 text-center">
+          <div className="mx-auto w-full max-w-3xl px-4 text-center sm:px-6">
             <h2 className="text-2xl font-bold tracking-tight text-foreground">
               Limits at a glance
             </h2>
@@ -207,7 +170,7 @@ export default function PricingPage() {
       </main>
 
       <footer className="border-t border-border py-8">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-6 text-sm text-muted-foreground sm:flex-row">
+        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-4 text-sm text-muted-foreground sm:flex-row sm:px-6">
           <Link href="/" className="flex items-center gap-2.5">
             <div className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <Activity className="size-3.5" strokeWidth={2.25} />

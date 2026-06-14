@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 import { IntegrationIcon } from "@/components/landing/IntegrationIcon";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { MarketingHeader } from "@/components/MarketingHeader";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -105,44 +105,7 @@ const INTEGRATIONS = [
 export default function Home() {
   return (
     <div className="flex min-h-full flex-col bg-background">
-      <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 py-6">
-        <div className="flex items-center gap-2.5">
-          <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Activity className="size-4" strokeWidth={2.25} />
-          </div>
-          <span className="text-base font-semibold tracking-tight text-foreground">
-            App Pulse Check
-          </span>
-        </div>
-        <nav className="flex items-center gap-2">
-          <ThemeToggle />
-          <Link
-            href="/pricing"
-            className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
-          >
-            Pricing
-          </Link>
-          <Link
-            href="/docs"
-            className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
-          >
-            <BookOpen className="size-4" />
-            Docs
-          </Link>
-          <Link
-            href="/login"
-            className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
-          >
-            Log in
-          </Link>
-          <Link
-            href="/signup"
-            className={cn(buttonVariants({ size: "sm" }))}
-          >
-            Sign up
-          </Link>
-        </nav>
-      </header>
+      <MarketingHeader />
 
       <main className="flex-1">
         {/* Hero */}
@@ -151,7 +114,7 @@ export default function Home() {
             aria-hidden
             className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(0,102,204,0.08),transparent)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(0,102,204,0.04),transparent)]"
           />
-          <div className="mx-auto grid w-full max-w-6xl gap-12 px-6 pb-20 pt-12 lg:grid-cols-2 lg:items-center lg:gap-16 lg:pb-28 lg:pt-16">
+          <div className="mx-auto grid w-full max-w-6xl gap-12 px-4 pb-20 pt-12 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-16 lg:pb-28 lg:pt-16">
             <div>
               <Badge variant="secondary" className="mb-6">
                 Heartbeat monitoring for cron &amp; scripts
@@ -248,7 +211,7 @@ export default function Home() {
 
         {/* How it works */}
         <section className="border-b border-border py-20 sm:py-24">
-          <div className="mx-auto w-full max-w-6xl px-6">
+          <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
                 How it works
@@ -292,7 +255,7 @@ export default function Home() {
 
         {/* Features */}
         <section className="border-b border-border bg-secondary/40 py-20 sm:py-24">
-          <div className="mx-auto w-full max-w-6xl px-6">
+          <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
                 Everything you need, nothing you don&apos;t
@@ -324,7 +287,7 @@ export default function Home() {
 
         {/* Integrations */}
         <section className="border-b border-border py-20 sm:py-24">
-          <div className="mx-auto w-full max-w-6xl px-6">
+          <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
                 Get notified where your team already lives
@@ -381,7 +344,7 @@ export default function Home() {
 
         {/* CTA */}
         <section className="py-20 sm:py-24">
-          <div className="mx-auto w-full max-w-6xl px-6">
+          <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
             <div className="relative overflow-hidden rounded-2xl bg-primary px-6 py-16 text-center shadow-lg ring-1 ring-primary/20 sm:px-12 sm:py-20">
               <div
                 aria-hidden
@@ -412,7 +375,7 @@ export default function Home() {
       </main>
 
       <footer className="border-t border-border py-8">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-6 text-sm text-muted-foreground sm:flex-row">
+        <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-4 text-sm text-muted-foreground sm:flex-row sm:px-6">
           <div className="flex items-center gap-2.5">
             <div className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <Activity className="size-3.5" strokeWidth={2.25} />

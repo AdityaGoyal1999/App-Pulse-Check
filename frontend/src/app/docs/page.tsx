@@ -4,14 +4,13 @@ import {
   Activity,
   ArrowRight,
   Bell,
-  BookOpen,
   Clock,
   Shield,
   Zap,
 } from "lucide-react";
 
 import { CodeBlock } from "@/components/docs/CodeBlock";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { MarketingHeader } from "@/components/MarketingHeader";
 import { IntegrationIcon } from "@/components/landing/IntegrationIcon";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -130,48 +129,26 @@ function DocH3({ children }: { children: React.ReactNode }) {
 export default function DocsPage() {
   return (
     <div className="flex min-h-full flex-col bg-background">
-      <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 py-4">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <Activity className="size-4" strokeWidth={2.25} />
-            </div>
-            <span className="text-base font-semibold tracking-tight text-foreground">
-              App Pulse Check
-            </span>
-          </Link>
-          <nav className="flex items-center gap-2">
-            <ThemeToggle />
-            <Link
-              href="/pricing"
-              className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
-            >
-              Pricing
-            </Link>
-            <Link
-              href="/docs"
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "sm" }),
-                "text-foreground",
-              )}
-            >
-              <BookOpen className="size-4" />
-              Docs
-            </Link>
-            <Link
-              href="/login"
-              className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
-            >
-              Log in
-            </Link>
-            <Link href="/signup" className={cn(buttonVariants({ size: "sm" }))}>
-              Sign up
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <MarketingHeader sticky activeNav="docs" />
 
-      <div className="mx-auto flex w-full max-w-6xl flex-1 gap-12 px-6 py-10 lg:py-14">
+      <nav
+        aria-label="On this page"
+        className="border-b border-border lg:hidden"
+      >
+        <div className="mx-auto flex w-full max-w-6xl gap-1 overflow-x-auto px-4 py-2 sm:px-6">
+          {TOC.map((item) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              className="shrink-0 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+      </nav>
+
+      <div className="mx-auto flex w-full max-w-6xl flex-1 gap-12 px-4 py-10 sm:px-6 lg:py-14">
         <aside className="hidden w-52 shrink-0 lg:block">
           <nav className="sticky top-24 space-y-1">
             <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">

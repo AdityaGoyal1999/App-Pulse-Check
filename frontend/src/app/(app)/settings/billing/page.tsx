@@ -160,7 +160,7 @@ export default function BillingSettingsPage() {
     plan === "SUPPORTER" && billing?.subscriptionStatus !== null;
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-6 py-8 lg:py-12">
+    <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 lg:py-12">
       <AppPageHeader
         title={
           <div className="flex items-center gap-3">
@@ -222,21 +222,31 @@ export default function BillingSettingsPage() {
                 </div>
               )}
 
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 {canUpgradeToSupporter && (
                   <>
-                    <Button onClick={() => void handleUpgrade()} disabled={isUpgrading}>
+                    <Button
+                      className="w-full sm:w-auto"
+                      onClick={() => void handleUpgrade()}
+                      disabled={isUpgrading}
+                    >
                       {isUpgrading ? (
                         <>
                           <Loader2 className="size-4 animate-spin" />
                           Redirecting...
                         </>
                       ) : (
-                        "Upgrade to Supporter — $5/mo"
+                        <>
+                          <span className="sm:hidden">Upgrade — $5/mo</span>
+                          <span className="hidden sm:inline">
+                            Upgrade to Supporter — $5/mo
+                          </span>
+                        </>
                       )}
                     </Button>
                     <Button
                       variant="outline"
+                      className="w-full sm:w-auto"
                       onClick={() => void handleSync()}
                       disabled={isSyncing}
                     >
@@ -255,6 +265,7 @@ export default function BillingSettingsPage() {
                 {canManageSubscription && (
                   <Button
                     variant="outline"
+                    className="w-full sm:w-auto"
                     onClick={() => void handleManageSubscription()}
                     disabled={isOpeningPortal}
                   >
