@@ -4,6 +4,7 @@ import { type FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { ButtonPending } from "@/components/ButtonPending";
 import { AuthPageShell } from "@/components/AuthPageShell";
 import { AuthPageSkeleton } from "@/components/skeletons/AuthPageSkeleton";
 import { PasswordRequirements } from "@/components/PasswordRequirements";
@@ -105,7 +106,9 @@ export default function LoginPage() {
           className="w-full"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Signing in…" : "Sign in"}
+          <ButtonPending pending={isSubmitting} pendingLabel="Signing in…">
+            Sign in
+          </ButtonPending>
         </Button>
 
         <p className="mt-4 text-center text-sm text-muted-foreground">

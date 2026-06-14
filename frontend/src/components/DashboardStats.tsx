@@ -25,6 +25,15 @@ import {
 import type { Check, UserMe } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
+function StatusPulseDot({ className }: { className?: string }) {
+  return (
+    <span className={cn("relative flex size-2", className)} aria-hidden>
+      <span className="absolute inline-flex size-full animate-ping rounded-full bg-green-500/70" />
+      <span className="relative inline-flex size-2 rounded-full bg-green-600 dark:bg-green-500" />
+    </span>
+  );
+}
+
 type DashboardStatsProps = {
   userMe: UserMe;
   checks: Check[];
@@ -35,11 +44,12 @@ type StatCardProps = {
   value: number | string;
   label: string;
   description: string;
+  className?: string;
 };
 
-function StatCard({ icon, value, label, description }: StatCardProps) {
+function StatCard({ icon, value, label, description, className }: StatCardProps) {
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">{icon}</div>
         <CardTitle className="text-2xl font-semibold tabular-nums">
@@ -78,7 +88,8 @@ export function DashboardStats({ userMe, checks }: DashboardStatsProps) {
 
       <StatCard
         icon={
-          <div className="flex size-9 items-center justify-center rounded-lg border border-green-200 bg-green-50 text-green-700 dark:border-green-900 dark:bg-green-950 dark:text-green-400">
+          <div className="relative flex size-9 items-center justify-center rounded-lg border border-green-200 bg-green-50 text-green-700 dark:border-green-900 dark:bg-green-950 dark:text-green-400">
+            <StatusPulseDot className="absolute top-2 right-2" />
             <CheckCircle2 className="size-4" />
           </div>
         }
@@ -88,6 +99,7 @@ export function DashboardStats({ userMe, checks }: DashboardStatsProps) {
       />
 
       <StatCard
+        className={downCount > 0 ? "bg-destructive/5" : undefined}
         icon={
           <div className="flex size-9 items-center justify-center rounded-lg bg-destructive/10 text-destructive">
             <AlertCircle className="size-4" />

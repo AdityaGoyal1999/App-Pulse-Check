@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CreditCard, Loader2 } from "lucide-react";
+import { CreditCard } from "lucide-react";
 import { toast } from "sonner";
 
+import { ButtonPending } from "@/components/ButtonPending";
 import { PlanBadge } from "@/components/PlanBadge";
 import { AppPageHeader } from "@/components/AppPageHeader";
 import { BillingSkeleton } from "@/components/skeletons/BillingSkeleton";
@@ -160,7 +161,7 @@ export default function BillingSettingsPage() {
     plan === "SUPPORTER" && billing?.subscriptionStatus !== null;
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 lg:py-12">
+    <div className="mx-auto w-full max-w-3xl px-6 py-8 lg:py-12">
       <AppPageHeader
         title={
           <div className="flex items-center gap-3">
@@ -222,42 +223,22 @@ export default function BillingSettingsPage() {
                 </div>
               )}
 
-              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <div className="flex flex-wrap gap-3">
                 {canUpgradeToSupporter && (
                   <>
-                    <Button
-                      className="w-full sm:w-auto"
-                      onClick={() => void handleUpgrade()}
-                      disabled={isUpgrading}
-                    >
-                      {isUpgrading ? (
-                        <>
-                          <Loader2 className="size-4 animate-spin" />
-                          Redirecting...
-                        </>
-                      ) : (
-                        <>
-                          <span className="sm:hidden">Upgrade — $5/mo</span>
-                          <span className="hidden sm:inline">
-                            Upgrade to Supporter — $5/mo
-                          </span>
-                        </>
-                      )}
+                    <Button onClick={() => void handleUpgrade()} disabled={isUpgrading}>
+                      <ButtonPending pending={isUpgrading} pendingLabel="Redirecting...">
+                        Upgrade to Supporter — $5/mo
+                      </ButtonPending>
                     </Button>
                     <Button
                       variant="outline"
-                      className="w-full sm:w-auto"
                       onClick={() => void handleSync()}
                       disabled={isSyncing}
                     >
-                      {isSyncing ? (
-                        <>
-                          <Loader2 className="size-4 animate-spin" />
-                          Syncing...
-                        </>
-                      ) : (
-                        "Sync from Stripe"
-                      )}
+                      <ButtonPending pending={isSyncing} pendingLabel="Syncing...">
+                        Sync from Stripe
+                      </ButtonPending>
                     </Button>
                   </>
                 )}
@@ -265,18 +246,15 @@ export default function BillingSettingsPage() {
                 {canManageSubscription && (
                   <Button
                     variant="outline"
-                    className="w-full sm:w-auto"
                     onClick={() => void handleManageSubscription()}
                     disabled={isOpeningPortal}
                   >
-                    {isOpeningPortal ? (
-                      <>
-                        <Loader2 className="size-4 animate-spin" />
-                        Opening portal...
-                      </>
-                    ) : (
-                      "Manage subscription"
-                    )}
+                    <ButtonPending
+                      pending={isOpeningPortal}
+                      pendingLabel="Opening portal..."
+                    >
+                      Manage subscription
+                    </ButtonPending>
                   </Button>
                 )}
               </div>

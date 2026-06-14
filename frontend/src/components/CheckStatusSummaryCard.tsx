@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { CheckStatus } from "@/lib/types";
+import { getCheckSurfaceClassName } from "@/lib/check-status";
 import { cn } from "@/lib/utils";
 
 type CheckStatusSummaryCardProps = {
@@ -67,7 +68,13 @@ export function CheckStatusSummaryCard({
         aria-hidden
         className="absolute -inset-3 rounded-2xl bg-primary/5 blur-xl"
       />
-      <Card className="relative shadow-sm">
+      <Card
+        className={cn(
+          "relative",
+          getCheckSurfaceClassName({ status, paused }),
+        )}
+        elevation="featured"
+      >
         <CardHeader className="border-b">
           <div className="flex items-center justify-between gap-3">
             <CardTitle className="truncate text-base font-semibold">
@@ -79,7 +86,7 @@ export function CheckStatusSummaryCard({
         </CardHeader>
         {showPingUrl ? (
           <CardContent className="pt-4">
-            <div className="rounded-lg border border-border bg-muted/40 p-3">
+            <div className="rounded-lg elevation-flat bg-muted/40 p-3">
               <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
                 <Copy className="size-3.5" />
                 Ping URL

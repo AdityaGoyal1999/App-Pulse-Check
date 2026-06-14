@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import {
   Bell,
   Check as CheckIcon,
   Circle,
   Copy,
+  Loader2,
   PartyPopper,
   PlusCircle,
 } from "lucide-react";
@@ -33,6 +35,7 @@ export function SetupChecklistContent({
   check,
   onNavigateAway,
 }: SetupChecklistContentProps) {
+  const [isCopying, setIsCopying] = useState(false);
   const pingUrl = getPingUrl(check.uuid);
   const hasPinged = check.lastPingedAt !== null;
   const hasAlerts = check.hasAlerts;
@@ -41,11 +44,14 @@ export function SetupChecklistContent({
   const completed = [true, hasPinged, hasAlerts, allDone];
 
   async function copyPingUrl() {
+    setIsCopying(true);
     try {
       await navigator.clipboard.writeText(pingUrl);
       toast.success("Ping URL copied");
     } catch {
       toast.error("Failed to copy URL");
+    } finally {
+      setIsCopying(false);
     }
   }
 
@@ -73,9 +79,14 @@ export function SetupChecklistContent({
               variant="outline"
               size="sm"
               className="shrink-0 sm:mt-0.5"
+              disabled={isCopying}
               onClick={() => void copyPingUrl()}
             >
-              <Copy className="size-3.5" />
+              {isCopying ? (
+                <Loader2 className="size-3.5 animate-spin" />
+              ) : (
+                <Copy className="size-3.5" />
+              )}
               Copy URL
             </Button>
           </div>

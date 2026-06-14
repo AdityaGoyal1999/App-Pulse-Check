@@ -3,8 +3,10 @@
 import { type FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Pause, Play } from "lucide-react";
+import { Pause, Play, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+
+import { ButtonPending } from "@/components/ButtonPending";
 
 import { CheckPageNav } from "@/components/CheckPageNav";
 import { CheckStatusSummaryCard } from "@/components/CheckStatusSummaryCard";
@@ -188,7 +190,9 @@ export default function CheckSettingsPage() {
                   disabled={isTogglingPause}
                   onClick={() => void handleTogglePause()}
                 >
-                  {settings.paused ? (
+                  {isTogglingPause ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : settings.paused ? (
                     <Play className="size-4" />
                   ) : (
                     <Pause className="size-4" />
@@ -248,7 +252,9 @@ export default function CheckSettingsPage() {
                 )}
 
                 <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Saving…" : "Save alert settings"}
+                  <ButtonPending pending={isSubmitting} pendingLabel="Saving…">
+                    Save alert settings
+                  </ButtonPending>
                 </Button>
               </form>
             </CardContent>

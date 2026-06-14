@@ -253,7 +253,7 @@ export default function DocsPage() {
               New accounts start on Free. Paid tiers unlock higher limits and additional alert
               channels as they launch.
             </p>
-            <div className="not-prose my-6 overflow-x-auto rounded-lg border border-border">
+            <div className="not-prose my-6 overflow-x-auto rounded-lg elevation-flat">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border bg-muted/40">
@@ -379,7 +379,7 @@ export default function DocsPage() {
               The ping endpoint is public and requires no authentication. The UUID in the URL acts
               as the secret — treat it like an API key.
             </p>
-            <div className="not-prose my-4 overflow-x-auto rounded-lg border border-border">
+            <div className="not-prose my-4 overflow-x-auto rounded-lg elevation-flat">
               <table className="w-full text-sm">
                 <tbody>
                   <tr className="border-b border-border">
@@ -434,7 +434,7 @@ export default function DocsPage() {
               When you create a check, you set two timing values that control when a missed ping
               triggers a down state.
             </p>
-            <div className="not-prose my-4 overflow-x-auto rounded-lg border border-border">
+            <div className="not-prose my-4 overflow-x-auto rounded-lg elevation-flat">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border bg-muted/40">
@@ -466,7 +466,7 @@ export default function DocsPage() {
               lag by up to ~60 seconds after the deadline passes.
             </p>
             <DocH3>Suggested presets</DocH3>
-            <div className="not-prose overflow-x-auto rounded-lg border border-border">
+            <div className="not-prose overflow-x-auto rounded-lg elevation-flat">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border bg-muted/40">
@@ -595,9 +595,8 @@ curl -fsS -o /dev/null "$PULSECHECK_URL"`}</CodeBlock>
               {ALERT_CHANNELS.map((channel) => (
                 <Card
                   key={channel.id}
-                  className={cn(
-                    channel.available && "ring-1 ring-primary/20",
-                  )}
+                  className={cn(channel.available && "ring-primary/20")}
+                  elevation={channel.available ? "featured" : "default"}
                 >
                   <CardHeader>
                     <div className="flex items-start justify-between gap-3">
@@ -717,7 +716,7 @@ curl -fsS -o /dev/null "$PULSECHECK_URL"`}</CodeBlock>
             </p>
           </DocSection>
 
-          <div className="mt-12 rounded-xl border border-border bg-primary/5 p-8 text-center">
+          <div className="mt-12 rounded-xl elevation-flat bg-primary/5 p-8 text-center">
             <h2 className="text-xl font-semibold text-foreground">Ready to add your first check?</h2>
             <p className="mt-2 text-muted-foreground">
               Create an account and copy a ping URL in under a minute.

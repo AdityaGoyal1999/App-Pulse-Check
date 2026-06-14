@@ -8,7 +8,7 @@ type CodeBlockProps = {
 
 export function CodeBlock({ children, title, className }: CodeBlockProps) {
   return (
-    <div className={cn("overflow-hidden rounded-lg border border-border", className)}>
+    <div className={cn("overflow-hidden rounded-lg elevation-flat", className)}>
       {title && (
         <div className="border-b border-border bg-muted/50 px-4 py-2 text-xs font-medium text-muted-foreground">
           {title}

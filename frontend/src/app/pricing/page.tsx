@@ -51,8 +51,9 @@ export default function PricingPage() {
                 key={plan.id}
                 className={cn(
                   "flex flex-col",
-                  plan.highlighted && "ring-2 ring-primary/30",
+                  plan.highlighted && "ring-primary/20",
                 )}
+                elevation={plan.highlighted ? "featured" : "default"}
               >
                 <CardHeader>
                   <div className="flex items-start justify-between gap-2">
@@ -125,7 +126,7 @@ export default function PricingPage() {
             <h2 className="text-2xl font-bold tracking-tight text-foreground">
               Limits at a glance
             </h2>
-            <div className="mt-8 overflow-x-auto rounded-xl border border-border">
+            <div className="mt-8 overflow-x-auto rounded-xl elevation-flat">
               <table className="w-full text-left text-sm">
                 <thead>
                   <tr className="border-b border-border bg-muted/40">

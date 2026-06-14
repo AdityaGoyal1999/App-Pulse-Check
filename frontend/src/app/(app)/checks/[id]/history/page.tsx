@@ -154,8 +154,14 @@ export default function CheckHistoryPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {logs.map((log) => (
-                        <TableRow key={log.id}>
+                      {logs.map((log, index) => (
+                        <TableRow
+                          key={log.id}
+                          className="row-fade-in"
+                          style={{
+                            animationDelay: `${Math.min(index, 8) * 30}ms`,
+                          }}
+                        >
                           <TableCell className="font-medium">
                             {formatDistanceToNow(new Date(log.pingedAt), {
                               addSuffix: true,

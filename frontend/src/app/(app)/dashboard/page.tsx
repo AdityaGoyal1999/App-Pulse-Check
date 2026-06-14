@@ -1,7 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Loader2 } from "lucide-react";
+
+import { ButtonPending } from "@/components/ButtonPending";
 
 import { CheckList, type CheckListRef } from "@/components/CheckList";
 import { CheckSearchInput } from "@/components/CheckSearchInput";
@@ -24,6 +26,7 @@ export default function DashboardPage() {
   const debouncedSearch = useDebouncedValue(searchQuery, 300);
   const [userMe, setUserMe] = useState<UserMe | null | undefined>(undefined);
   const [allChecks, setAllChecks] = useState<Check[]>([]);
+  const [isRefreshingChecks, setIsRefreshingChecks] = useState(false);
   const checkListRef = useRef<CheckListRef>(null);
   const createCheckFormRef = useRef<CreateCheckFormRef>(null);
 
@@ -76,7 +79,7 @@ export default function DashboardPage() {
     userMe != null && userMe.checkCount >= userMe.limits.maxChecks;
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6 lg:py-12">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-8 lg:py-12">
       <AppPageHeader
         title="Your checks"
         description="Monitor cron jobs and background tasks."
@@ -85,11 +88,15 @@ export default function DashboardPage() {
             <Button
               type="button"
               variant="outline"
-              className="w-full sm:w-auto"
+              disabled={isRefreshingChecks}
               onClick={() => checkListRef.current?.refresh()}
             >
-              <RefreshCw className="size-4" />
-              Refresh
+              <ButtonPending pending={isRefreshingChecks} pendingLabel="Refreshing…">
+                <>
+                  <RefreshCw className="size-4" />
+                  Refresh
+                </>
+              </ButtonPending>
             </Button>
             <CreateCheckForm
               ref={createCheckFormRef}
@@ -120,6 +127,7 @@ export default function DashboardPage() {
         onChecksChange={handleChecksChange}
         onCreateClick={() => createCheckFormRef.current?.open()}
         createDisabled={atLimit}
+        onRefreshingChange={setIsRefreshingChecks}
       />
     </div>
   );

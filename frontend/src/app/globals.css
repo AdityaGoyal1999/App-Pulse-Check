@@ -146,3 +146,25 @@
     @apply font-heading font-bold tracking-tight text-foreground;
   }
 }
+
+@layer utilities {
+  .elevation-flat {
+    @apply border border-border;
+  }
+
+  .elevation-card {
+    @apply ring-1 ring-foreground/10;
+  }
+
+  .elevation-featured {
+    @apply shadow-md ring-1 ring-foreground/10;
+  }
+
+  .elevation-overlay {
+    @apply shadow-lg ring-1 ring-foreground/10;
+  }
+
+  .row-fade-in {
+    @apply animate-in fade-in-0 duration-200 fill-mode-backwards;
+  }
+}

@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import { Activity, BookOpen, Search } from "lucide-react";
 
-import { CheckCard, CheckRow } from "@/components/CheckRow";
+import { CheckRow } from "@/components/CheckRow";
 import { CheckListSkeleton } from "@/components/skeletons/CheckListSkeleton";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -39,6 +39,7 @@ type CheckListProps = {
   onChecksChange?: (checks: Check[]) => void;
   onCreateClick?: () => void;
   createDisabled?: boolean;
+  onRefreshingChange?: (refreshing: boolean) => void;
 };
 
 export type CheckListRef = {
@@ -54,6 +55,7 @@ export const CheckList = forwardRef<CheckListRef, CheckListProps>(
       onChecksChange,
       onCreateClick,
       createDisabled = false,
+      onRefreshingChange,
     },
     ref,
   ) {
@@ -88,6 +90,10 @@ export const CheckList = forwardRef<CheckListRef, CheckListProps>(
       },
       [onChecksChange, searchQuery],
     );
+
+    useEffect(() => {
+      onRefreshingChange?.(isRefreshing);
+    }, [isRefreshing, onRefreshingChange]);
 
     useImperativeHandle(
       ref,
@@ -178,7 +184,11 @@ export const CheckList = forwardRef<CheckListRef, CheckListProps>(
     const isSearching = searchQuery.trim().length > 0;
 
     return (
-      <Card className={isRefreshing ? "opacity-60 transition-opacity" : undefined}>
+      <Card
+        className={cn(
+          isRefreshing && "opacity-60 transition-opacity duration-200",
+        )}
+      >
         <CardHeader className={isSearching ? "border-b" : "sr-only"}>
           {isSearching ? (
             <>
@@ -192,41 +202,30 @@ export const CheckList = forwardRef<CheckListRef, CheckListProps>(
           )}
         </CardHeader>
         <CardContent className="px-0">
-          <div className="md:hidden">
-            {checks.map((check) => (
-              <CheckCard
-                key={check.id}
-                check={check}
-                onDeleted={onDeleted}
-                onUpdated={() => fetchChecks(true)}
-              />
-            ))}
-          </div>
-          <div className="hidden md:block">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Last Pinged</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Ping URL</TableHead>
-                  <TableHead className="w-28 text-right">
-                    <span className="sr-only">Actions</span>
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {checks.map((check) => (
-                  <CheckRow
-                    key={check.id}
-                    check={check}
-                    onDeleted={onDeleted}
-                    onUpdated={() => fetchChecks(true)}
-                  />
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Last Pinged</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Ping URL</TableHead>
+                <TableHead className="w-28 text-right">
+                  <span className="sr-only">Actions</span>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {checks.map((check, index) => (
+                <CheckRow
+                  key={check.id}
+                  check={check}
+                  index={index}
+                  onDeleted={onDeleted}
+                  onUpdated={() => fetchChecks(true)}
+                />
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     );

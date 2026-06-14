@@ -16,6 +16,36 @@ const STATUS_CONFIG: Record<
   DOWN: { label: "Down", variant: "destructive" },
 };
 
+function StatusDot({
+  status,
+  pulse = false,
+}: {
+  status: CheckStatus;
+  pulse?: boolean;
+}) {
+  if (status === "UP") {
+    return (
+      <span className="relative flex size-2 shrink-0" aria-hidden>
+        {pulse ? (
+          <span className="absolute inline-flex size-full animate-ping rounded-full bg-green-500/70" />
+        ) : null}
+        <span className="relative inline-flex size-2 rounded-full bg-green-600 dark:bg-green-500" />
+      </span>
+    );
+  }
+
+  if (status === "DOWN") {
+    return (
+      <span
+        className="size-2 shrink-0 rounded-full bg-destructive"
+        aria-hidden
+      />
+    );
+  }
+
+  return null;
+}
+
 export function StatusBadge({
   status,
   paused = false,
@@ -24,10 +54,15 @@ export function StatusBadge({
   paused?: boolean;
 }) {
   const config = STATUS_CONFIG[status];
+  const showUpPulse = status === "UP" && !paused;
 
   return (
     <div className="flex flex-wrap items-center gap-1.5">
-      <Badge variant={config.variant} className={cn(config.className)}>
+      <Badge
+        variant={config.variant}
+        className={cn("gap-1.5", config.className)}
+      >
+        <StatusDot status={status} pulse={showUpPulse} />
         {config.label}
       </Badge>
       {paused && (
