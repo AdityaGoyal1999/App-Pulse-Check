@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
-import { MoreVertical, History, Pause, Play, Settings, Trash2 } from "lucide-react";
+import { MoreVertical, History, Pause, Play, Settings, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { CopyPingUrlButton } from "@/components/CopyPingUrlButton";
@@ -26,11 +26,12 @@ import type { Check } from "@/lib/types";
 
 type CheckRowProps = {
   check: Check;
+  index?: number;
   onDeleted: () => void;
   onUpdated: () => void;
 };
 
-export function CheckRow({ check, onDeleted, onUpdated }: CheckRowProps) {
+export function CheckRow({ check, index = 0, onDeleted, onUpdated }: CheckRowProps) {
   const { refreshChecks } = useChecks();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isTogglingPause, setIsTogglingPause] = useState(false);
@@ -73,7 +74,10 @@ export function CheckRow({ check, onDeleted, onUpdated }: CheckRowProps) {
     : "Never";
 
   return (
-    <TableRow>
+    <TableRow
+      className="row-fade-in"
+      style={{ animationDelay: `${Math.min(index, 8) * 30}ms` }}
+    >
       <TableCell className="font-medium">
         <Link
           href={`/checks/${check.id}/settings`}
@@ -142,7 +146,13 @@ export function CheckRow({ check, onDeleted, onUpdated }: CheckRowProps) {
                   disabled={isBusy}
                   onClick={() => void handleTogglePause()}
                 >
-                  {check.paused ? <Play /> : <Pause />}
+                  {isTogglingPause ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : check.paused ? (
+                    <Play />
+                  ) : (
+                    <Pause />
+                  )}
                   {isTogglingPause
                     ? "Saving…"
                     : check.paused
@@ -154,7 +164,11 @@ export function CheckRow({ check, onDeleted, onUpdated }: CheckRowProps) {
                   className="text-destructive data-highlighted:bg-destructive/10 data-highlighted:text-destructive"
                   onClick={() => void handleDelete()}
                 >
-                  <Trash2 />
+                  {isDeleting ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    <Trash2 />
+                  )}
                   {isDeleting ? "Deleting…" : "Delete"}
                 </DropdownMenuItem>
               </DropdownMenuContent>

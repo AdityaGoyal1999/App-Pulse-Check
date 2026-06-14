@@ -196,7 +196,7 @@ export default function Home() {
                 aria-hidden
                 className="absolute -inset-4 rounded-3xl bg-primary/5 blur-2xl"
               />
-              <Card className="relative shadow-sm">
+              <Card className="relative" elevation="featured">
                 <CardHeader className="border-b">
                   <div className="flex items-center justify-between gap-3">
                     <CardTitle className="text-sm font-semibold">
@@ -214,7 +214,7 @@ export default function Home() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4 pt-4">
-                  <div className="rounded-lg border border-border bg-muted/40 p-3">
+                  <div className="rounded-lg elevation-flat bg-muted/40 p-3">
                     <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
                       <Copy className="size-3.5" />
                       Ping URL
@@ -340,9 +340,9 @@ export default function Home() {
                 <Card
                   key={integration.id}
                   className={cn(
-                    "relative transition-shadow",
                     integration.available && "ring-primary/20",
                   )}
+                  elevation={integration.available ? "featured" : "default"}
                 >
                   <CardHeader>
                     <div className="flex items-start justify-between gap-2">
@@ -382,7 +382,7 @@ export default function Home() {
         {/* CTA */}
         <section className="py-20 sm:py-24">
           <div className="mx-auto w-full max-w-6xl px-6">
-            <div className="relative overflow-hidden rounded-2xl bg-primary px-6 py-16 text-center shadow-lg ring-1 ring-primary/20 sm:px-12 sm:py-20">
+            <div className="relative overflow-hidden rounded-2xl bg-primary px-6 py-16 text-center elevation-overlay ring-primary/20 sm:px-12 sm:py-20">
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(255,255,255,0.14),transparent)]"

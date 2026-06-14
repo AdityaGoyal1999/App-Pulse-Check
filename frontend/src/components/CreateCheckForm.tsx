@@ -8,6 +8,7 @@ import {
 } from "react";
 import Link from "next/link";
 
+import { ButtonPending } from "@/components/ButtonPending";
 import { SetupChecklistContent } from "@/components/SetupChecklistContent";
 import { Button } from "@/components/ui/button";
 import {
@@ -204,7 +205,9 @@ export const CreateCheckForm = forwardRef<
 
             <DialogFooter>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Creating…" : "Create check"}
+                <ButtonPending pending={isSubmitting} pendingLabel="Creating…">
+                  Create check
+                </ButtonPending>
               </Button>
             </DialogFooter>
           </form>

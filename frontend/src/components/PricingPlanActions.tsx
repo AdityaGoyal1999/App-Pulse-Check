@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Loader2 } from "lucide-react";
 
+import { ButtonPending } from "@/components/ButtonPending";
 import { buttonVariants } from "@/components/ui/button";
 import { getToken, getCurrentUser, createCheckoutSession } from "@/lib/api";
 import type { Plan } from "@/lib/types";
@@ -133,17 +134,12 @@ export function PricingPlanActions({ plan }: PricingPlanActionsProps) {
           disabled={isCheckingOut}
           className={cn(buttonVariants({ className: "w-full" }))}
         >
-          {isCheckingOut ? (
-            <>
-              <Loader2 className="size-4 animate-spin" />
-              Redirecting...
-            </>
-          ) : (
+          <ButtonPending pending={isCheckingOut} pendingLabel="Redirecting...">
             <>
               Upgrade to Supporter
               <ArrowRight />
             </>
-          )}
+          </ButtonPending>
         </button>
       );
     }

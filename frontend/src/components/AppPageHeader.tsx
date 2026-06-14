@@ -20,7 +20,7 @@ export function AppPageHeader({
   return (
     <div
       className={cn(
-        "relative -mx-6 overflow-hidden rounded-xl border border-border/60 bg-secondary/30 px-6 py-6",
+        "relative -mx-6 overflow-hidden rounded-xl elevation-flat bg-secondary/30 px-6 py-6",
         className,
       )}
     >

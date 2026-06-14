@@ -4,6 +4,7 @@ import { type FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { ButtonPending } from "@/components/ButtonPending";
 import { AuthPageShell } from "@/components/AuthPageShell";
 import { AuthPageSkeleton } from "@/components/skeletons/AuthPageSkeleton";
 import { PasswordRequirements } from "@/components/PasswordRequirements";
@@ -128,7 +129,9 @@ export default function SignupPage() {
           className="w-full"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Creating account…" : "Create account"}
+          <ButtonPending pending={isSubmitting} pendingLabel="Creating account…">
+            Create account
+          </ButtonPending>
         </Button>
 
         <p className="mt-4 text-center text-sm text-muted-foreground">

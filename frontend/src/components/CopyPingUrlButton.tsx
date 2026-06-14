@@ -1,20 +1,25 @@
 "use client";
 
-import { Copy } from "lucide-react";
+import { useState } from "react";
+import { Copy, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { getPingUrl } from "@/lib/api";
 
 export function CopyPingUrlButton({ uuid }: { uuid: string }) {
+  const [isCopying, setIsCopying] = useState(false);
   const url = getPingUrl(uuid);
 
   async function handleCopy() {
+    setIsCopying(true);
     try {
       await navigator.clipboard.writeText(url);
       toast.success("Ping URL copied");
     } catch {
       toast.error("Failed to copy URL");
+    } finally {
+      setIsCopying(false);
     }
   }
 
@@ -24,9 +29,14 @@ export function CopyPingUrlButton({ uuid }: { uuid: string }) {
       variant="outline"
       size="sm"
       title={url}
-      onClick={handleCopy}
+      disabled={isCopying}
+      onClick={() => void handleCopy()}
     >
-      <Copy className="size-3.5" />
+      {isCopying ? (
+        <Loader2 className="size-3.5 animate-spin" />
+      ) : (
+        <Copy className="size-3.5" />
+      )}
       Copy URL
     </Button>
   );

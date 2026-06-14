@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CreditCard, Loader2 } from "lucide-react";
+import { CreditCard } from "lucide-react";
 import { toast } from "sonner";
 
+import { ButtonPending } from "@/components/ButtonPending";
 import { PlanBadge } from "@/components/PlanBadge";
 import { AppPageHeader } from "@/components/AppPageHeader";
 import { BillingSkeleton } from "@/components/skeletons/BillingSkeleton";
@@ -226,28 +227,18 @@ export default function BillingSettingsPage() {
                 {canUpgradeToSupporter && (
                   <>
                     <Button onClick={() => void handleUpgrade()} disabled={isUpgrading}>
-                      {isUpgrading ? (
-                        <>
-                          <Loader2 className="size-4 animate-spin" />
-                          Redirecting...
-                        </>
-                      ) : (
-                        "Upgrade to Supporter — $5/mo"
-                      )}
+                      <ButtonPending pending={isUpgrading} pendingLabel="Redirecting...">
+                        Upgrade to Supporter — $5/mo
+                      </ButtonPending>
                     </Button>
                     <Button
                       variant="outline"
                       onClick={() => void handleSync()}
                       disabled={isSyncing}
                     >
-                      {isSyncing ? (
-                        <>
-                          <Loader2 className="size-4 animate-spin" />
-                          Syncing...
-                        </>
-                      ) : (
-                        "Sync from Stripe"
-                      )}
+                      <ButtonPending pending={isSyncing} pendingLabel="Syncing...">
+                        Sync from Stripe
+                      </ButtonPending>
                     </Button>
                   </>
                 )}
@@ -258,14 +249,12 @@ export default function BillingSettingsPage() {
                     onClick={() => void handleManageSubscription()}
                     disabled={isOpeningPortal}
                   >
-                    {isOpeningPortal ? (
-                      <>
-                        <Loader2 className="size-4 animate-spin" />
-                        Opening portal...
-                      </>
-                    ) : (
-                      "Manage subscription"
-                    )}
+                    <ButtonPending
+                      pending={isOpeningPortal}
+                      pendingLabel="Opening portal..."
+                    >
+                      Manage subscription
+                    </ButtonPending>
                   </Button>
                 )}
               </div>
