@@ -20,6 +20,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TableCell, TableRow } from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useChecks } from "@/contexts/ChecksContext";
 import { deleteCheck, updateCheckPaused } from "@/lib/api";
 import { getCheckRowClassName } from "@/lib/check-status";
@@ -103,86 +108,103 @@ export function CheckRow({ check, index = 0, onDeleted, onUpdated }: CheckRowPro
       </TableCell>
       <TableCell className="w-28 text-right">
         <div className="flex items-center justify-end gap-0.5">
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            render={<Link href={`/checks/${check.id}/settings`} />}
-            aria-label={`Settings for ${check.name}`}
-          >
-            <Settings className="size-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            render={<Link href={`/checks/${check.id}/history`} />}
-            aria-label={`History for ${check.name}`}
-          >
-            <History className="size-4" />
-          </Button>
-          <DropdownMenu>
-          <DropdownMenuTrigger
-            disabled={isBusy}
-            render={
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label={`Options for ${check.name}`}
-              />
-            }
-          >
-            <MoreVertical className="size-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuPortal>
-            <DropdownMenuPositioner align="end">
-              <DropdownMenuContent>
-                <DropdownMenuLinkItem
-                  closeOnClick
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
                   render={<Link href={`/checks/${check.id}/settings`} />}
-                >
-                  <Settings />
-                  Settings
-                </DropdownMenuLinkItem>
-                <DropdownMenuLinkItem
-                  closeOnClick
+                  aria-label={`Settings for ${check.name}`}
+                />
+              }
+            />
+            <TooltipContent>Settings</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
                   render={<Link href={`/checks/${check.id}/history`} />}
-                >
-                  <History />
-                  History
-                </DropdownMenuLinkItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  disabled={isBusy}
-                  onClick={() => void handleTogglePause()}
-                >
-                  {isTogglingPause ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : check.paused ? (
-                    <Play />
-                  ) : (
-                    <Pause />
-                  )}
-                  {isTogglingPause
-                    ? "Saving…"
-                    : check.paused
-                      ? "Resume"
-                      : "Pause"}
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  disabled={isBusy}
-                  className="text-destructive data-highlighted:bg-destructive/10 data-highlighted:text-destructive"
-                  onClick={() => void handleDelete()}
-                >
-                  {isDeleting ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : (
-                    <Trash2 />
-                  )}
-                  {isDeleting ? "Deleting…" : "Delete"}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenuPositioner>
-          </DropdownMenuPortal>
-        </DropdownMenu>
+                  aria-label={`History for ${check.name}`}
+                />
+              }
+            />
+            <TooltipContent>History</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    disabled={isBusy}
+                    render={
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        aria-label={`Options for ${check.name}`}
+                      />
+                    }
+                  >
+                    <MoreVertical className="size-4" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuPortal>
+                    <DropdownMenuPositioner align="end">
+                      <DropdownMenuContent>
+                        <DropdownMenuLinkItem
+                          closeOnClick
+                          render={<Link href={`/checks/${check.id}/settings`} />}
+                        >
+                          <Settings />
+                          Settings
+                        </DropdownMenuLinkItem>
+                        <DropdownMenuLinkItem
+                          closeOnClick
+                          render={<Link href={`/checks/${check.id}/history`} />}
+                        >
+                          <History />
+                          History
+                        </DropdownMenuLinkItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          disabled={isBusy}
+                          onClick={() => void handleTogglePause()}
+                        >
+                          {isTogglingPause ? (
+                            <Loader2 className="size-4 animate-spin" />
+                          ) : check.paused ? (
+                            <Play />
+                          ) : (
+                            <Pause />
+                          )}
+                          {isTogglingPause
+                            ? "Saving…"
+                            : check.paused
+                              ? "Resume"
+                              : "Pause"}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          disabled={isBusy}
+                          className="text-destructive data-highlighted:bg-destructive/10 data-highlighted:text-destructive"
+                          onClick={() => void handleDelete()}
+                        >
+                          {isDeleting ? (
+                            <Loader2 className="size-4 animate-spin" />
+                          ) : (
+                            <Trash2 />
+                          )}
+                          {isDeleting ? "Deleting…" : "Delete"}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenuPositioner>
+                  </DropdownMenuPortal>
+                </DropdownMenu>
+              }
+            />
+            <TooltipContent>More options</TooltipContent>
+          </Tooltip>
         </div>
       </TableCell>
     </TableRow>

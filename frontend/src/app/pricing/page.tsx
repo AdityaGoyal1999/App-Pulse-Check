@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Activity, Check } from "lucide-react";
 
 import { MarketingHeader } from "@/components/MarketingHeader";
+import { PricingMobileCta } from "@/components/PricingMobileCta";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
 
 export default function PricingPage() {
   return (
-    <div className="flex min-h-full flex-col bg-background">
+    <div className="flex min-h-full flex-col bg-background pb-24 sm:pb-0">
       <MarketingHeader activeNav="pricing" />
 
       <main className="flex-1">
@@ -50,8 +51,9 @@ export default function PricingPage() {
               <Card
                 key={plan.id}
                 className={cn(
-                  "flex flex-col",
-                  plan.highlighted && "ring-primary/20",
+                  "flex flex-col transition-transform duration-200",
+                  plan.highlighted &&
+                    "z-10 scale-[1.02] ring-2 ring-primary/30",
                 )}
                 elevation={plan.highlighted ? "featured" : "default"}
               >
@@ -169,6 +171,8 @@ export default function PricingPage() {
           </div>
         </section>
       </main>
+
+      <PricingMobileCta />
 
       <footer className="border-t border-border py-8">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-4 text-sm text-muted-foreground sm:flex-row sm:px-6">

@@ -22,11 +22,16 @@ export function AuthPageSkeleton({
 }: AuthPageSkeletonProps) {
   return (
     <div
-      className="flex min-h-full flex-col bg-background"
+      className="relative flex min-h-full flex-col overflow-hidden bg-background"
       aria-busy="true"
       aria-label="Loading"
     >
-      <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 py-6">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(0,102,204,0.08),transparent)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(0,102,204,0.04),transparent)]"
+      />
+
+      <header className="relative mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-6 sm:py-6">
         <div className="flex items-center gap-2.5">
           <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Activity className="size-4" strokeWidth={2.25} />
@@ -38,7 +43,7 @@ export function AuthPageSkeleton({
         <Skeleton className="size-9 rounded-md" />
       </header>
 
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-6 py-12">
+      <main className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-4 py-12 sm:px-6">
         <div className="w-full max-w-sm">
           <Card>
             <CardHeader>
@@ -57,6 +62,7 @@ export function AuthPageSkeleton({
               </div>
             </CardContent>
           </Card>
+          <Skeleton className="mx-auto mt-6 h-4 w-56" />
         </div>
       </main>
     </div>

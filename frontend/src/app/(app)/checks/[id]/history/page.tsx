@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { format, formatDistanceToNow } from "date-fns";
 import { CheckPageNav } from "@/components/CheckPageNav";
 import { CheckStatusSummaryCard } from "@/components/CheckStatusSummaryCard";
+import { PingHistoryTimeline } from "@/components/PingHistoryTimeline";
 import { CheckHistorySkeleton } from "@/components/skeletons/CheckHistorySkeleton";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -15,14 +15,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { getCheck, getCheckPingLogs } from "@/lib/api";
 import type { CheckSettings, PingLogEntry } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -132,48 +124,7 @@ export default function CheckHistoryPage() {
                 </div>
               ) : (
                 <>
-                  <div className="divide-y divide-border md:hidden">
-                    {logs.map((log) => (
-                      <div key={log.id} className="py-3 first:pt-0 last:pb-0">
-                        <p className="font-medium">
-                          {formatDistanceToNow(new Date(log.pingedAt), {
-                            addSuffix: true,
-                          })}
-                        </p>
-                        <p className="mt-0.5 text-sm text-muted-foreground">
-                          {format(new Date(log.pingedAt), "PPp")}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                  <Table className="hidden md:table">
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Pinged</TableHead>
-                        <TableHead>Timestamp</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {logs.map((log, index) => (
-                        <TableRow
-                          key={log.id}
-                          className="row-fade-in"
-                          style={{
-                            animationDelay: `${Math.min(index, 8) * 30}ms`,
-                          }}
-                        >
-                          <TableCell className="font-medium">
-                            {formatDistanceToNow(new Date(log.pingedAt), {
-                              addSuffix: true,
-                            })}
-                          </TableCell>
-                          <TableCell className="text-muted-foreground">
-                            {format(new Date(log.pingedAt), "PPpp")}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                  <PingHistoryTimeline logs={logs} />
                   {retentionLimit !== null && (
                     <p className="mt-4 text-sm text-muted-foreground">
                       Showing {logs.length} of up to {retentionLimit} retained
