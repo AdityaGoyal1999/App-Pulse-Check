@@ -29,6 +29,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getChecks } from "@/lib/api";
+import { CHECK_TABLE_CLASS, CHECK_TABLE_COLUMNS } from "@/lib/check-table";
 import type { Check } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -202,14 +203,20 @@ export const CheckList = forwardRef<CheckListRef, CheckListProps>(
           )}
         </CardHeader>
         <CardContent className="px-0">
-          <Table>
+          <Table className={CHECK_TABLE_CLASS}>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Last Pinged</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Ping URL</TableHead>
-                <TableHead className="w-28 text-right">
+                <TableHead className={CHECK_TABLE_COLUMNS.name}>Name</TableHead>
+                <TableHead className={CHECK_TABLE_COLUMNS.lastPinged}>
+                  Last Pinged
+                </TableHead>
+                <TableHead className={CHECK_TABLE_COLUMNS.status}>
+                  Status
+                </TableHead>
+                <TableHead className={CHECK_TABLE_COLUMNS.pingUrl}>
+                  Ping URL
+                </TableHead>
+                <TableHead className={CHECK_TABLE_COLUMNS.actions}>
                   <span className="sr-only">Actions</span>
                 </TableHead>
               </TableRow>

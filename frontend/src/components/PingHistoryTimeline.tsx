@@ -21,7 +21,7 @@ export function PingHistoryTimeline({ logs }: PingHistoryTimelineProps) {
           >
             <div className="flex flex-col items-center pt-1.5">
               <span
-                className="size-2 shrink-0 rounded-full bg-green-500"
+                className="size-2 shrink-0 rounded-full bg-success"
                 aria-hidden
               />
               {!isLast ? (

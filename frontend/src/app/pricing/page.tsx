@@ -15,14 +15,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { MARKETING_PLANS, PLAN_DIFFERENTIATORS } from "@/lib/plans";
+import { createPageMetadata } from "@/lib/metadata";
 import { PricingPlanActions } from "@/components/PricingPlanActions";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = {
-  title: "Pricing — App Pulse Check",
+export const metadata: Metadata = createPageMetadata({
+  title: "Pricing",
   description:
     "Simple pricing for heartbeat monitoring. Start free with 20 checks and 100 ping logs per check.",
-};
+  path: "/pricing",
+});
 
 export default function PricingPage() {
   return (

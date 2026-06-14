@@ -18,7 +18,7 @@ export function PasswordRequirements({ password }: PasswordRequirementsProps) {
             <Check
               className={cn(
                 "size-3.5 shrink-0",
-                met ? "text-green-600" : "text-muted-foreground/40",
+                met ? "text-success" : "text-muted-foreground/40",
               )}
               strokeWidth={2.5}
             />

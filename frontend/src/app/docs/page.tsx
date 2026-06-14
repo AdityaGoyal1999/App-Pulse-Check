@@ -21,13 +21,15 @@ import {
 } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { MARKETING_PLANS } from "@/lib/plans";
+import { createPageMetadata } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = {
-  title: "Documentation — App Pulse Check",
+export const metadata: Metadata = createPageMetadata({
+  title: "Documentation",
   description:
     "Learn how to integrate heartbeat monitoring into your cron jobs, scripts, and background workers. Slack alerts supported today.",
-};
+  path: "/docs",
+});
 
 const TOC = [
   { id: "overview", label: "What & why" },

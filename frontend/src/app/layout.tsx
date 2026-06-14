@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { createPageMetadata } from "@/lib/metadata";
 import "./globals.css";
 
 const inter = Inter({
@@ -19,9 +20,14 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  title: "App Pulse Check",
-  description:
-    "Lightweight heartbeat monitoring for cron jobs and scripts. Get Slack alerts when checks go down — Discord, Email, and PagerDuty coming soon.",
+  ...createPageMetadata({
+    title: "App Pulse Check",
+    description:
+      "Lightweight heartbeat monitoring for cron jobs and scripts. Get Slack alerts when checks go down — Discord, Email, and PagerDuty coming soon.",
+  }),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3001",
+  ),
 };
 
 export default function RootLayout({

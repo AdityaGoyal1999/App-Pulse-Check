@@ -10,6 +10,14 @@ import { CopyPingUrlButton } from "@/components/CopyPingUrlButton";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -27,6 +35,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useChecks } from "@/contexts/ChecksContext";
 import { deleteCheck, updateCheckPaused } from "@/lib/api";
+import { CHECK_TABLE_COLUMNS } from "@/lib/check-table";
 import { getCheckRowClassName } from "@/lib/check-status";
 import type { Check } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -42,14 +51,15 @@ export function CheckRow({ check, index = 0, onDeleted, onUpdated }: CheckRowPro
   const { refreshChecks } = useChecks();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isTogglingPause, setIsTogglingPause] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const isBusy = isDeleting || isTogglingPause;
 
   async function handleDelete() {
-    if (!window.confirm("Delete this check?")) return;
-
     setIsDeleting(true);
     try {
       await deleteCheck(check.id);
+      toast.success(`"${check.name}" deleted`);
+      setDeleteOpen(false);
       void refreshChecks();
       onDeleted();
     } catch (err) {
@@ -106,7 +116,7 @@ export function CheckRow({ check, index = 0, onDeleted, onUpdated }: CheckRowPro
       <TableCell>
         <CopyPingUrlButton uuid={check.uuid} />
       </TableCell>
-      <TableCell className="w-28 text-right">
+      <TableCell className={CHECK_TABLE_COLUMNS.actions}>
         <div className="flex items-center justify-end gap-0.5">
           <Tooltip>
             <TooltipTrigger
@@ -188,7 +198,7 @@ export function CheckRow({ check, index = 0, onDeleted, onUpdated }: CheckRowPro
                         <DropdownMenuItem
                           disabled={isBusy}
                           className="text-destructive data-highlighted:bg-destructive/10 data-highlighted:text-destructive"
-                          onClick={() => void handleDelete()}
+                          onClick={() => setDeleteOpen(true)}
                         >
                           {isDeleting ? (
                             <Loader2 className="size-4 animate-spin" />
@@ -207,6 +217,43 @@ export function CheckRow({ check, index = 0, onDeleted, onUpdated }: CheckRowPro
           </Tooltip>
         </div>
       </TableCell>
+
+      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <DialogContent showCloseButton={!isDeleting}>
+          <DialogHeader>
+            <DialogTitle>Delete check?</DialogTitle>
+            <DialogDescription>
+              &quot;{check.name}&quot; will be permanently removed along with
+              its ping history and alert settings. This cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={isDeleting}
+              onClick={() => setDeleteOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              disabled={isDeleting}
+              onClick={() => void handleDelete()}
+            >
+              {isDeleting ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  Deleting…
+                </>
+              ) : (
+                "Delete check"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </TableRow>
   );
 }

@@ -28,8 +28,8 @@ import { cn } from "@/lib/utils";
 function StatusPulseDot({ className }: { className?: string }) {
   return (
     <span className={cn("relative flex size-2", className)} aria-hidden>
-      <span className="absolute inline-flex size-full animate-ping rounded-full bg-green-500/70" />
-      <span className="relative inline-flex size-2 rounded-full bg-green-600 dark:bg-green-500" />
+      <span className="absolute inline-flex size-full animate-ping rounded-full bg-success/70" />
+      <span className="relative inline-flex size-2 rounded-full bg-success" />
     </span>
   );
 }
@@ -88,7 +88,7 @@ export function DashboardStats({ userMe, checks }: DashboardStatsProps) {
 
       <StatCard
         icon={
-          <div className="relative flex size-9 items-center justify-center rounded-lg border border-green-200 bg-green-50 text-green-700 dark:border-green-900 dark:bg-green-950 dark:text-green-400">
+          <div className="relative flex size-9 items-center justify-center rounded-lg border border-success-border bg-success-muted text-success-foreground">
             <StatusPulseDot className="absolute top-2 right-2" />
             <CheckCircle2 className="size-4" />
           </div>

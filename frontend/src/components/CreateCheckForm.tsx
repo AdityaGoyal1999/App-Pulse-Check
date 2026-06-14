@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 import { ButtonPending } from "@/components/ButtonPending";
 import { SetupChecklistContent } from "@/components/SetupChecklistContent";
@@ -95,6 +96,7 @@ export const CreateCheckForm = forwardRef<
       resetForm();
       setCreatedCheck(check);
       setStep("setup");
+      toast.success(`"${check.name}" created`);
       onCreated(check);
     } catch (err) {
       if (err instanceof ApiError && err.status === 403) {

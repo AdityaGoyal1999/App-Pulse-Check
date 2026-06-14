@@ -144,7 +144,7 @@ export function SetupChecklistContent({
                   className={cn(
                     "flex size-8 shrink-0 items-center justify-center rounded-full border",
                     state === "complete" &&
-                      "border-green-200 bg-green-50 text-green-700 dark:border-green-900 dark:bg-green-950 dark:text-green-400",
+                      "border-success-border bg-success-muted text-success-foreground",
                     state === "current" &&
                       "border-primary/30 bg-primary/10 text-primary",
                     state === "upcoming" &&
@@ -164,7 +164,7 @@ export function SetupChecklistContent({
                     className={cn(
                       "my-1 min-h-6 w-px flex-1",
                       completed[index]
-                        ? "bg-green-200 dark:bg-green-900"
+                        ? "bg-success-border"
                         : "bg-border",
                     )}
                   />

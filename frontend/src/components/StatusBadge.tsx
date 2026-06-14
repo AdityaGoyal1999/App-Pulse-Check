@@ -11,7 +11,7 @@ const STATUS_CONFIG: Record<
     label: "Up",
     variant: "secondary",
     className:
-      "border-green-200 bg-green-50 text-green-700 dark:border-green-900 dark:bg-green-950 dark:text-green-400",
+      "border-success-border bg-success-muted text-success-foreground",
   },
   DOWN: { label: "Down", variant: "destructive" },
 };
@@ -27,9 +27,9 @@ function StatusDot({
     return (
       <span className="relative flex size-2 shrink-0" aria-hidden>
         {pulse ? (
-          <span className="absolute inline-flex size-full animate-ping rounded-full bg-green-500/70" />
+          <span className="absolute inline-flex size-full animate-ping rounded-full bg-success/70" />
         ) : null}
-        <span className="relative inline-flex size-2 rounded-full bg-green-600 dark:bg-green-500" />
+        <span className="relative inline-flex size-2 rounded-full bg-success" />
       </span>
     );
   }
@@ -68,7 +68,7 @@ export function StatusBadge({
       {paused && (
         <Badge
           variant="outline"
-          className="border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900 dark:bg-amber-950 dark:text-amber-300"
+          className="border-warning-border bg-warning-muted text-warning-foreground"
         >
           Paused
         </Badge>

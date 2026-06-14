@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { CHECK_TABLE_CLASS, CHECK_TABLE_COLUMNS } from "@/lib/check-table";
 import { cn } from "@/lib/utils";
 
 function CheckRowSkeleton({ nameWidth }: { nameWidth: string }) {
@@ -25,7 +26,7 @@ function CheckRowSkeleton({ nameWidth }: { nameWidth: string }) {
       <TableCell>
         <Skeleton className="h-8 w-48 max-w-full" />
       </TableCell>
-      <TableCell className="text-right">
+      <TableCell className={CHECK_TABLE_COLUMNS.actions}>
         <Skeleton className="ml-auto h-8 w-8 rounded-md" />
       </TableCell>
     </TableRow>
@@ -72,14 +73,20 @@ export function CheckListSkeleton({ rows = 5 }: CheckListSkeletonProps) {
           ))}
         </div>
         <div className="hidden md:block">
-          <Table>
+          <Table className={CHECK_TABLE_CLASS}>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Last Pinged</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Ping URL</TableHead>
-                <TableHead className="w-28 text-right">
+                <TableHead className={CHECK_TABLE_COLUMNS.name}>Name</TableHead>
+                <TableHead className={CHECK_TABLE_COLUMNS.lastPinged}>
+                  Last Pinged
+                </TableHead>
+                <TableHead className={CHECK_TABLE_COLUMNS.status}>
+                  Status
+                </TableHead>
+                <TableHead className={CHECK_TABLE_COLUMNS.pingUrl}>
+                  Ping URL
+                </TableHead>
+                <TableHead className={CHECK_TABLE_COLUMNS.actions}>
                   <span className="sr-only">Actions</span>
                 </TableHead>
               </TableRow>

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Activity,
@@ -21,7 +22,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
+import { createPageMetadata } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
+
+export const metadata: Metadata = createPageMetadata({
+  title: "App Pulse Check",
+  description:
+    "Heartbeat monitoring for cron jobs and scripts. Get alerted the moment something stops checking in.",
+  path: "/",
+});
 
 const STEPS = [
   {
