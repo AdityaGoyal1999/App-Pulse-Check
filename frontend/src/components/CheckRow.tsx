@@ -22,7 +22,9 @@ import {
 import { TableCell, TableRow } from "@/components/ui/table";
 import { useChecks } from "@/contexts/ChecksContext";
 import { deleteCheck, updateCheckPaused } from "@/lib/api";
+import { getCheckRowClassName } from "@/lib/check-status";
 import type { Check } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 type CheckRowProps = {
   check: Check;
@@ -75,7 +77,13 @@ export function CheckRow({ check, index = 0, onDeleted, onUpdated }: CheckRowPro
 
   return (
     <TableRow
-      className="row-fade-in"
+      className={cn(
+        "row-fade-in",
+        getCheckRowClassName({
+          status: check.status,
+          paused: check.paused,
+        }),
+      )}
       style={{ animationDelay: `${Math.min(index, 8) * 30}ms` }}
     >
       <TableCell className="font-medium">

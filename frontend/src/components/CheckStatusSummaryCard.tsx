@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { CheckStatus } from "@/lib/types";
+import { getCheckSurfaceClassName } from "@/lib/check-status";
 import { cn } from "@/lib/utils";
 
 type CheckStatusSummaryCardProps = {
@@ -67,7 +68,13 @@ export function CheckStatusSummaryCard({
         aria-hidden
         className="absolute -inset-3 rounded-2xl bg-primary/5 blur-xl"
       />
-      <Card className="relative" elevation="featured">
+      <Card
+        className={cn(
+          "relative",
+          getCheckSurfaceClassName({ status, paused }),
+        )}
+        elevation="featured"
+      >
         <CardHeader className="border-b">
           <div className="flex items-center justify-between gap-3">
             <CardTitle className="truncate text-base font-semibold">
