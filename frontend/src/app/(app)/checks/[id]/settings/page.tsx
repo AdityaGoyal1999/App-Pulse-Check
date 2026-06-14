@@ -3,14 +3,12 @@
 import { type FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { formatDistanceToNow } from "date-fns";
 import { Pause, Play } from "lucide-react";
 import { toast } from "sonner";
 
-import { CopyPingUrlButton } from "@/components/CopyPingUrlButton";
 import { CheckPageNav } from "@/components/CheckPageNav";
+import { CheckStatusSummaryCard } from "@/components/CheckStatusSummaryCard";
 import { CheckSettingsSkeleton } from "@/components/skeletons/CheckSettingsSkeleton";
-import { StatusBadge } from "@/components/StatusBadge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -132,10 +130,6 @@ export default function CheckSettingsPage() {
     }
   }
 
-  const lastPinged = settings?.lastPingedAt
-    ? formatDistanceToNow(new Date(settings.lastPingedAt), { addSuffix: true })
-    : "Never";
-
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-6 py-8 lg:py-12">
       <CheckPageNav
@@ -158,43 +152,15 @@ export default function CheckSettingsPage() {
         </div>
       ) : settings ? (
         <div className="flex flex-col gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Overview</CardTitle>
-              <CardDescription>
-                Current status and ping configuration for this check.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div className="flex flex-wrap items-center gap-3">
-                <StatusBadge status={settings.status} paused={settings.paused} />
-              </div>
-              <dl className="grid gap-3 text-sm sm:grid-cols-2">
-                <div>
-                  <dt className="text-muted-foreground">Last pinged</dt>
-                  <dd className="mt-1 font-medium text-foreground">
-                    {lastPinged}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-muted-foreground">Expected interval</dt>
-                  <dd className="mt-1 font-medium text-foreground">
-                    {settings.intervalSeconds}s
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-muted-foreground">Grace period</dt>
-                  <dd className="mt-1 font-medium text-foreground">
-                    {settings.graceSeconds}s
-                  </dd>
-                </div>
-              </dl>
-              <div>
-                <p className="mb-2 text-sm text-muted-foreground">Ping URL</p>
-                <CopyPingUrlButton uuid={settings.uuid} />
-              </div>
-            </CardContent>
-          </Card>
+          <CheckStatusSummaryCard
+            name={settings.name}
+            status={settings.status}
+            paused={settings.paused}
+            lastPingedAt={settings.lastPingedAt}
+            intervalSeconds={settings.intervalSeconds}
+            graceSeconds={settings.graceSeconds}
+            uuid={settings.uuid}
+          />
 
           <Card>
             <CardHeader>

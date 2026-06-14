@@ -6,6 +6,7 @@ import { CreditCard, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { PlanBadge } from "@/components/PlanBadge";
+import { AppPageHeader } from "@/components/AppPageHeader";
 import { BillingSkeleton } from "@/components/skeletons/BillingSkeleton";
 import { Button } from "@/components/ui/button";
 import {
@@ -159,20 +160,21 @@ export default function BillingSettingsPage() {
     plan === "SUPPORTER" && billing?.subscriptionStatus !== null;
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-6 py-10">
-      <div className="mb-8 flex items-center gap-3">
-        <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-          <CreditCard className="size-5" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">
-            Billing
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Manage your plan and subscription.
-          </p>
-        </div>
-      </div>
+    <div className="mx-auto w-full max-w-3xl px-6 py-8 lg:py-12">
+      <AppPageHeader
+        title={
+          <div className="flex items-center gap-3">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <CreditCard className="size-5" />
+            </div>
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+              Billing
+            </h1>
+          </div>
+        }
+        description="Manage your plan and subscription."
+        className="mb-8"
+      />
 
       {isLoading ? (
         <BillingSkeleton />

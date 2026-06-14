@@ -7,31 +7,25 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-function OverviewCardSkeleton() {
+function SummaryCardSkeleton() {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Overview</CardTitle>
-        <CardDescription>
-          Current status and ping configuration for this check.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="grid gap-4">
-        <Skeleton className="h-5 w-16 rounded-full" />
-        <dl className="grid gap-3 text-sm sm:grid-cols-2">
-          {Array.from({ length: 3 }).map((_, index) => (
-            <div key={index}>
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="mt-2 h-4 w-20" />
-            </div>
-          ))}
-        </dl>
-        <div>
-          <Skeleton className="mb-2 h-4 w-16" />
-          <Skeleton className="h-9 w-full max-w-md" />
-        </div>
-      </CardContent>
-    </Card>
+    <div className="relative">
+      <Card>
+        <CardHeader className="border-b">
+          <div className="flex items-center justify-between gap-3">
+            <Skeleton className="h-5 w-32" />
+            <Skeleton className="h-5 w-14 rounded-full" />
+          </div>
+          <Skeleton className="h-4 w-56" />
+        </CardHeader>
+        <CardContent className="pt-4">
+          <div className="rounded-lg border border-border bg-muted/40 p-3">
+            <Skeleton className="h-3.5 w-16" />
+            <Skeleton className="mt-2 h-9 w-full max-w-md" />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
 
@@ -87,7 +81,7 @@ export function CheckSettingsSkeleton() {
       aria-busy="true"
       aria-label="Loading check settings"
     >
-      <OverviewCardSkeleton />
+      <SummaryCardSkeleton />
       <MonitoringCardSkeleton />
       <AlertsCardSkeleton />
     </div>

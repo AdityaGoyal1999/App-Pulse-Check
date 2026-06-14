@@ -1,6 +1,11 @@
 "use client";
 
-import { type FormEvent, useState } from "react";
+import {
+  forwardRef,
+  type FormEvent,
+  useImperativeHandle,
+  useState,
+} from "react";
 import Link from "next/link";
 
 import { SetupChecklistContent } from "@/components/SetupChecklistContent";
@@ -29,10 +34,17 @@ type CreateCheckFormProps = {
   atLimit?: boolean;
 };
 
+export type CreateCheckFormRef = {
+  open: () => void;
+};
+
 const DEFAULT_INTERVAL = "300";
 const DEFAULT_GRACE = "60";
 
-export function CreateCheckForm({ onCreated, atLimit = false }: CreateCheckFormProps) {
+export const CreateCheckForm = forwardRef<
+  CreateCheckFormRef,
+  CreateCheckFormProps
+>(function CreateCheckForm({ onCreated, atLimit = false }, ref) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<"create" | "setup">("create");
   const [createdCheck, setCreatedCheck] = useState<Check | null>(null);
@@ -42,6 +54,10 @@ export function CreateCheckForm({ onCreated, atLimit = false }: CreateCheckFormP
   const [fieldErrors, setFieldErrors] = useState<CreateCheckFieldErrors>({});
   const [apiError, setApiError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    open: () => setOpen(true),
+  }));
 
   function resetForm() {
     setName("");
@@ -221,4 +237,4 @@ export function CreateCheckForm({ onCreated, atLimit = false }: CreateCheckFormP
       </DialogContent>
     </Dialog>
   );
-}
+});

@@ -9,11 +9,11 @@ import {
   useState,
 } from "react";
 import Link from "next/link";
-import { BookOpen } from "lucide-react";
+import { Activity, BookOpen, Search } from "lucide-react";
 
 import { CheckRow } from "@/components/CheckRow";
 import { CheckListSkeleton } from "@/components/skeletons/CheckListSkeleton";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -30,12 +30,15 @@ import {
 } from "@/components/ui/table";
 import { getChecks } from "@/lib/api";
 import type { Check } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 type CheckListProps = {
   refreshKey: number;
   searchQuery?: string;
   onDeleted: () => void;
   onChecksChange?: (checks: Check[]) => void;
+  onCreateClick?: () => void;
+  createDisabled?: boolean;
 };
 
 export type CheckListRef = {
@@ -44,7 +47,14 @@ export type CheckListRef = {
 
 export const CheckList = forwardRef<CheckListRef, CheckListProps>(
   function CheckList(
-    { refreshKey, searchQuery = "", onDeleted, onChecksChange },
+    {
+      refreshKey,
+      searchQuery = "",
+      onDeleted,
+      onChecksChange,
+      onCreateClick,
+      createDisabled = false,
+    },
     ref,
   ) {
     const hasLoadedRef = useRef(false);
@@ -121,27 +131,44 @@ export const CheckList = forwardRef<CheckListRef, CheckListProps>(
 
     if (total === 0) {
       const isSearching = searchQuery.trim().length > 0;
+      const EmptyIcon = isSearching ? Search : Activity;
+
       return (
         <Card>
-          <CardContent className="border border-dashed border-border py-16 text-center">
-            <p className="text-sm font-medium text-foreground">
-              {isSearching ? "No checks match your search" : "No checks yet"}
-            </p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {isSearching
-                ? "Try a different name or clear the search."
-                : "Create your first check to start monitoring a job or cron."}
-            </p>
+          <CardContent className="flex flex-col items-center gap-4 rounded-lg border border-dashed border-border bg-muted/30 px-6 py-20 text-center">
+            <div
+              className="flex size-11 items-center justify-center rounded-full bg-muted text-muted-foreground"
+              aria-hidden
+            >
+              <EmptyIcon className="size-5" strokeWidth={2} />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-foreground">
+                {isSearching ? "No checks match your search" : "No checks yet"}
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {isSearching
+                  ? "Try a different name or clear the search."
+                  : "Create your first check to start monitoring a job or cron."}
+              </p>
+            </div>
             {!isSearching && (
-              <Button
-                variant="outline"
-                size="sm"
-                className="mt-4"
-                render={<Link href="/docs#quick-start" />}
-              >
-                <BookOpen className="size-3.5" />
-                Read the quick start guide
-              </Button>
+              <div className="flex flex-col items-center gap-2 sm:flex-row">
+                <Button
+                  type="button"
+                  disabled={createDisabled}
+                  onClick={onCreateClick}
+                >
+                  Create check
+                </Button>
+                <Link
+                  href="/docs#quick-start"
+                  className={cn(buttonVariants({ variant: "outline" }))}
+                >
+                  <BookOpen className="size-3.5" />
+                  Read the quick start guide
+                </Link>
+              </div>
             )}
           </CardContent>
         </Card>

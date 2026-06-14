@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { format, formatDistanceToNow } from "date-fns";
 import { CheckPageNav } from "@/components/CheckPageNav";
+import { CheckStatusSummaryCard } from "@/components/CheckStatusSummaryCard";
 import { CheckHistorySkeleton } from "@/components/skeletons/CheckHistorySkeleton";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -23,14 +24,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getCheck, getCheckPingLogs } from "@/lib/api";
-import type { PingLogEntry } from "@/lib/types";
+import type { CheckSettings, PingLogEntry } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export default function CheckHistoryPage() {
   const params = useParams<{ id: string }>();
   const checkId = params.id;
 
-  const [checkName, setCheckName] = useState<string | null>(null);
+  const [check, setCheck] = useState<CheckSettings | null>(null);
   const [logs, setLogs] = useState<PingLogEntry[]>([]);
   const [retentionLimit, setRetentionLimit] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,7 +52,7 @@ export default function CheckHistoryPage() {
           getCheckPingLogs(checkId),
         ]);
         if (cancelled) return;
-        setCheckName(check.name);
+        setCheck(check);
         setLogs(pingLogs.logs);
         setRetentionLimit(pingLogs.retentionLimit);
       } catch (err) {
@@ -77,7 +78,7 @@ export default function CheckHistoryPage() {
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-6 py-8 lg:py-12">
       <CheckPageNav
         checkId={checkId}
-        checkName={checkName}
+        checkName={check?.name}
         active="history"
       />
 
@@ -95,63 +96,76 @@ export default function CheckHistoryPage() {
         </div>
       ) : apiError ? (
         <p className="text-destructive">{apiError}</p>
-      ) : (
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent pings</CardTitle>
-            <CardDescription>
-              Newest pings first. Older entries are removed once your plan
-              retention limit is reached.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {logs.length === 0 ? (
-              <div className="space-y-3 text-sm text-muted-foreground">
-                <p>No pings recorded yet.</p>
-                <Link
-                  href={`/checks/${checkId}/settings`}
-                  className={cn(
-                    buttonVariants({ variant: "outline", size: "sm" }),
-                  )}
-                >
-                  Go to check settings
-                </Link>
-              </div>
-            ) : (
-              <>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Pinged</TableHead>
-                      <TableHead>Timestamp</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {logs.map((log) => (
-                      <TableRow key={log.id}>
-                        <TableCell className="font-medium">
-                          {formatDistanceToNow(new Date(log.pingedAt), {
-                            addSuffix: true,
-                          })}
-                        </TableCell>
-                        <TableCell className="text-muted-foreground">
-                          {format(new Date(log.pingedAt), "PPpp")}
-                        </TableCell>
+      ) : check ? (
+        <div className="flex flex-col gap-6">
+          <CheckStatusSummaryCard
+            name={check.name}
+            status={check.status}
+            paused={check.paused}
+            lastPingedAt={check.lastPingedAt}
+            intervalSeconds={check.intervalSeconds}
+            graceSeconds={check.graceSeconds}
+            uuid={check.uuid}
+            showPingUrl={false}
+          />
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent pings</CardTitle>
+              <CardDescription>
+                Newest pings first. Older entries are removed once your plan
+                retention limit is reached.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {logs.length === 0 ? (
+                <div className="space-y-3 text-sm text-muted-foreground">
+                  <p>No pings recorded yet.</p>
+                  <Link
+                    href={`/checks/${checkId}/settings`}
+                    className={cn(
+                      buttonVariants({ variant: "outline", size: "sm" }),
+                    )}
+                  >
+                    Go to check settings
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Pinged</TableHead>
+                        <TableHead>Timestamp</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-                {retentionLimit !== null && (
-                  <p className="mt-4 text-sm text-muted-foreground">
-                    Showing {logs.length} of up to {retentionLimit} retained
-                    pings
-                  </p>
-                )}
-              </>
-            )}
-          </CardContent>
-        </Card>
-      )}
+                    </TableHeader>
+                    <TableBody>
+                      {logs.map((log) => (
+                        <TableRow key={log.id}>
+                          <TableCell className="font-medium">
+                            {formatDistanceToNow(new Date(log.pingedAt), {
+                              addSuffix: true,
+                            })}
+                          </TableCell>
+                          <TableCell className="text-muted-foreground">
+                            {format(new Date(log.pingedAt), "PPpp")}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                  {retentionLimit !== null && (
+                    <p className="mt-4 text-sm text-muted-foreground">
+                      Showing {logs.length} of up to {retentionLimit} retained
+                      pings
+                    </p>
+                  )}
+                </>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -5,9 +5,13 @@ import { RefreshCw } from "lucide-react";
 
 import { CheckList, type CheckListRef } from "@/components/CheckList";
 import { CheckSearchInput } from "@/components/CheckSearchInput";
-import { CreateCheckForm } from "@/components/CreateCheckForm";
+import {
+  CreateCheckForm,
+  type CreateCheckFormRef,
+} from "@/components/CreateCheckForm";
 import { DashboardStats } from "@/components/DashboardStats";
 import { DashboardStatsSkeleton } from "@/components/skeletons/DashboardStatsSkeleton";
+import { AppPageHeader } from "@/components/AppPageHeader";
 import { Button } from "@/components/ui/button";
 import { useChecks } from "@/contexts/ChecksContext";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
@@ -21,6 +25,7 @@ export default function DashboardPage() {
   const [userMe, setUserMe] = useState<UserMe | null | undefined>(undefined);
   const [allChecks, setAllChecks] = useState<Check[]>([]);
   const checkListRef = useRef<CheckListRef>(null);
+  const createCheckFormRef = useRef<CreateCheckFormRef>(null);
 
   const refreshUsage = useCallback(async () => {
     try {
@@ -72,27 +77,27 @@ export default function DashboardPage() {
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-8 lg:py-12">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-            Your checks
-          </h1>
-          <p className="mt-2 text-muted-foreground">
-            Monitor cron jobs and background tasks.
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => checkListRef.current?.refresh()}
-          >
-            <RefreshCw className="size-4" />
-            Refresh
-          </Button>
-          <CreateCheckForm onCreated={bumpRefreshKey} atLimit={atLimit} />
-        </div>
-      </div>
+      <AppPageHeader
+        title="Your checks"
+        description="Monitor cron jobs and background tasks."
+        actions={
+          <>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => checkListRef.current?.refresh()}
+            >
+              <RefreshCw className="size-4" />
+              Refresh
+            </Button>
+            <CreateCheckForm
+              ref={createCheckFormRef}
+              onCreated={bumpRefreshKey}
+              atLimit={atLimit}
+            />
+          </>
+        }
+      />
 
       {userMe === undefined ? (
         <DashboardStatsSkeleton />
@@ -112,6 +117,8 @@ export default function DashboardPage() {
         searchQuery={debouncedSearch}
         onDeleted={bumpRefreshKey}
         onChecksChange={handleChecksChange}
+        onCreateClick={() => createCheckFormRef.current?.open()}
+        createDisabled={atLimit}
       />
     </div>
   );

@@ -40,7 +40,24 @@ type CheckHistorySkeletonProps = {
 
 export function CheckHistorySkeleton({ rows = 6 }: CheckHistorySkeletonProps) {
   return (
-    <Card aria-busy="true" aria-label="Loading ping history">
+    <div
+      className="flex flex-col gap-6"
+      aria-busy="true"
+      aria-label="Loading ping history"
+    >
+      <div className="relative">
+        <Card>
+          <CardHeader className="border-b">
+            <div className="flex items-center justify-between gap-3">
+              <Skeleton className="h-5 w-32" />
+              <Skeleton className="h-5 w-14 rounded-full" />
+            </div>
+            <Skeleton className="h-4 w-56" />
+          </CardHeader>
+        </Card>
+      </div>
+
+      <Card>
       <CardHeader>
         <CardTitle>Recent pings</CardTitle>
         <CardDescription>
@@ -69,5 +86,6 @@ export function CheckHistorySkeleton({ rows = 6 }: CheckHistorySkeletonProps) {
         <Skeleton className="mt-4 h-4 w-56" />
       </CardContent>
     </Card>
+    </div>
   );
 }
