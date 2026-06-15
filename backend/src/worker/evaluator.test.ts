@@ -164,6 +164,27 @@ describe("evaluateChecks", () => {
     });
   });
 
+  it("passes Discord webhook URL to sendDownAlert for Discord-only checks", async () => {
+    const overdue = makeCandidate({
+      alertWebhookUrl: null,
+      alertDiscordWebhookUrl:
+        "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYz",
+    });
+    findMany.mockResolvedValue([overdue]);
+    updateMany.mockResolvedValue({ count: 1 });
+
+    await evaluateChecks();
+
+    expect(sendDownAlert).toHaveBeenCalledWith(
+      { name: overdue.name, lastPingedAt: overdue.lastPingedAt },
+      {
+        alertWebhookUrl: null,
+        alertDiscordWebhookUrl: overdue.alertDiscordWebhookUrl,
+        alertEmail: null,
+      },
+    );
+  });
+
   it("evaluates resumed checks once they appear in candidate query results", async () => {
     const resumedOverdue = makeCandidate({ id: "resumed-check" });
     findMany.mockResolvedValue([resumedOverdue]);

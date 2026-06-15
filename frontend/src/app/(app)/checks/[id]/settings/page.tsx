@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { ButtonPending } from "@/components/ButtonPending";
 
 import { CheckPageNav } from "@/components/CheckPageNav";
+import { IntegrationIcon } from "@/components/landing/IntegrationIcon";
 import { CheckStatusSummaryCard } from "@/components/CheckStatusSummaryCard";
 import { CheckSettingsSkeleton } from "@/components/skeletons/CheckSettingsSkeleton";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -231,7 +232,16 @@ export default function CheckSettingsPage() {
             <CardContent>
               <form onSubmit={handleAlertSubmit} className="grid gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="alert-webhook">Slack webhook URL</Label>
+                  <Label htmlFor="alert-webhook" className="flex items-center gap-2">
+                    <span
+                      className="flex size-5 shrink-0 items-center justify-center rounded text-white"
+                      style={{ backgroundColor: "#4A154B" }}
+                      aria-hidden
+                    >
+                      <IntegrationIcon name="slack" className="size-3" />
+                    </span>
+                    Slack webhook URL
+                  </Label>
                   <Input
                     id="alert-webhook"
                     type="url"
@@ -252,7 +262,17 @@ export default function CheckSettingsPage() {
                 </div>
 
                 <div className="grid gap-2">
-                  <Label htmlFor="alert-discord-webhook">
+                  <Label
+                    htmlFor="alert-discord-webhook"
+                    className="flex items-center gap-2"
+                  >
+                    <span
+                      className="flex size-5 shrink-0 items-center justify-center rounded text-white"
+                      style={{ backgroundColor: "#5865F2" }}
+                      aria-hidden
+                    >
+                      <IntegrationIcon name="discord" className="size-3" />
+                    </span>
                     Discord webhook URL
                   </Label>
                   <Input

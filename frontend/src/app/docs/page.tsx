@@ -624,7 +624,18 @@ curl -fsS -o /dev/null "$PULSECHECK_URL"`}</CodeBlock>
                 </Card>
               ))}
             </div>
-            <DocH3>Setting up Discord alerts</DocH3>
+            <DocH3>
+              <span className="flex items-center gap-2">
+                <span
+                  className="flex size-6 shrink-0 items-center justify-center rounded-md text-white"
+                  style={{ backgroundColor: "#5865F2" }}
+                  aria-hidden
+                >
+                  <IntegrationIcon name="discord" className="size-3.5" />
+                </span>
+                Setting up Discord alerts
+              </span>
+            </DocH3>
             <ol className="list-decimal space-y-2 pl-5">
               <li>
                 In Discord, open your server and go to{" "}
@@ -648,7 +659,18 @@ curl -fsS -o /dev/null "$PULSECHECK_URL"`}</CodeBlock>
               You can configure Slack, Discord, or both on the same check. Recovery alerts
               are sent to the same channels when a down check receives a ping again.
             </p>
-            <DocH3>Setting up Slack alerts</DocH3>
+            <DocH3>
+              <span className="flex items-center gap-2">
+                <span
+                  className="flex size-6 shrink-0 items-center justify-center rounded-md text-white"
+                  style={{ backgroundColor: "#4A154B" }}
+                  aria-hidden
+                >
+                  <IntegrationIcon name="slack" className="size-3.5" />
+                </span>
+                Setting up Slack alerts
+              </span>
+            </DocH3>
             <ol className="list-decimal space-y-2 pl-5">
               <li>
                 In Slack, go to{" "}
