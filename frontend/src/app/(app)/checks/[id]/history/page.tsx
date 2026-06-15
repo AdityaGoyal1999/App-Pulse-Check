@@ -91,7 +91,6 @@ export default function CheckHistoryPage() {
       ) : check ? (
         <div className="flex flex-col gap-6">
           <CheckStatusSummaryCard
-            name={check.name}
             status={check.status}
             paused={check.paused}
             lastPingedAt={check.lastPingedAt}

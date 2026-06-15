@@ -1,21 +1,14 @@
+import type { ReactNode } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { Copy } from "lucide-react";
 
 import { CopyPingUrlButton } from "@/components/CopyPingUrlButton";
 import { StatusBadge } from "@/components/StatusBadge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import type { CheckStatus } from "@/lib/types";
 import { getCheckSurfaceClassName } from "@/lib/check-status";
 import { cn } from "@/lib/utils";
 
 type CheckStatusSummaryCardProps = {
-  name: string;
   status: CheckStatus;
   paused?: boolean;
   lastPingedAt: string | null;
@@ -23,6 +16,7 @@ type CheckStatusSummaryCardProps = {
   graceSeconds?: number;
   uuid: string;
   showPingUrl?: boolean;
+  actions?: ReactNode;
   className?: string;
 };
 
@@ -40,7 +34,6 @@ function formatInterval(seconds: number): string {
 }
 
 export function CheckStatusSummaryCard({
-  name,
   status,
   paused = false,
   lastPingedAt,
@@ -48,6 +41,7 @@ export function CheckStatusSummaryCard({
   graceSeconds,
   uuid,
   showPingUrl = true,
+  actions,
   className,
 }: CheckStatusSummaryCardProps) {
   const lastPingLabel = lastPingedAt
@@ -62,42 +56,30 @@ export function CheckStatusSummaryCard({
     metaParts.push(`grace ${formatInterval(graceSeconds)}`);
   }
 
+  const hasActions = showPingUrl || actions;
+
   return (
-    <div className={cn("relative", className)}>
-      <div
-        aria-hidden
-        className="absolute -inset-3 rounded-2xl bg-primary/5 blur-xl"
-      />
-      <Card
-        className={cn(
-          "relative",
-          getCheckSurfaceClassName({ status, paused }),
-        )}
-        elevation="featured"
-      >
-        <CardHeader className="border-b">
-          <div className="flex items-center justify-between gap-3">
-            <CardTitle className="truncate text-base font-semibold">
-              {name}
-            </CardTitle>
-            <StatusBadge status={status} paused={paused} />
+    <Card
+      className={cn(
+        getCheckSurfaceClassName({ status, paused }),
+        className,
+      )}
+      elevation="featured"
+    >
+      <CardContent className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+          <StatusBadge status={status} paused={paused} />
+          <p className="text-sm text-muted-foreground">
+            {metaParts.join(" · ")}
+          </p>
+        </div>
+        {hasActions ? (
+          <div className="flex shrink-0 flex-col gap-2 sm:flex-row sm:items-center">
+            {showPingUrl ? <CopyPingUrlButton uuid={uuid} /> : null}
+            {actions}
           </div>
-          <CardDescription>{metaParts.join(" · ")}</CardDescription>
-        </CardHeader>
-        {showPingUrl ? (
-          <CardContent className="pt-4">
-            <div className="rounded-lg elevation-flat bg-muted/40 p-3">
-              <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                <Copy className="size-3.5" />
-                Ping URL
-              </div>
-              <div className="mt-2">
-                <CopyPingUrlButton uuid={uuid} />
-              </div>
-            </div>
-          </CardContent>
         ) : null}
-      </Card>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

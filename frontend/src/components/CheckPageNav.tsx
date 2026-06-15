@@ -46,7 +46,7 @@ export function CheckPageNav({ checkId, checkName, active }: CheckPageNavProps) 
         title={checkName ?? "Check"}
         description={
           active === "settings"
-            ? "Monitoring, alerts, and pause controls"
+            ? "Status and notification settings"
             : "Recent ping activity for this check"
         }
         footer={

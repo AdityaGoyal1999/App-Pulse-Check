@@ -6,8 +6,7 @@ import { useParams } from "next/navigation";
 import { Pause, Play, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-import { ButtonPending } from "@/components/ButtonPending";
-
+import { CheckAlertsSheet } from "@/components/CheckAlertsSheet";
 import { CheckPageNav } from "@/components/CheckPageNav";
 import { IntegrationIcon } from "@/components/landing/IntegrationIcon";
 import { CheckStatusSummaryCard } from "@/components/CheckStatusSummaryCard";
@@ -20,8 +19,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useChecks } from "@/contexts/ChecksContext";
 import {
   getCheck,
@@ -34,6 +31,41 @@ import {
   validateNotificationForm,
 } from "@/lib/validation";
 import { cn } from "@/lib/utils";
+
+function AlertStatusRow({
+  name,
+  iconName,
+  iconBg,
+  configured,
+}: {
+  name: string;
+  iconName: "slack" | "discord";
+  iconBg: string;
+  configured: boolean;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-3 text-sm">
+      <div className="flex items-center gap-2 text-muted-foreground">
+        <span
+          className="flex size-5 shrink-0 items-center justify-center rounded text-white"
+          style={{ backgroundColor: iconBg }}
+          aria-hidden
+        >
+          <IntegrationIcon name={iconName} className="size-3" />
+        </span>
+        {name}
+      </div>
+      <span
+        className={cn(
+          "font-medium",
+          configured ? "text-foreground" : "text-muted-foreground",
+        )}
+      >
+        {configured ? "Configured" : "Not configured"}
+      </span>
+    </div>
+  );
+}
 
 export default function CheckSettingsPage() {
   const params = useParams<{ id: string }>();
@@ -49,6 +81,7 @@ export default function CheckSettingsPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isTogglingPause, setIsTogglingPause] = useState(false);
   const [notFound, setNotFound] = useState(false);
+  const [alertsOpen, setAlertsOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -111,6 +144,7 @@ export default function CheckSettingsPage() {
       setAlertWebhookUrl(updated.alertWebhookUrl ?? "");
       setAlertDiscordWebhookUrl(updated.alertDiscordWebhookUrl ?? "");
       toast.success("Alert settings saved");
+      setAlertsOpen(false);
       void refreshChecks();
     } catch (err) {
       setApiError(err instanceof Error ? err.message : "Request failed");
@@ -163,154 +197,82 @@ export default function CheckSettingsPage() {
       ) : settings ? (
         <div className="flex flex-col gap-6">
           <CheckStatusSummaryCard
-            name={settings.name}
             status={settings.status}
             paused={settings.paused}
             lastPingedAt={settings.lastPingedAt}
             intervalSeconds={settings.intervalSeconds}
             graceSeconds={settings.graceSeconds}
             uuid={settings.uuid}
+            actions={
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={isTogglingPause}
+                onClick={() => void handleTogglePause()}
+              >
+                {isTogglingPause ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : settings.paused ? (
+                  <Play className="size-4" />
+                ) : (
+                  <Pause className="size-4" />
+                )}
+                {isTogglingPause
+                  ? "Saving…"
+                  : settings.paused
+                    ? "Resume check"
+                    : "Pause check"}
+              </Button>
+            }
           />
 
           <Card>
-            <CardHeader>
-              <CardTitle>Monitoring</CardTitle>
-              <CardDescription>
-                Paused checks are skipped by the evaluation worker and will not
-                trigger down alerts.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-sm font-medium text-foreground">
-                    {settings.paused ? "Check is paused" : "Check is active"}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {settings.paused
-                      ? "Resume to start evaluating this check again."
-                      : "Pause to temporarily stop monitoring."}
-                  </p>
-                </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  disabled={isTogglingPause}
-                  onClick={() => void handleTogglePause()}
-                >
-                  {isTogglingPause ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : settings.paused ? (
-                    <Play className="size-4" />
-                  ) : (
-                    <Pause className="size-4" />
-                  )}
-                  {isTogglingPause
-                    ? "Saving…"
-                    : settings.paused
-                      ? "Resume check"
-                      : "Pause check"}
-                </Button>
+            <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
+              <div className="space-y-1">
+                <CardTitle>Down alerts</CardTitle>
+                <CardDescription>
+                  Notify when this check goes down.
+                </CardDescription>
               </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Down alerts</CardTitle>
-              <CardDescription>
-                Get notified when this check goes DOWN. Configure Slack and/or
-                Discord webhooks per check.{" "}
-                <Link
-                  href="/docs#alerts"
-                  className="font-medium text-primary hover:underline"
-                >
-                  View setup guide
-                </Link>
-              </CardDescription>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="shrink-0"
+                onClick={() => setAlertsOpen(true)}
+              >
+                Configure alerts
+              </Button>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleAlertSubmit} className="grid gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="alert-webhook" className="flex items-center gap-2">
-                    <span
-                      className="flex size-5 shrink-0 items-center justify-center rounded text-white"
-                      style={{ backgroundColor: "#4A154B" }}
-                      aria-hidden
-                    >
-                      <IntegrationIcon name="slack" className="size-3" />
-                    </span>
-                    Slack webhook URL
-                  </Label>
-                  <Input
-                    id="alert-webhook"
-                    type="url"
-                    value={alertWebhookUrl}
-                    onChange={(e) => setAlertWebhookUrl(e.target.value)}
-                    placeholder="https://hooks.slack.com/services/..."
-                    disabled={isSubmitting}
-                  />
-                  <p className="text-sm text-muted-foreground">
-                    Optional. Create one in Slack: Apps → Incoming Webhooks →
-                    Add to workspace.
-                  </p>
-                  {fieldErrors.alertWebhookUrl && (
-                    <p className="text-sm text-destructive">
-                      {fieldErrors.alertWebhookUrl}
-                    </p>
-                  )}
-                </div>
-
-                <div className="grid gap-2">
-                  <Label
-                    htmlFor="alert-discord-webhook"
-                    className="flex items-center gap-2"
-                  >
-                    <span
-                      className="flex size-5 shrink-0 items-center justify-center rounded text-white"
-                      style={{ backgroundColor: "#5865F2" }}
-                      aria-hidden
-                    >
-                      <IntegrationIcon name="discord" className="size-3" />
-                    </span>
-                    Discord webhook URL
-                  </Label>
-                  <Input
-                    id="alert-discord-webhook"
-                    type="url"
-                    value={alertDiscordWebhookUrl}
-                    onChange={(e) =>
-                      setAlertDiscordWebhookUrl(e.target.value)
-                    }
-                    placeholder="https://discord.com/api/webhooks/..."
-                    disabled={isSubmitting}
-                  />
-                  <p className="text-sm text-muted-foreground">
-                    Optional. In Discord: Server Settings → Integrations →
-                    Webhooks → New Webhook.
-                  </p>
-                  {fieldErrors.alertDiscordWebhookUrl && (
-                    <p className="text-sm text-destructive">
-                      {fieldErrors.alertDiscordWebhookUrl}
-                    </p>
-                  )}
-                </div>
-
-                {fieldErrors.form && (
-                  <p className="text-sm text-destructive">{fieldErrors.form}</p>
-                )}
-                {apiError && (
-                  <p className="text-sm text-destructive">{apiError}</p>
-                )}
-
-                <Button type="submit" disabled={isSubmitting}>
-                  <ButtonPending pending={isSubmitting} pendingLabel="Saving…">
-                    Save alert settings
-                  </ButtonPending>
-                </Button>
-              </form>
+            <CardContent className="space-y-3">
+              <AlertStatusRow
+                name="Slack"
+                iconName="slack"
+                iconBg="#4A154B"
+                configured={Boolean(settings.alertWebhookUrl)}
+              />
+              <AlertStatusRow
+                name="Discord"
+                iconName="discord"
+                iconBg="#5865F2"
+                configured={Boolean(settings.alertDiscordWebhookUrl)}
+              />
             </CardContent>
           </Card>
+
+          <CheckAlertsSheet
+            open={alertsOpen}
+            onOpenChange={setAlertsOpen}
+            alertWebhookUrl={alertWebhookUrl}
+            alertDiscordWebhookUrl={alertDiscordWebhookUrl}
+            onAlertWebhookUrlChange={setAlertWebhookUrl}
+            onAlertDiscordWebhookUrlChange={setAlertDiscordWebhookUrl}
+            fieldErrors={fieldErrors}
+            apiError={apiError}
+            isSubmitting={isSubmitting}
+            onSubmit={handleAlertSubmit}
+          />
         </div>
       ) : null}
     </div>
