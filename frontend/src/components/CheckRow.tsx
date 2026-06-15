@@ -126,7 +126,9 @@ export function CheckRow({ check, index = 0, onDeleted, onUpdated }: CheckRowPro
                   size="icon-sm"
                   render={<Link href={`/checks/${check.id}/settings`} />}
                   aria-label={`Settings for ${check.name}`}
-                />
+                >
+                  <Settings className="size-4" />
+                </Button>
               }
             />
             <TooltipContent>Settings</TooltipContent>
@@ -139,7 +141,9 @@ export function CheckRow({ check, index = 0, onDeleted, onUpdated }: CheckRowPro
                   size="icon-sm"
                   render={<Link href={`/checks/${check.id}/history`} />}
                   aria-label={`History for ${check.name}`}
-                />
+                >
+                  <History className="size-4" />
+                </Button>
               }
             />
             <TooltipContent>History</TooltipContent>
