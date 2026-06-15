@@ -11,6 +11,7 @@ import {
   Zap,
 } from "lucide-react";
 
+import { DemoVideo } from "@/components/landing/DemoVideo";
 import { IntegrationIcon } from "@/components/landing/IntegrationIcon";
 import { MarketingHeader } from "@/components/MarketingHeader";
 import { Badge } from "@/components/ui/badge";
@@ -215,6 +216,23 @@ export default function Home() {
                 </CardContent>
               </Card>
             </div>
+          </div>
+        </section>
+
+        {/* Demo */}
+        <section className="border-b border-border bg-secondary/40 py-20 sm:py-24">
+          <div className="mx-auto w-full max-w-6xl px-6">
+            <div className="mx-auto max-w-2xl text-center">
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                See it in action
+              </h2>
+              <p className="mt-4 text-lg text-[var(--subtle-foreground)]">
+                Watch how checks, pings, and Slack alerts work in under two
+                minutes.
+              </p>
+            </div>
+
+            <DemoVideo className="mx-auto mt-14 w-full max-w-4xl" />
           </div>
         </section>
 
