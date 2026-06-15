@@ -93,7 +93,7 @@ const INTEGRATIONS = [
     id: "discord" as const,
     name: "Discord",
     description: "Webhook notifications for your server channels.",
-    available: false,
+    available: true,
     brandColor: "#5865F2",
   },
   {
@@ -320,8 +320,8 @@ export default function Home() {
                 Get notified where your team already lives
               </h2>
               <p className="mt-4 text-lg text-[var(--subtle-foreground)]">
-                Connect alerts per check. Slack is supported today — Discord,
-                Email, and PagerDuty are on the way.
+                Connect alerts per check. Slack and Discord are supported today —
+                Email and PagerDuty are on the way.
               </p>
             </div>
 

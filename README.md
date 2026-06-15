@@ -35,10 +35,10 @@ curl https://api-production-b6d49.up.railway.app/ping/7b1b7f6f-e22c-4268-91c1-6e
 - 🌐 **Landing page** — product positioning with login and signup entry points
 - 📊 **Dashboard** — protected `/dashboard` with check list, status badges (`NEW` / `UP` / `DOWN`), relative last-ping times, copy-ping-URL, create, and delete
 - ⏱️ **Missed-ping detection** — standalone evaluation worker runs every 60s and marks overdue checks `DOWN` (respects `intervalSeconds` + `graceSeconds`, skips paused checks)
-- 🔔 **Down alerts** — Slack notifications when checks go down
-- 💬 **Slack webhooks** — per-check Slack Incoming Webhook URLs for alert delivery
+- 🔔 **Down alerts** — Slack and Discord notifications when checks go down
+- 💬 **Webhook alerts** — per-check Slack and Discord webhook URLs for alert delivery
 - 🚀 **Production deployment** — API hosted on Railway ([live demo](#-live-demo))
-- 🔁 **Resolution and deduplication** — `alertSent` prevents repeat DOWN alerts; recovery pings mark checks `UP` again and send Slack recovery notifications
+- 🔁 **Resolution and deduplication** — `alertSent` prevents repeat DOWN alerts; recovery pings mark checks `UP` again and send Slack/Discord recovery notifications
 
 ## 🔄 How it works
 
@@ -56,7 +56,7 @@ curl https://api-production-b6d49.up.railway.app/ping/7b1b7f6f-e22c-4268-91c1-6e
 | 🔑 Auth          | bcrypt, JSON Web Tokens, Zod validation             |
 | 🎨 Frontend      | Next.js, React, TypeScript, Tailwind CSS, shadcn/ui |
 | ⚙️ Worker        | Standalone Node process (`backend/src/worker/`)     |
-| 💬 Notifications | Slack Incoming Webhooks |
+| 💬 Notifications | Slack & Discord Incoming Webhooks |
 
 
 ## 🚀 Getting started

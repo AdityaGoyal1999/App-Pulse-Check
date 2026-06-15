@@ -104,8 +104,8 @@ export function SetupChecklistContent({
     {
       title: "Set up alerts (optional)",
       description: hasAlerts
-        ? "Slack webhook configured for this check."
-        : "Add a Slack Incoming Webhook so you get notified when this check goes down.",
+        ? "Webhook alerts configured for this check."
+        : "Add a Slack or Discord webhook so you get notified when this check goes down.",
       icon: Bell,
       detail: !hasAlerts ? (
         <Button

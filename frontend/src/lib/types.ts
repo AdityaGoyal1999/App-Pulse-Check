@@ -50,6 +50,7 @@ export type CreateCheckInput = {
 export type CheckNotificationSettings = {
   name: string;
   alertWebhookUrl: string | null;
+  alertDiscordWebhookUrl: string | null;
   alertEmail: string | null;
 };
 export type CheckSettings = {
@@ -62,6 +63,7 @@ export type CheckSettings = {
   lastPingedAt: string | null;
   paused: boolean;
   alertWebhookUrl: string | null;
+  alertDiscordWebhookUrl: string | null;
   alertEmail: string | null;
 };
 export type PingLogEntry = { id: string; pingedAt: string };

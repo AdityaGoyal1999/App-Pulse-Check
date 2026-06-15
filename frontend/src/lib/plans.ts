@@ -31,8 +31,8 @@ export const MARKETING_PLANS: MarketingPlan[] = [
     features: [
       "20 checks",
       "100 ping logs per check",
-      "Slack down alerts",
-      "Slack recovery alerts",
+      "Slack & Discord down alerts",
+      "Slack & Discord recovery alerts",
       "Alert deduplication",
       "Pause checks",
       "Web dashboard & ping history",

@@ -134,6 +134,7 @@ export function updateCheckNotifications(
   checkId: string,
   body: {
     alertWebhookUrl?: string | null;
+    alertDiscordWebhookUrl?: string | null;
     alertEmail?: string | null;
   },
 ) {

@@ -19,6 +19,7 @@ pingRouter.get("/:uuid", async (req, res) => {
         status: true,
         lastPingedAt: true,
         alertWebhookUrl: true,
+        alertDiscordWebhookUrl: true,
         alertEmail: true,
       },
     });
@@ -50,7 +51,11 @@ pingRouter.get("/:uuid", async (req, res) => {
     if (isRecovery) {
       void sendRecoveryAlert(
         { name: check.name, lastPingedAt: pingedAt },
-        { alertWebhookUrl: check.alertWebhookUrl, alertEmail: check.alertEmail },
+        {
+          alertWebhookUrl: check.alertWebhookUrl,
+          alertDiscordWebhookUrl: check.alertDiscordWebhookUrl,
+          alertEmail: check.alertEmail,
+        },
       );
     }
 

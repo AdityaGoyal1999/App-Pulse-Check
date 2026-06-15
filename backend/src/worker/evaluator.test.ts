@@ -38,6 +38,7 @@ function makeCandidate(
     intervalSeconds: 60,
     graceSeconds: 30,
     alertWebhookUrl: "https://hooks.slack.com/services/test",
+    alertDiscordWebhookUrl: null,
     alertEmail: null,
     ...overrides,
   };
@@ -153,6 +154,7 @@ describe("evaluateChecks", () => {
       { name: overdue.name, lastPingedAt: overdue.lastPingedAt },
       {
         alertWebhookUrl: overdue.alertWebhookUrl,
+        alertDiscordWebhookUrl: overdue.alertDiscordWebhookUrl,
         alertEmail: overdue.alertEmail,
       },
     );

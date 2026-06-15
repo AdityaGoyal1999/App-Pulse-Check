@@ -29,6 +29,9 @@ done
 
 cd "${BACKEND_DIR}"
 
+echo "Generating Prisma client..."
+npx prisma generate
+
 echo "Starting Prisma Studio at http://localhost:5555 ..."
 npx prisma studio --port 5555 --browser none &
 STUDIO_PID=$!

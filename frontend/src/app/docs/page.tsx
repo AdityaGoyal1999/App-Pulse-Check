@@ -27,7 +27,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = createPageMetadata({
   title: "Documentation",
   description:
-    "Learn how to integrate heartbeat monitoring into your cron jobs, scripts, and background workers. Slack alerts supported today.",
+    "Learn how to integrate heartbeat monitoring into your cron jobs, scripts, and background workers. Slack and Discord alerts supported.",
   path: "/docs",
 });
 
@@ -84,7 +84,7 @@ const ALERT_CHANNELS = [
     id: "discord" as const,
     name: "Discord",
     description: "Webhook notifications for your server channels.",
-    available: false,
+    available: true,
     brandColor: "#5865F2",
   },
   {
@@ -238,7 +238,7 @@ export default function DocsPage() {
             <ul className="list-disc space-y-2 pl-5">
               <li>Web dashboard with live status badges and relative last-ping times</li>
               <li>Copy-ping-URL workflow — no SDK, no package install</li>
-              <li>Per-check Slack webhook configuration</li>
+              <li>Per-check Slack and Discord webhook configuration</li>
               <li>Pause checks during planned maintenance</li>
               <li>Configurable interval and grace period per job</li>
               <li>JWT-protected API for creating and managing checks</li>
@@ -359,7 +359,7 @@ export default function DocsPage() {
                 for copy-paste examples.
               </li>
               <li>
-                Configure Slack alerts under{" "}
+                Configure Slack or Discord alerts under{" "}
                 <strong className="font-medium text-foreground">Alerts</strong> on the check row.
                 See{" "}
                 <a href="#alerts" className="font-medium text-primary hover:underline">
@@ -516,7 +516,7 @@ export default function DocsPage() {
               </li>
               <li>
                 <Badge variant="destructive" className="mr-2 bg-destructive/10 text-destructive">DOWN</Badge>
-                Pings stopped arriving on time. A Slack alert fires if configured.
+                Pings stopped arriving on time. A Slack or Discord alert fires if configured.
               </li>
             </ul>
             <DocH3>Pause</DocH3>
@@ -624,6 +624,30 @@ curl -fsS -o /dev/null "$PULSECHECK_URL"`}</CodeBlock>
                 </Card>
               ))}
             </div>
+            <DocH3>Setting up Discord alerts</DocH3>
+            <ol className="list-decimal space-y-2 pl-5">
+              <li>
+                In Discord, open your server and go to{" "}
+                <strong className="font-medium text-foreground">
+                  Server Settings → Integrations → Webhooks
+                </strong>
+                .
+              </li>
+              <li>
+                Click <strong className="font-medium text-foreground">New Webhook</strong>,
+                choose the channel for alerts, and copy the webhook URL — it starts with{" "}
+                <code className="font-mono text-sm">https://discord.com/api/webhooks/…</code>
+              </li>
+              <li>
+                On the dashboard, open{" "}
+                <strong className="font-medium text-foreground">Alerts</strong> for your check,
+                paste the Discord webhook URL, and save settings.
+              </li>
+            </ol>
+            <p>
+              You can configure Slack, Discord, or both on the same check. Recovery alerts
+              are sent to the same channels when a down check receives a ping again.
+            </p>
             <DocH3>Setting up Slack alerts</DocH3>
             <ol className="list-decimal space-y-2 pl-5">
               <li>
@@ -695,11 +719,11 @@ curl -fsS -o /dev/null "$PULSECHECK_URL"`}</CodeBlock>
               period or interval. Also confirm you&apos;re pinging <em>after</em> the work finishes,
               not before.
             </p>
-            <DocH3>I didn&apos;t get a Slack alert</DocH3>
+            <DocH3>I didn&apos;t get a Slack or Discord alert</DocH3>
             <p>
-              Verify a webhook URL is saved on the check&apos;s alert settings, the URL is valid, and
-              the check isn&apos;t paused. Alerts fire on DOWN transitions — not on every evaluation
-              cycle.
+              Verify at least one webhook URL is saved on the check&apos;s alert settings,
+              the URL is valid, and the check isn&apos;t paused. Alerts fire on DOWN
+              transitions — not on every evaluation cycle.
             </p>
             <DocH3>Ping returns 404</DocH3>
             <p>

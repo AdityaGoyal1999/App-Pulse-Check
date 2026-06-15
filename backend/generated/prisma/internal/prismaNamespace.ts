@@ -694,6 +694,7 @@ export const CheckScalarFieldEnum = {
   paused: 'paused',
   alertSent: 'alertSent',
   alertWebhookUrl: 'alertWebhookUrl',
+  alertDiscordWebhookUrl: 'alertDiscordWebhookUrl',
   alertEmail: 'alertEmail',
   createdAt: 'createdAt'
 } as const

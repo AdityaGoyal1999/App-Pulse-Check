@@ -41,6 +41,7 @@ export default function CheckSettingsPage() {
 
   const [settings, setSettings] = useState<CheckSettings | null>(null);
   const [alertWebhookUrl, setAlertWebhookUrl] = useState("");
+  const [alertDiscordWebhookUrl, setAlertDiscordWebhookUrl] = useState("");
   const [fieldErrors, setFieldErrors] = useState<NotificationFieldErrors>({});
   const [apiError, setApiError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -61,6 +62,7 @@ export default function CheckSettingsPage() {
         if (cancelled) return;
         setSettings(data);
         setAlertWebhookUrl(data.alertWebhookUrl ?? "");
+        setAlertDiscordWebhookUrl(data.alertDiscordWebhookUrl ?? "");
       } catch (err) {
         if (cancelled) return;
         const message = err instanceof Error ? err.message : "Request failed";
@@ -84,7 +86,10 @@ export default function CheckSettingsPage() {
     e.preventDefault();
     setApiError("");
 
-    const result = validateNotificationForm(alertWebhookUrl);
+    const result = validateNotificationForm(
+      alertWebhookUrl,
+      alertDiscordWebhookUrl,
+    );
     setFieldErrors(result.errors);
     if (!result.valid || !result.values) return;
 
@@ -97,11 +102,13 @@ export default function CheckSettingsPage() {
               ...prev,
               name: updated.name,
               alertWebhookUrl: updated.alertWebhookUrl,
+              alertDiscordWebhookUrl: updated.alertDiscordWebhookUrl,
               alertEmail: updated.alertEmail,
             }
           : prev,
       );
       setAlertWebhookUrl(updated.alertWebhookUrl ?? "");
+      setAlertDiscordWebhookUrl(updated.alertDiscordWebhookUrl ?? "");
       toast.success("Alert settings saved");
       void refreshChecks();
     } catch (err) {
@@ -211,8 +218,8 @@ export default function CheckSettingsPage() {
             <CardHeader>
               <CardTitle>Down alerts</CardTitle>
               <CardDescription>
-                Get notified when this check goes DOWN. Configure a Slack
-                incoming webhook.{" "}
+                Get notified when this check goes DOWN. Configure Slack and/or
+                Discord webhooks per check.{" "}
                 <Link
                   href="/docs#alerts"
                   className="font-medium text-primary hover:underline"
@@ -234,12 +241,37 @@ export default function CheckSettingsPage() {
                     disabled={isSubmitting}
                   />
                   <p className="text-sm text-muted-foreground">
-                    Create one in Slack: Apps → Incoming Webhooks → Add to
-                    workspace.
+                    Optional. Create one in Slack: Apps → Incoming Webhooks →
+                    Add to workspace.
                   </p>
                   {fieldErrors.alertWebhookUrl && (
                     <p className="text-sm text-destructive">
                       {fieldErrors.alertWebhookUrl}
+                    </p>
+                  )}
+                </div>
+
+                <div className="grid gap-2">
+                  <Label htmlFor="alert-discord-webhook">
+                    Discord webhook URL
+                  </Label>
+                  <Input
+                    id="alert-discord-webhook"
+                    type="url"
+                    value={alertDiscordWebhookUrl}
+                    onChange={(e) =>
+                      setAlertDiscordWebhookUrl(e.target.value)
+                    }
+                    placeholder="https://discord.com/api/webhooks/..."
+                    disabled={isSubmitting}
+                  />
+                  <p className="text-sm text-muted-foreground">
+                    Optional. In Discord: Server Settings → Integrations →
+                    Webhooks → New Webhook.
+                  </p>
+                  {fieldErrors.alertDiscordWebhookUrl && (
+                    <p className="text-sm text-destructive">
+                      {fieldErrors.alertDiscordWebhookUrl}
                     </p>
                   )}
                 </div>

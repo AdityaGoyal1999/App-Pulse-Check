@@ -94,41 +94,61 @@ export function validateCreateCheckForm(
   };
 }
 
+import { isDiscordWebhookUrl, isSlackWebhookUrl } from "@/lib/webhook-urls";
+
 export type NotificationFieldErrors = {
   alertWebhookUrl?: string;
+  alertDiscordWebhookUrl?: string;
   // alertEmail?: string;
   form?: string;
 };
 
-export function validateNotificationForm(alertWebhookUrl: string) {
-  const trimmedWebhook = alertWebhookUrl.trim();
+export function validateNotificationForm(
+  alertWebhookUrl: string,
+  alertDiscordWebhookUrl: string,
+) {
+  const trimmedSlack = alertWebhookUrl.trim();
+  const trimmedDiscord = alertDiscordWebhookUrl.trim();
   const errors: NotificationFieldErrors = {};
 
-  const webhookValue = trimmedWebhook || null;
+  const slackValue = trimmedSlack || null;
+  const discordValue = trimmedDiscord || null;
 
-  if (webhookValue) {
+  if (slackValue) {
     try {
-      new URL(webhookValue);
+      new URL(slackValue);
     } catch {
       errors.alertWebhookUrl = "Enter a valid URL";
     }
+    if (!errors.alertWebhookUrl && !isSlackWebhookUrl(slackValue)) {
+      errors.alertWebhookUrl = "Enter a valid Slack incoming webhook URL";
+    }
   }
 
-  // Email alerts disabled until verified domain (next ship):
-  // const trimmedEmail = alertEmail.trim().toLowerCase();
-  // const emailValue = trimmedEmail || null;
-  // if (emailValue && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
-  //   errors.alertEmail = "Enter a valid email address";
-  // }
+  if (discordValue) {
+    try {
+      new URL(discordValue);
+    } catch {
+      errors.alertDiscordWebhookUrl = "Enter a valid URL";
+    }
+    if (!errors.alertDiscordWebhookUrl && !isDiscordWebhookUrl(discordValue)) {
+      errors.alertDiscordWebhookUrl = "Enter a valid Discord webhook URL";
+    }
+  }
 
-  if (!webhookValue) {
-    errors.form = "Enter a Slack webhook URL";
+  if (!slackValue && !discordValue) {
+    errors.form = "Enter at least one Slack or Discord webhook URL";
   }
 
   const valid = Object.keys(errors).length === 0;
 
   return {
-    values: valid ? { alertWebhookUrl: webhookValue } : null,
+    values: valid
+      ? {
+          alertWebhookUrl: slackValue,
+          alertDiscordWebhookUrl: discordValue,
+        }
+      : null,
     errors,
     valid,
   };

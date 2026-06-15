@@ -7,6 +7,7 @@ type AlertCheck = {
 
 type AlertUser = {
   alertWebhookUrl: string | null;
+  alertDiscordWebhookUrl: string | null;
   alertEmail: string | null;
 };
 
@@ -15,6 +16,7 @@ type DownAlertContent = {
   text: string;
   html: string;
   slackPayload: Record<string, unknown>;
+  discordPayload: Record<string, unknown>;
 };
 
 type RecoveryAlertContent = {
@@ -22,6 +24,7 @@ type RecoveryAlertContent = {
   text: string;
   html: string;
   slackPayload: Record<string, unknown>;
+  discordPayload: Record<string, unknown>;
 };
 
 // let resendClient: Resend | null = null;
@@ -243,11 +246,28 @@ function buildDownAlertMessage(check: AlertCheck): DownAlertContent {
     ],
   };
 
+  const discordPayload = {
+    embeds: [
+      {
+        title: "Check is DOWN",
+        url: link,
+        description: `**${check.name}** missed its expected ping window.`,
+        color: 0xdc2626,
+        fields: [
+          { name: "Check", value: check.name, inline: true },
+          { name: "Last ping", value: lastPing, inline: true },
+        ],
+        footer: { text: `Sent by ${name}` },
+      },
+    ],
+  };
+
   return {
     subject: `Check DOWN: ${check.name}`,
     text,
     html,
     slackPayload,
+    discordPayload,
   };
 }
 
@@ -388,15 +408,33 @@ function buildRecoveryAlertMessage(check: AlertCheck): RecoveryAlertContent {
     ],
   };
 
+  const discordPayload = {
+    embeds: [
+      {
+        title: "Check is UP",
+        url: link,
+        description: `**${check.name}** received a ping again.`,
+        color: 0x16a34a,
+        fields: [
+          { name: "Check", value: check.name, inline: true },
+          { name: "Last ping", value: lastPing, inline: true },
+        ],
+        footer: { text: `Sent by ${name}` },
+      },
+    ],
+  };
+
   return {
     subject: `Check UP: ${check.name}`,
     text,
     html,
     slackPayload,
+    discordPayload,
   };
 }
 
-async function sendSlackAlert(
+async function sendWebhookAlert(
+  label: string,
   webhookUrl: string,
   payload: Record<string, unknown>,
 ): Promise<void> {
@@ -409,12 +447,26 @@ async function sendSlackAlert(
 
     if (!response.ok) {
       console.error(
-        `Slack alert failed: HTTP ${response.status} ${response.statusText}`,
+        `${label} alert failed: HTTP ${response.status} ${response.statusText}`,
       );
     }
   } catch (err) {
-    console.error("Slack alert failed:", err);
+    console.error(`${label} alert failed:`, err);
   }
+}
+
+async function sendSlackAlert(
+  webhookUrl: string,
+  payload: Record<string, unknown>,
+): Promise<void> {
+  return sendWebhookAlert("Slack", webhookUrl, payload);
+}
+
+async function sendDiscordAlert(
+  webhookUrl: string,
+  payload: Record<string, unknown>,
+): Promise<void> {
+  return sendWebhookAlert("Discord", webhookUrl, payload);
 }
 
 // Email alerts disabled until verified domain (next ship):
@@ -463,16 +515,20 @@ export async function sendDownAlert(
   check: AlertCheck,
   user: AlertUser,
 ): Promise<void> {
-  if (!user.alertWebhookUrl) {
+  if (!user.alertWebhookUrl && !user.alertDiscordWebhookUrl) {
     return;
   }
 
-  const { slackPayload } = buildDownAlertMessage(check);
+  const { slackPayload, discordPayload } = buildDownAlertMessage(check);
 
   const tasks: Promise<void>[] = [];
 
   if (user.alertWebhookUrl) {
     tasks.push(sendSlackAlert(user.alertWebhookUrl, slackPayload));
+  }
+
+  if (user.alertDiscordWebhookUrl) {
+    tasks.push(sendDiscordAlert(user.alertDiscordWebhookUrl, discordPayload));
   }
 
   // if (user.alertEmail) {
@@ -486,16 +542,20 @@ export async function sendRecoveryAlert(
   check: AlertCheck,
   user: AlertUser,
 ): Promise<void> {
-  if (!user.alertWebhookUrl) {
+  if (!user.alertWebhookUrl && !user.alertDiscordWebhookUrl) {
     return;
   }
 
-  const { slackPayload } = buildRecoveryAlertMessage(check);
+  const { slackPayload, discordPayload } = buildRecoveryAlertMessage(check);
 
   const tasks: Promise<void>[] = [];
 
   if (user.alertWebhookUrl) {
     tasks.push(sendSlackAlert(user.alertWebhookUrl, slackPayload));
+  }
+
+  if (user.alertDiscordWebhookUrl) {
+    tasks.push(sendDiscordAlert(user.alertDiscordWebhookUrl, discordPayload));
   }
 
   // if (user.alertEmail) {

@@ -48,6 +48,7 @@ export type CheckMinAggregateOutputType = {
   paused: boolean | null
   alertSent: boolean | null
   alertWebhookUrl: string | null
+  alertDiscordWebhookUrl: string | null
   alertEmail: string | null
   createdAt: Date | null
 }
@@ -64,6 +65,7 @@ export type CheckMaxAggregateOutputType = {
   paused: boolean | null
   alertSent: boolean | null
   alertWebhookUrl: string | null
+  alertDiscordWebhookUrl: string | null
   alertEmail: string | null
   createdAt: Date | null
 }
@@ -80,6 +82,7 @@ export type CheckCountAggregateOutputType = {
   paused: number
   alertSent: number
   alertWebhookUrl: number
+  alertDiscordWebhookUrl: number
   alertEmail: number
   createdAt: number
   _all: number
@@ -108,6 +111,7 @@ export type CheckMinAggregateInputType = {
   paused?: true
   alertSent?: true
   alertWebhookUrl?: true
+  alertDiscordWebhookUrl?: true
   alertEmail?: true
   createdAt?: true
 }
@@ -124,6 +128,7 @@ export type CheckMaxAggregateInputType = {
   paused?: true
   alertSent?: true
   alertWebhookUrl?: true
+  alertDiscordWebhookUrl?: true
   alertEmail?: true
   createdAt?: true
 }
@@ -140,6 +145,7 @@ export type CheckCountAggregateInputType = {
   paused?: true
   alertSent?: true
   alertWebhookUrl?: true
+  alertDiscordWebhookUrl?: true
   alertEmail?: true
   createdAt?: true
   _all?: true
@@ -243,6 +249,7 @@ export type CheckGroupByOutputType = {
   paused: boolean
   alertSent: boolean
   alertWebhookUrl: string | null
+  alertDiscordWebhookUrl: string | null
   alertEmail: string | null
   createdAt: Date
   _count: CheckCountAggregateOutputType | null
@@ -282,6 +289,7 @@ export type CheckWhereInput = {
   paused?: Prisma.BoolFilter<"Check"> | boolean
   alertSent?: Prisma.BoolFilter<"Check"> | boolean
   alertWebhookUrl?: Prisma.StringNullableFilter<"Check"> | string | null
+  alertDiscordWebhookUrl?: Prisma.StringNullableFilter<"Check"> | string | null
   alertEmail?: Prisma.StringNullableFilter<"Check"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Check"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -300,6 +308,7 @@ export type CheckOrderByWithRelationInput = {
   paused?: Prisma.SortOrder
   alertSent?: Prisma.SortOrder
   alertWebhookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  alertDiscordWebhookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   alertEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -321,6 +330,7 @@ export type CheckWhereUniqueInput = Prisma.AtLeast<{
   paused?: Prisma.BoolFilter<"Check"> | boolean
   alertSent?: Prisma.BoolFilter<"Check"> | boolean
   alertWebhookUrl?: Prisma.StringNullableFilter<"Check"> | string | null
+  alertDiscordWebhookUrl?: Prisma.StringNullableFilter<"Check"> | string | null
   alertEmail?: Prisma.StringNullableFilter<"Check"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Check"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -339,6 +349,7 @@ export type CheckOrderByWithAggregationInput = {
   paused?: Prisma.SortOrder
   alertSent?: Prisma.SortOrder
   alertWebhookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  alertDiscordWebhookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   alertEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.CheckCountOrderByAggregateInput
@@ -363,6 +374,7 @@ export type CheckScalarWhereWithAggregatesInput = {
   paused?: Prisma.BoolWithAggregatesFilter<"Check"> | boolean
   alertSent?: Prisma.BoolWithAggregatesFilter<"Check"> | boolean
   alertWebhookUrl?: Prisma.StringNullableWithAggregatesFilter<"Check"> | string | null
+  alertDiscordWebhookUrl?: Prisma.StringNullableWithAggregatesFilter<"Check"> | string | null
   alertEmail?: Prisma.StringNullableWithAggregatesFilter<"Check"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Check"> | Date | string
 }
@@ -378,6 +390,7 @@ export type CheckCreateInput = {
   paused?: boolean
   alertSent?: boolean
   alertWebhookUrl?: string | null
+  alertDiscordWebhookUrl?: string | null
   alertEmail?: string | null
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutChecksInput
@@ -396,6 +409,7 @@ export type CheckUncheckedCreateInput = {
   paused?: boolean
   alertSent?: boolean
   alertWebhookUrl?: string | null
+  alertDiscordWebhookUrl?: string | null
   alertEmail?: string | null
   createdAt?: Date | string
   pingLogs?: Prisma.PingLogUncheckedCreateNestedManyWithoutCheckInput
@@ -412,6 +426,7 @@ export type CheckUpdateInput = {
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertDiscordWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutChecksNestedInput
@@ -430,6 +445,7 @@ export type CheckUncheckedUpdateInput = {
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertDiscordWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pingLogs?: Prisma.PingLogUncheckedUpdateManyWithoutCheckNestedInput
@@ -447,6 +463,7 @@ export type CheckCreateManyInput = {
   paused?: boolean
   alertSent?: boolean
   alertWebhookUrl?: string | null
+  alertDiscordWebhookUrl?: string | null
   alertEmail?: string | null
   createdAt?: Date | string
 }
@@ -462,6 +479,7 @@ export type CheckUpdateManyMutationInput = {
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertDiscordWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -478,6 +496,7 @@ export type CheckUncheckedUpdateManyInput = {
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertDiscordWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -504,6 +523,7 @@ export type CheckCountOrderByAggregateInput = {
   paused?: Prisma.SortOrder
   alertSent?: Prisma.SortOrder
   alertWebhookUrl?: Prisma.SortOrder
+  alertDiscordWebhookUrl?: Prisma.SortOrder
   alertEmail?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -525,6 +545,7 @@ export type CheckMaxOrderByAggregateInput = {
   paused?: Prisma.SortOrder
   alertSent?: Prisma.SortOrder
   alertWebhookUrl?: Prisma.SortOrder
+  alertDiscordWebhookUrl?: Prisma.SortOrder
   alertEmail?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -541,6 +562,7 @@ export type CheckMinOrderByAggregateInput = {
   paused?: Prisma.SortOrder
   alertSent?: Prisma.SortOrder
   alertWebhookUrl?: Prisma.SortOrder
+  alertDiscordWebhookUrl?: Prisma.SortOrder
   alertEmail?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -642,6 +664,7 @@ export type CheckCreateWithoutUserInput = {
   paused?: boolean
   alertSent?: boolean
   alertWebhookUrl?: string | null
+  alertDiscordWebhookUrl?: string | null
   alertEmail?: string | null
   createdAt?: Date | string
   pingLogs?: Prisma.PingLogCreateNestedManyWithoutCheckInput
@@ -658,6 +681,7 @@ export type CheckUncheckedCreateWithoutUserInput = {
   paused?: boolean
   alertSent?: boolean
   alertWebhookUrl?: string | null
+  alertDiscordWebhookUrl?: string | null
   alertEmail?: string | null
   createdAt?: Date | string
   pingLogs?: Prisma.PingLogUncheckedCreateNestedManyWithoutCheckInput
@@ -704,6 +728,7 @@ export type CheckScalarWhereInput = {
   paused?: Prisma.BoolFilter<"Check"> | boolean
   alertSent?: Prisma.BoolFilter<"Check"> | boolean
   alertWebhookUrl?: Prisma.StringNullableFilter<"Check"> | string | null
+  alertDiscordWebhookUrl?: Prisma.StringNullableFilter<"Check"> | string | null
   alertEmail?: Prisma.StringNullableFilter<"Check"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Check"> | Date | string
 }
@@ -719,6 +744,7 @@ export type CheckCreateWithoutPingLogsInput = {
   paused?: boolean
   alertSent?: boolean
   alertWebhookUrl?: string | null
+  alertDiscordWebhookUrl?: string | null
   alertEmail?: string | null
   createdAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutChecksInput
@@ -736,6 +762,7 @@ export type CheckUncheckedCreateWithoutPingLogsInput = {
   paused?: boolean
   alertSent?: boolean
   alertWebhookUrl?: string | null
+  alertDiscordWebhookUrl?: string | null
   alertEmail?: string | null
   createdAt?: Date | string
 }
@@ -767,6 +794,7 @@ export type CheckUpdateWithoutPingLogsInput = {
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertDiscordWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutChecksNestedInput
@@ -784,6 +812,7 @@ export type CheckUncheckedUpdateWithoutPingLogsInput = {
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertDiscordWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -799,6 +828,7 @@ export type CheckCreateManyUserInput = {
   paused?: boolean
   alertSent?: boolean
   alertWebhookUrl?: string | null
+  alertDiscordWebhookUrl?: string | null
   alertEmail?: string | null
   createdAt?: Date | string
 }
@@ -814,6 +844,7 @@ export type CheckUpdateWithoutUserInput = {
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertDiscordWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pingLogs?: Prisma.PingLogUpdateManyWithoutCheckNestedInput
@@ -830,6 +861,7 @@ export type CheckUncheckedUpdateWithoutUserInput = {
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertDiscordWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pingLogs?: Prisma.PingLogUncheckedUpdateManyWithoutCheckNestedInput
@@ -846,6 +878,7 @@ export type CheckUncheckedUpdateManyWithoutUserInput = {
   paused?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertSent?: Prisma.BoolFieldUpdateOperationsInput | boolean
   alertWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  alertDiscordWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   alertEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -893,6 +926,7 @@ export type CheckSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   paused?: boolean
   alertSent?: boolean
   alertWebhookUrl?: boolean
+  alertDiscordWebhookUrl?: boolean
   alertEmail?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -912,6 +946,7 @@ export type CheckSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   paused?: boolean
   alertSent?: boolean
   alertWebhookUrl?: boolean
+  alertDiscordWebhookUrl?: boolean
   alertEmail?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -929,6 +964,7 @@ export type CheckSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   paused?: boolean
   alertSent?: boolean
   alertWebhookUrl?: boolean
+  alertDiscordWebhookUrl?: boolean
   alertEmail?: boolean
   createdAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -946,11 +982,12 @@ export type CheckSelectScalar = {
   paused?: boolean
   alertSent?: boolean
   alertWebhookUrl?: boolean
+  alertDiscordWebhookUrl?: boolean
   alertEmail?: boolean
   createdAt?: boolean
 }
 
-export type CheckOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uuid" | "userId" | "name" | "intervalSeconds" | "graceSeconds" | "status" | "lastPingedAt" | "paused" | "alertSent" | "alertWebhookUrl" | "alertEmail" | "createdAt", ExtArgs["result"]["check"]>
+export type CheckOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "uuid" | "userId" | "name" | "intervalSeconds" | "graceSeconds" | "status" | "lastPingedAt" | "paused" | "alertSent" | "alertWebhookUrl" | "alertDiscordWebhookUrl" | "alertEmail" | "createdAt", ExtArgs["result"]["check"]>
 export type CheckInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   pingLogs?: boolean | Prisma.Check$pingLogsArgs<ExtArgs>
@@ -981,6 +1018,7 @@ export type $CheckPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     paused: boolean
     alertSent: boolean
     alertWebhookUrl: string | null
+    alertDiscordWebhookUrl: string | null
     alertEmail: string | null
     createdAt: Date
   }, ExtArgs["result"]["check"]>
@@ -1419,6 +1457,7 @@ export interface CheckFieldRefs {
   readonly paused: Prisma.FieldRef<"Check", 'Boolean'>
   readonly alertSent: Prisma.FieldRef<"Check", 'Boolean'>
   readonly alertWebhookUrl: Prisma.FieldRef<"Check", 'String'>
+  readonly alertDiscordWebhookUrl: Prisma.FieldRef<"Check", 'String'>
   readonly alertEmail: Prisma.FieldRef<"Check", 'String'>
   readonly createdAt: Prisma.FieldRef<"Check", 'DateTime'>
 }

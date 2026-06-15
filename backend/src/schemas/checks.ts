@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isDiscordWebhookUrl, isSlackWebhookUrl } from "../lib/webhook-urls";
 
 export const createCheckSchema = z.object({
   name: z.string().trim().min(1).max(100),
@@ -8,15 +9,37 @@ export const createCheckSchema = z.object({
 
 export type CreateCheckBody = z.infer<typeof createCheckSchema>;
 
+const slackWebhookSchema = z
+  .string()
+  .url()
+  .nullable()
+  .refine((value) => value === null || isSlackWebhookUrl(value), {
+    message: "Enter a valid Slack incoming webhook URL",
+  });
+
+const discordWebhookSchema = z
+  .string()
+  .url()
+  .nullable()
+  .refine((value) => value === null || isDiscordWebhookUrl(value), {
+    message: "Enter a valid Discord webhook URL",
+  });
+
 export const updateCheckNotificationsSchema = z
   .object({
-    alertWebhookUrl: z.string().url().nullable().optional(),
+    alertWebhookUrl: slackWebhookSchema.optional(),
+    alertDiscordWebhookUrl: discordWebhookSchema.optional(),
     // alertEmail: z.string().email().nullable().optional(), // next ship
   })
-  .refine((data) => data.alertWebhookUrl !== undefined, {
-    message: "At least one field is required",
-    path: [],
-  });
+  .refine(
+    (data) =>
+      data.alertWebhookUrl !== undefined ||
+      data.alertDiscordWebhookUrl !== undefined,
+    {
+      message: "At least one field is required",
+      path: [],
+    },
+  );
 
 export type UpdateCheckNotificationsBody = z.infer<
   typeof updateCheckNotificationsSchema

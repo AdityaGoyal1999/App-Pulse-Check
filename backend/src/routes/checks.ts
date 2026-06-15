@@ -27,6 +27,7 @@ function toCheckResponse(check: {
   lastPingedAt: Date | null;
   paused: boolean;
   alertWebhookUrl: string | null;
+  alertDiscordWebhookUrl: string | null;
   createdAt: Date;
 }) {
   return {
@@ -38,7 +39,7 @@ function toCheckResponse(check: {
     status: check.status,
     lastPingedAt: check.lastPingedAt,
     paused: check.paused,
-    hasAlerts: Boolean(check.alertWebhookUrl),
+    hasAlerts: Boolean(check.alertWebhookUrl || check.alertDiscordWebhookUrl),
     createdAt: check.createdAt,
   };
 }
@@ -124,6 +125,7 @@ const settingsSelect = {
   lastPingedAt: true,
   paused: true,
   alertWebhookUrl: true,
+  alertDiscordWebhookUrl: true,
   alertEmail: true,
 } as const;
 
@@ -137,6 +139,7 @@ function toSettingsResponse(check: {
   lastPingedAt: Date | null;
   paused: boolean;
   alertWebhookUrl: string | null;
+  alertDiscordWebhookUrl: string | null;
   alertEmail: string | null;
 }) {
   return {
@@ -149,6 +152,7 @@ function toSettingsResponse(check: {
     lastPingedAt: check.lastPingedAt,
     paused: check.paused,
     alertWebhookUrl: check.alertWebhookUrl,
+    alertDiscordWebhookUrl: check.alertDiscordWebhookUrl,
     alertEmail: check.alertEmail,
   };
 }
@@ -176,17 +180,20 @@ checksRouter.get("/:id", async (req, res) => {
 const notificationSelect = {
   name: true,
   alertWebhookUrl: true,
+  alertDiscordWebhookUrl: true,
   alertEmail: true,
 } as const;
 
 function toNotificationsResponse(check: {
   name: string;
   alertWebhookUrl: string | null;
+  alertDiscordWebhookUrl: string | null;
   alertEmail: string | null;
 }) {
   return {
     name: check.name,
     alertWebhookUrl: check.alertWebhookUrl,
+    alertDiscordWebhookUrl: check.alertDiscordWebhookUrl,
     alertEmail: check.alertEmail,
   };
 }
@@ -311,11 +318,18 @@ checksRouter.patch("/:id/notifications", async (req, res) => {
     return;
   }
 
-  const data: { alertWebhookUrl?: string | null; alertEmail?: string | null } =
-    {};
+  const data: {
+    alertWebhookUrl?: string | null;
+    alertDiscordWebhookUrl?: string | null;
+    alertEmail?: string | null;
+  } = {};
 
   if (parsed.data.alertWebhookUrl !== undefined) {
     data.alertWebhookUrl = parsed.data.alertWebhookUrl;
+  }
+
+  if (parsed.data.alertDiscordWebhookUrl !== undefined) {
+    data.alertDiscordWebhookUrl = parsed.data.alertDiscordWebhookUrl;
   }
 
   // if (parsed.data.alertEmail !== undefined) {

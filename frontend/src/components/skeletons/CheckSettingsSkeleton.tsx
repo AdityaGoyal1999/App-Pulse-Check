@@ -58,13 +58,18 @@ function AlertsCardSkeleton() {
       <CardHeader>
         <CardTitle>Down alerts</CardTitle>
         <CardDescription>
-          Get notified when this check goes DOWN. Configure a Slack incoming
-          webhook.
+          Get notified when this check goes DOWN. Configure Slack and/or Discord
+          webhooks.
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
         <div className="grid gap-2">
           <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-9 w-full" />
+          <Skeleton className="h-4 w-72 max-w-full" />
+        </div>
+        <div className="grid gap-2">
+          <Skeleton className="h-4 w-36" />
           <Skeleton className="h-9 w-full" />
           <Skeleton className="h-4 w-72 max-w-full" />
         </div>

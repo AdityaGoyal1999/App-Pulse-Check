@@ -18,6 +18,7 @@ export type EvaluatorCandidate = {
   intervalSeconds: number;
   graceSeconds: number;
   alertWebhookUrl: string | null;
+  alertDiscordWebhookUrl: string | null;
   alertEmail: string | null;
 };
 
@@ -52,6 +53,7 @@ export async function evaluateChecks(): Promise<number> {
       intervalSeconds: true,
       graceSeconds: true,
       alertWebhookUrl: true,
+      alertDiscordWebhookUrl: true,
       alertEmail: true,
     },
   });
@@ -69,6 +71,7 @@ export async function evaluateChecks(): Promise<number> {
               intervalSeconds: check.intervalSeconds,
               graceSeconds: check.graceSeconds,
               alertWebhookUrl: check.alertWebhookUrl,
+              alertDiscordWebhookUrl: check.alertDiscordWebhookUrl,
               alertEmail: check.alertEmail,
             },
           ]
@@ -87,6 +90,7 @@ export async function evaluateChecks(): Promise<number> {
         { name: check.name, lastPingedAt: check.lastPingedAt },
         {
           alertWebhookUrl: check.alertWebhookUrl,
+          alertDiscordWebhookUrl: check.alertDiscordWebhookUrl,
           alertEmail: check.alertEmail,
         },
       ),
