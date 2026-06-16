@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { CodeBlock } from "@/components/docs/CodeBlock";
+import { DocsTocNav, DocsTocRoot } from "@/components/docs/DocsTableOfContents";
 import { MarketingHeader } from "@/components/MarketingHeader";
 import { IntegrationIcon } from "@/components/landing/IntegrationIcon";
 import { Badge } from "@/components/ui/badge";
@@ -132,42 +133,13 @@ function DocH3({ children }: { children: React.ReactNode }) {
 export default function DocsPage() {
   return (
     <div className="flex min-h-full flex-col bg-background">
-      <MarketingHeader sticky activeNav="docs" />
+      <DocsTocRoot items={TOC}>
+        <MarketingHeader sticky activeNav="docs" />
 
-      <nav
-        aria-label="On this page"
-        className="border-b border-border lg:hidden"
-      >
-        <div className="mx-auto flex w-full max-w-6xl gap-1 overflow-x-auto px-4 py-2 sm:px-6">
-          {TOC.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              className="shrink-0 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
-      </nav>
+        <DocsTocNav items={TOC} variant="horizontal" />
 
-      <div className="mx-auto flex w-full max-w-6xl flex-1 gap-12 px-4 py-10 sm:px-6 lg:py-14">
-        <aside className="hidden w-52 shrink-0 lg:block">
-          <nav className="sticky top-24 space-y-1">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              On this page
-            </p>
-            {TOC.map((item) => (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                className="block rounded-md px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
-        </aside>
+        <div className="mx-auto flex w-full max-w-6xl flex-1 gap-12 px-4 py-10 sm:px-6 lg:py-14">
+          <DocsTocNav items={TOC} variant="sidebar" />
 
         <main className="min-w-0 flex-1">
           <div className="mb-10">
@@ -860,6 +832,7 @@ curl -fsS -o /dev/null "$PULSECHECK_URL"`}</CodeBlock>
           </div>
         </div>
       </footer>
+    </DocsTocRoot>
     </div>
   );
 }
