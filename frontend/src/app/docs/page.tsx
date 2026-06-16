@@ -343,14 +343,14 @@ export default function DocsPage() {
                 .
               </li>
               <li>
-                Click <strong className="font-medium text-foreground">Create Check</strong> — give
+                Click <strong className="font-medium text-foreground">Create Check</strong> and give the check
                 it a name, set an expected interval (seconds between successful runs), and a grace
-                period (extra buffer before marking down).
+                period (extra buffer before we mark it as DOWN).
               </li>
               <li>
                 Copy the ping URL from the check row. It looks like{" "}
                 <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm text-foreground">
-                  https://your-api.example.com/ping/a1b2c3d4-…
+                  https://app.pulsecheck.com/ping/a1b2c3d4-…
                 </code>
               </li>
               <li>
@@ -362,7 +362,7 @@ export default function DocsPage() {
                 for copy-paste examples.
               </li>
               <li>
-                Configure Slack or Discord alerts under{" "}
+                Configure Slack or Discord alerts (more coming soon) under{" "}
                 <strong className="font-medium text-foreground">Alerts</strong> on the check row.
                 See{" "}
                 <a href="#alerts" className="font-medium text-primary hover:underline">
