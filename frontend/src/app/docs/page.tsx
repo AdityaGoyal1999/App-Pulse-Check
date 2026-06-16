@@ -6,6 +6,7 @@ import {
   Bell,
   Clock,
   Shield,
+  TriangleAlert,
   Zap,
 } from "lucide-react";
 
@@ -382,7 +383,16 @@ export default function DocsPage() {
           <DocSection id="ping-api" title="Ping API reference">
             <p>
               The ping endpoint is public and requires no authentication. The UUID in the URL acts
-              as the secret — treat it like an API key.
+              as the secret.{" "}
+              <strong className="inline-flex items-center gap-1.5 font-medium text-foreground">
+                <TriangleAlert
+                  className="size-4 shrink-0 text-amber-600 dark:text-amber-500"
+                  strokeWidth={2.25}
+                  aria-hidden
+                />
+                Treat it like an API key
+              </strong>
+              .
             </p>
             <div className="not-prose my-4 overflow-x-auto rounded-lg elevation-flat">
               <table className="w-full text-sm">
@@ -394,7 +404,7 @@ export default function DocsPage() {
                   <tr className="border-b border-border">
                     <td className="bg-muted/40 px-4 py-2.5 font-medium text-foreground">URL</td>
                     <td className="px-4 py-2.5 font-mono text-foreground">
-                      {"{API_URL}"}/ping/{"{uuid}"}
+                      https://app.pulsecheck.com/ping/{"{uuid}"}
                     </td>
                   </tr>
                   <tr className="border-b border-border">
