@@ -427,7 +427,7 @@ export default function DocsPage() {
               </table>
             </div>
             <DocH3>Test with curl</DocH3>
-            <CodeBlock title="bash">{`curl -fsS -o /dev/null "https://your-api.example.com/ping/YOUR-UUID"`}</CodeBlock>
+            <CodeBlock title="bash">{`curl -fsS -o /dev/null "https://app.pulsecheck.com/ping/YOUR-UUID"`}</CodeBlock>
             <p className="text-sm">
               <code className="font-mono">-f</code> fails on non-2xx responses;{" "}
               <code className="font-mono">-sS</code> keeps output quiet but surfaces errors.
@@ -435,11 +435,11 @@ export default function DocsPage() {
             <DocH3>Errors</DocH3>
             <ul className="list-disc space-y-2 pl-5">
               <li>
-                <code className="font-mono text-sm">404</code> — UUID not found (wrong URL or deleted
+                <code className="font-mono text-sm">404</code>: UUID not found (wrong URL or deleted
                 check)
               </li>
               <li>
-                <code className="font-mono text-sm">500</code> — server error; retry is safe
+                <code className="font-mono text-sm">500</code>: server error; retry is safe
               </li>
             </ul>
           </DocSection>
