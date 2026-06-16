@@ -374,7 +374,13 @@ export default function DocsPage() {
               <li>
                 Run your job once. The check should move from{" "}
                 <Badge variant="outline" className="mx-0.5 align-middle text-xs">NEW</Badge> to{" "}
-                <Badge variant="outline" className="mx-0.5 align-middle text-xs">UP</Badge> after
+                <Badge
+                  variant="secondary"
+                  className="mx-0.5 align-middle border-success-border bg-success-muted text-xs text-success-foreground"
+                >
+                  Up
+                </Badge>{" "}
+                after
                 the first ping.
               </li>
             </ol>
@@ -524,7 +530,12 @@ export default function DocsPage() {
                 DOWN until the first successful ping arrives.
               </li>
               <li>
-                <Badge variant="outline" className="mr-2">UP</Badge>
+                <Badge
+                  variant="secondary"
+                  className="mr-2 border-success-border bg-success-muted text-success-foreground"
+                >
+                  Up
+                </Badge>
                 Last ping arrived within the expected window. Everything looks healthy.
               </li>
               <li>
@@ -544,7 +555,10 @@ export default function DocsPage() {
             <p>
               Add one HTTP GET at the <strong className="font-medium text-foreground">end</strong> of
               your job, only after work completes successfully. Store the ping URL in an environment
-              variable — never commit it to version control.
+              variable.{" "}
+              <strong className="font-medium text-foreground">
+                Never commit it to version control.
+              </strong>
             </p>
             <DocH3>Linux cron</DocH3>
             <CodeBlock title="crontab">{`# Run backup at 2 AM; ping only if backup succeeds
