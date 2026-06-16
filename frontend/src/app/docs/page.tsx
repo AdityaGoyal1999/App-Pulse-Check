@@ -60,9 +60,9 @@ const FEATURES = [
   },
   {
     icon: Bell,
-    title: "Actionable down alerts",
+    title: "Integrate with popular apps",
     description:
-      "Know the moment something stops checking in — before your users or data pipeline do.",
+      "Send down and recovery alerts to Slack or Discord with a per-check webhook URL right where your team already works.",
   },
   {
     icon: Shield,
@@ -209,15 +209,15 @@ export default function DocsPage() {
             <p>
               App Pulse Check exposes <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm text-foreground">GET /health</code> on
               the API server for monitoring the service itself. Your jobs use{" "}
-              <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm text-foreground">GET /ping/:uuid</code> — a
+              <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm text-foreground">GET /ping/:uuid</code> a
               separate, public endpoint scoped to each check you create.
             </p>
           </DocSection>
 
           <DocSection id="what-we-offer" title="What we offer">
             <p>
-              App Pulse Check gives indie hackers and small teams focused monitoring — everything
-              you need to know when scheduled work stops running, without a full observability stack.
+              App Pulse Check gives indie hackers and small teams focused monitoring, everything
+              you need to know when scheduled work stops running without a full observability stack.
             </p>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {FEATURES.map((feature) => (
@@ -236,12 +236,15 @@ export default function DocsPage() {
             </div>
             <DocH3>Also included</DocH3>
             <ul className="list-disc space-y-2 pl-5">
-              <li>Web dashboard with live status badges and relative last-ping times</li>
-              <li>Copy-ping-URL workflow — no SDK, no package install</li>
+              <li>Web dashboard with live status badges and easily readable relative last-ping times</li>
+              <li>Copy-ping-URL workflow i.e. no SDK, no package install</li>
               <li>Per-check Slack and Discord webhook configuration</li>
               <li>Pause checks during planned maintenance</li>
-              <li>Configurable interval and grace period per job</li>
-              <li>JWT-protected API for creating and managing checks</li>
+              <li>Configurable interval and grace period per check</li>
+              <li>
+                JWT-protected check management API for creating and editing checks, separate from
+                the public ping URL your jobs call (no auth required there)
+              </li>
             </ul>
           </DocSection>
 
@@ -301,7 +304,7 @@ export default function DocsPage() {
               plan caps how many entries are kept per check. When a new ping would exceed your
               plan&apos;s limit, the{" "}
               <strong className="font-medium text-foreground">oldest</strong> log entries are
-              deleted automatically — both when pings arrive and during a periodic retention
+              deleted automatically, both when pings arrive and during a periodic retention
               cleanup.
             </p>
             <p>
