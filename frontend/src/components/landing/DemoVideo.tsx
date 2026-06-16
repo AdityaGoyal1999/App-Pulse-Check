@@ -5,7 +5,7 @@ import { Play } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-const DEMO_VIDEO_ID = "xsYq4p1oewg";
+const DEMO_VIDEO_ID = "jyIjnUqIFNY";
 
 type DemoVideoProps = {
   className?: string;
