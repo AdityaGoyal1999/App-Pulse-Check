@@ -617,7 +617,7 @@ curl -fsS -o /dev/null "$PULSECHECK_URL"`}</CodeBlock>
 
           <DocSection id="alerts" title="Alerts">
             <p>
-              Get notified the moment a check goes DOWN — before your users or downstream systems
+              Get notified the moment a check goes DOWN, before your users or downstream systems
               notice something is wrong.
             </p>
             <div className="not-prose mt-6 grid gap-4 sm:grid-cols-2">
