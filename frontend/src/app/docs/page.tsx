@@ -178,22 +178,22 @@ export default function DocsPage() {
             </h1>
             <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[var(--subtle-foreground)]">
               Everything you need to wire App Pulse Check into cron jobs, scripts,
-              and background workers — and get alerted when they go quiet.
+              and background workers and set up alerts.
             </p>
           </div>
 
           <DocSection id="overview" title="What the product is and why you should care">
             <p>
-              App Pulse Check is a <strong className="font-medium text-foreground">heartbeat monitor</strong> for
-              background jobs, cron tasks, and scripts. Each monitored job gets a unique ping URL.
-              When the job runs successfully, it calls that URL to signal it&apos;s alive. If pings
-              stop arriving within the expected window, the check is marked down and your team gets
+              App Pulse Check is a <strong className="font-medium text-foreground">heartbeat monitor </strong> for
+              background jobs, cron tasks, and scripts. Each monitored check (or job) gets a unique ping URL.
+              When the check runs successfully, it calls that URL to signal it&apos;s alive. If pings
+              stop arriving within the expected time window, the check is marked down and your team gets
               notified.
             </p>
             <p>
-              This is <strong className="font-medium text-foreground">not</strong> traditional HTTP
+              This is <strong className="font-medium text-foreground">not </strong> a traditional HTTP
               uptime monitoring. You don&apos;t point us at a public endpoint and wait for it to
-              respond. Instead, <em>your job tells us it finished</em> — which catches silent
+              respond. Instead, <em>your job tells us it finished</em> which catches silent
               failures: scripts that crash, crons that never fire, workers that hang, pipelines that
               stall without raising an error.
             </p>
