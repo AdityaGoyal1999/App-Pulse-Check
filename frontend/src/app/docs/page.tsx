@@ -363,9 +363,10 @@ export default function DocsPage() {
                 for copy-paste examples.
               </li>
               <li>
-                Configure Slack or Discord alerts (more coming soon) under{" "}
-                <strong className="font-medium text-foreground">Alerts</strong> on the check row.
-                See{" "}
+                Configure Slack or Discord alerts from the check&apos;s{" "}
+                <strong className="font-medium text-foreground">Settings</strong> page — click{" "}
+                <strong className="font-medium text-foreground">Configure alerts</strong> and save
+                your webhook URLs. See{" "}
                 <a href="#alerts" className="font-medium text-primary hover:underline">
                   Alerts
                 </a>{" "}
@@ -677,9 +678,12 @@ curl -fsS -o /dev/null "$PULSECHECK_URL"`}</CodeBlock>
                 <code className="font-mono text-sm">https://discord.com/api/webhooks/…</code>
               </li>
               <li>
-                On the dashboard, open{" "}
-                <strong className="font-medium text-foreground">Alerts</strong> for your check,
-                paste the Discord webhook URL, and save settings.
+                Open your check&apos;s{" "}
+                <strong className="font-medium text-foreground">Settings</strong> from the dashboard
+                (click the check name or the settings icon), click{" "}
+                <strong className="font-medium text-foreground">Configure alerts</strong>, paste the
+                Discord webhook URL, and click{" "}
+                <strong className="font-medium text-foreground">Save alert settings</strong>.
               </li>
             </ol>
             <p>
@@ -700,27 +704,53 @@ curl -fsS -o /dev/null "$PULSECHECK_URL"`}</CodeBlock>
             </DocH3>
             <ol className="list-decimal space-y-2 pl-5">
               <li>
-                In Slack, go to{" "}
-                <strong className="font-medium text-foreground">Apps → Incoming Webhooks</strong>{" "}
-                (or create a Slack app with Incoming Webhooks enabled).
+                Go to{" "}
+                <a
+                  href="https://api.slack.com/apps"
+                  className="font-medium text-primary hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  api.slack.com/apps
+                </a>{" "}
+                → <strong className="font-medium text-foreground">Create New App</strong> →{" "}
+                <strong className="font-medium text-foreground">From scratch</strong>.
               </li>
               <li>
-                Add a new webhook and choose the channel where alerts should appear (e.g.{" "}
-                <code className="font-mono text-sm">#alerts</code>).
+                Name the app (e.g.{" "}
+                <strong className="font-medium text-foreground">AppPulseCheck Alerts</strong>) and
+                pick your workspace.
               </li>
               <li>
-                Copy the webhook URL — it starts with{" "}
+                In the app settings, open{" "}
+                <strong className="font-medium text-foreground">Incoming Webhooks</strong>.
+              </li>
+              <li>
+                Turn <strong className="font-medium text-foreground">Activate Incoming Webhooks</strong>{" "}
+                on.
+              </li>
+              <li>
+                Click{" "}
+                <strong className="font-medium text-foreground">Add New Webhook to Workspace</strong>,
+                choose a channel, and <strong className="font-medium text-foreground">Allow</strong>.
+              </li>
+              <li>
+                Copy the webhook URL from the list it starts with{" "}
                 <code className="font-mono text-sm">https://hooks.slack.com/services/…</code>
               </li>
               <li>
-                On the dashboard, click <strong className="font-medium text-foreground">Alerts</strong> on
-                your check and paste the URL. Save settings.
+                Open your check&apos;s{" "}
+                <strong className="font-medium text-foreground">Settings</strong> from the dashboard
+                (click the check name or the settings icon), click{" "}
+                <strong className="font-medium text-foreground">Configure alerts</strong>, paste the
+                Slack webhook URL, and click{" "}
+                <strong className="font-medium text-foreground">Save alert settings</strong>.
               </li>
             </ol>
             <p>
               Alerts are configured <strong className="font-medium text-foreground">per check</strong>,
               so different jobs can notify different channels. An alert fires when a check
-              transitions to DOWN. More channels ship soon — no migration needed when they land.
+              transitions to DOWN. More channels ship soon, no migration needed when they land.
             </p>
           </DocSection>
 
@@ -770,7 +800,9 @@ curl -fsS -o /dev/null "$PULSECHECK_URL"`}</CodeBlock>
             </p>
             <DocH3>I didn&apos;t get a Slack or Discord alert</DocH3>
             <p>
-              Verify at least one webhook URL is saved on the check&apos;s alert settings,
+              Verify at least one webhook URL is saved in the check&apos;s{" "}
+              <strong className="font-medium text-foreground">Settings</strong> →{" "}
+              <strong className="font-medium text-foreground">Configure alerts</strong> panel,
               the URL is valid, and the check isn&apos;t paused. Alerts fire on DOWN
               transitions — not on every evaluation cycle.
             </p>
