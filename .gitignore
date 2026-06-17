@@ -106,6 +106,9 @@ dump.rdb
 # --- Prisma (generated client in custom output paths) ---
 # Migrations are committed; ignore local DB state only via .env above
 
+# --- Growth planning (local outreach notes, not committed) ---
+growthPlanning/
+
 # --- Misc ---
 .vercel
 .netlify
